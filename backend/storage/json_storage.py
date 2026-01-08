@@ -13,18 +13,40 @@ def save_challenge(challenge: Challenge):
         json.dump(challenge.to_dict(), f, indent=4)
 
 def load_challenge(name: str) -> Challenge | None:
-    if not os.path.exists(_path(name)):
+    path = _path(name)
+    if not os.path.exists(path):
         return None
 
-    with open(_path(name), "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    c = Challenge(data["name"])
+    c = Challenge(data["name"], data["activity_type"])
+
     if data["goal"]:
         g = data["goal"]
         c.set_goal(Goal(g["description"], g["target"], g["period"]))
 
     for s in data["sessions"]:
-        c.add_session(Session(s["date"], s["values"]))
+        c.add_session(Session(s["date"], s["time"], s["values"]))
 
     return c
+
+def list_challenges() -> list[dict]:
+    if not os.path.exists(DATA_DIR):
+        return []
+
+    challenges = []
+
+    for filename in os.listdir(DATA_DIR):
+        if not filename.endswith(".json"):
+            continue
+
+        with open(os.path.join(DATA_DIR, filename), "r", encoding="utf-8") as f:
+            data = json.load(f)
+            challenges.append({
+                "name": data["name"],
+                "activity_type": data["activity_type"]
+            })
+
+    return challenges
+
