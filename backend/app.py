@@ -7,7 +7,7 @@ from storage.json_storage import save_challenge, load_challenge
 from models.activities import ACTIVITIES  
 
 app = Flask(__name__)
-CORS(app)  # erlaubt Requests vom React-Frontend
+CORS(app)
 
 @app.route("/health", methods=["GET"])
 def health():
@@ -21,7 +21,7 @@ def create_challenge():
     if not name:
         return {"error": "name is required"}, 400
 
-    if name not in ACTIVITIES:  # <--- Validierung hinzufügen
+    if name not in ACTIVITIES:
         return {"error": f"Unknown activity '{name}'"}, 400
 
     if load_challenge(name):

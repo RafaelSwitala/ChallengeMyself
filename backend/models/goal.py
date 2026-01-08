@@ -2,7 +2,7 @@ class Goal:
     def __init__(self, description: str, target: float, period: str):
         self.description = description
         self.target = target
-        self.period = period  # "daily", "weekly", "monthly"
+        self.period = period
 
     def to_dict(self):
         return {

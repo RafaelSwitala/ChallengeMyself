@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 
-// Vordefinierte Activities
 const activities = [
-  "Laufen",
-  "Radfahren",
-  "Lesen",
-  "Lernen",
-  "Schlaf",
-  "Rauchen",
-  "Liegestütze",
-  "Wasser",
-  "Ernährung",
-  "Meditation"
+"Laufen",
+"Radfahren",
+"Lesen",
+"Lernen",
+"Liegestütze",
+"Rauchen",
+"Schlaf",
+"Wasser",
+"Spazieren",
+"Workout",
+"Schwimmen",
+"Bildschirmzeit",
+"Alkohol",
+"Stimmung",
+"Stress",
+"Energielevel",
+"Motivation"
+
 ];
 
 function App() {

@@ -1,7 +1,6 @@
 class Session:
     def __init__(self, date: str, values: dict, activity_name: str | None = None):
         self.date = date
-        # optional: extra Validierung, wenn activity_name übergeben wird
         if activity_name:
             from models.activities import ACTIVITIES
             allowed = ACTIVITIES.get(activity_name, [])

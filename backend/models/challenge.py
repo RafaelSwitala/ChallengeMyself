@@ -1,6 +1,6 @@
 from models.session import Session
 from models.goal import Goal
-from models.activities import ACTIVITIES  # <--- neu hinzufügen
+from models.activities import ACTIVITIES
 
 class Challenge:
     def __init__(self, name: str):
@@ -10,10 +10,9 @@ class Challenge:
         self.name = name
         self.sessions: list[Session] = []
         self.goal: Goal | None = None
-        self.allowed_keys = ACTIVITIES[name]  # <--- speichert erlaubte Felder pro Activity
+        self.allowed_keys = ACTIVITIES[name]
 
     def add_session(self, session: Session):
-        # Validierung: nur erlaubte Keys speichern
         filtered_values = {k: v for k, v in session.values.items() if k in self.allowed_keys}
         session.values = filtered_values
         self.sessions.append(session)
