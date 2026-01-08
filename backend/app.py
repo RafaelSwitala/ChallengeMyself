@@ -4,6 +4,7 @@ from flask_cors import CORS
 from models.challenge import Challenge
 from models.session import Session
 from storage.json_storage import save_challenge, load_challenge
+from models.activities import ACTIVITIES  
 
 app = Flask(__name__)
 CORS(app)  # erlaubt Requests vom React-Frontend
@@ -14,6 +15,22 @@ def health():
 
 @app.route("/challenges", methods=["POST"])
 def create_challenge():
+    data = request.json
+    name = data.get("name")
+
+    if not name:
+        return {"error": "name is required"}, 400
+
+    if name not in ACTIVITIES:  # <--- Validierung hinzufügen
+        return {"error": f"Unknown activity '{name}'"}, 400
+
+    if load_challenge(name):
+        return {"error": "challenge already exists"}, 400
+
+    challenge = Challenge(name)
+    save_challenge(challenge)
+
+    return jsonify(challenge.to_dict()), 201
     data = request.json
     name = data.get("name")
 

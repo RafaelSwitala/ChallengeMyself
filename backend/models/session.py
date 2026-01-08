@@ -1,7 +1,13 @@
 class Session:
-    def __init__(self, date: str, values: dict):
+    def __init__(self, date: str, values: dict, activity_name: str | None = None):
         self.date = date
-        self.values = values  # flexibel: km, minuten, zigaretten, etc.
+        # optional: extra Validierung, wenn activity_name übergeben wird
+        if activity_name:
+            from models.activities import ACTIVITIES
+            allowed = ACTIVITIES.get(activity_name, [])
+            self.values = {k: values.get(k) for k in allowed}
+        else:
+            self.values = values
 
     def to_dict(self):
         return {

@@ -1,8 +1,22 @@
 import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 
+// Vordefinierte Activities
+const activities = [
+  "Laufen",
+  "Radfahren",
+  "Lesen",
+  "Lernen",
+  "Schlaf",
+  "Rauchen",
+  "Liegestütze",
+  "Wasser",
+  "Ernährung",
+  "Meditation"
+];
+
 function App() {
-  const [name, setName] = useState("");
+  const [selectedActivity, setSelectedActivity] = useState(activities[0]);
   const [message, setMessage] = useState("");
 
   const createChallenge = async () => {
@@ -11,14 +25,14 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name: selectedActivity }),
     });
 
     if (response.ok) {
-      setMessage("Challenge erstellt 🎉");
-      setName("");
+      setMessage(`Challenge "${selectedActivity}" erstellt 🎉`);
     } else {
-      setMessage("Fehler beim Erstellen");
+      const data = await response.json();
+      setMessage(`Fehler: ${data.error}`);
     }
   };
 
@@ -29,12 +43,14 @@ function App() {
       <Form>
         <Form.Group className="mb-3">
           <Form.Label>Neue Challenge</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="z.B. Lernen"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <Form.Select
+            value={selectedActivity}
+            onChange={(e) => setSelectedActivity(e.target.value)}
+          >
+            {activities.map((a) => (
+              <option key={a} value={a}>{a}</option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
         <Button onClick={createChallenge}>Erstellen</Button>
