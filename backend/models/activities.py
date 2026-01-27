@@ -9,7 +9,6 @@ ACTIVITIES = {
         "intensitaet",
         "strecke_typ"
     ],
-
     "Radfahren": [
         "distanz_km",
         "dauer_min",
