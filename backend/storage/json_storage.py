@@ -43,10 +43,14 @@ def list_challenges() -> list[dict]:
 
         with open(os.path.join(DATA_DIR, filename), "r", encoding="utf-8") as f:
             data = json.load(f)
-            challenges.append({
-                "name": data["name"],
-                "activity_type": data["activity_type"]
-            })
+
+        challenges.append({
+            "id": filename.replace(".json", ""),
+            "name": data.get("name", "Unbenannt"),
+            "activity_type": data.get("activity_type", "Unbekannt")
+        })
 
     return challenges
+
+
 
