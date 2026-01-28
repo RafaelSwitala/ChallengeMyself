@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV 'C:\Users\rafaelswitala\Desktop\Informatik Duales Studium\6. Semester\SE-Einführung in die Programmierung in Python\ChallengeMyself\venv'
+set -gx VIRTUAL_ENV 'C:\Users\rafaelswitala\Desktop\PProjekte\ChallengeMyself\venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"Scripts $PATH

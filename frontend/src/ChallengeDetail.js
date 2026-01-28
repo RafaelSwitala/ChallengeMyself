@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Container, Button, Form } from "react-bootstrap";
 import SessionForm from "./SessionForm";
+import ChallengePlot from "./ChallengePlot";
 
 function ChallengeDetail() {
   const { name } = useParams(); // <-- aus URL
@@ -189,6 +190,10 @@ const deleteGoal = async () => {
           </li>
         ))}
       </ul>
+
+      <h2>{name}</h2>
+      {/* z.B. "menge_ml" für Alkohol */}
+    <ChallengePlot challengeName={challengeName} availableFields={fields} />
     </Container>
   );
 }
