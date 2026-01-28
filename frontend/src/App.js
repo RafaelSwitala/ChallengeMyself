@@ -3,31 +3,14 @@ import { Container, Form, Button } from "react-bootstrap";
 import { Routes, Route, Link } from "react-router-dom";
 import ChallengeDetail from "./ChallengeDetail";
 
-const activities = [
-  "Laufen",
-  "Radfahren",
-  "Lesen",
-  "Lernen",
-  "Liegestütze",
-  "Rauchen",
-  "Schlaf",
-  "Wasser",
-  "Spazieren",
-  "Workout",
-  "Schwimmen",
-  "Bildschirmzeit",
-  "Alkohol",
-  "Stimmung",
-  "Stress",
-  "Energielevel",
-  "Motivation"
-];
-
 function App() {
-  const [selectedActivity, setSelectedActivity] = useState(activities[0]);
+  const [activities, setActivities] = useState([]);
+  const [selectedActivity, setSelectedActivity] = useState("");
   const [challengeName, setChallengeName] = useState("");
   const [message, setMessage] = useState("");
   const [challenges, setChallenges] = useState([]);
+
+  // Challenges laden
   const loadChallenges = async () => {
     try {
       const res = await fetch("http://localhost:5000/challenges");
@@ -35,12 +18,38 @@ function App() {
       setChallenges(data);
     } catch (err) {
       console.error("Failed to load challenges", err);
+      setMessage("Fehler beim Laden der Challenges");
     }
   };
+
+  // Activities aus dem Backend laden
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/activities");
+        const data = await res.json();
+        setActivities(data.activities || []);
+        if (data.activities && data.activities.length > 0) {
+          setSelectedActivity(data.activities[0].name); // Name als default
+        }
+      } catch (err) {
+        console.error("Failed to load activities", err);
+        setMessage("Fehler beim Laden der Activities");
+      }
+    };
+
+    fetchActivities();
+    loadChallenges();
+  }, []);
 
   const createChallenge = async () => {
     if (!challengeName.trim()) {
       setMessage("Bitte einen Challenge-Namen eingeben");
+      return;
+    }
+
+    if (!selectedActivity) {
+      setMessage("Bitte eine Activity auswählen");
       return;
     }
 
@@ -72,10 +81,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    loadChallenges();
-  }, []);
-
   return (
     <Container className="mt-5">
       <Routes>
@@ -98,16 +103,18 @@ function App() {
 
                 <Form.Group className="mb-3">
                   <Form.Label>Activity</Form.Label>
-                  <Form.Select
-                    value={selectedActivity}
-                    onChange={(e) => setSelectedActivity(e.target.value)}
-                  >
-                    {activities.map((a) => (
-                      <option key={a} value={a}>
-                        {a}
-                      </option>
-                    ))}
-                  </Form.Select>
+                    <Form.Select
+                      value={selectedActivity}
+                      onChange={(e) => setSelectedActivity(e.target.value)}
+                      disabled={activities.length === 0}
+                    >
+                      {activities.map((a) => (
+                        <option key={a} value={a}>
+                          {a}
+                        </option>
+                      ))}
+                    </Form.Select>
+
                 </Form.Group>
 
                 <Button type="button" onClick={createChallenge}>
@@ -136,10 +143,8 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/challenge/:name"
-          element={<ChallengeDetail />}
-        />
+
+        <Route path="/challenge/:name" element={<ChallengeDetail />} />
       </Routes>
     </Container>
   );

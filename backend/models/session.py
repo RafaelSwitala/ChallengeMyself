@@ -1,8 +1,8 @@
 class Session:
-    def __init__(self, date: str, time: str, values: dict):
+    def __init__(self, date: str, time: str, values: dict | None = None):
         self.date = date
         self.time = time
-        self.values = values
+        self.values = values or {}
 
     def to_dict(self):
         return {

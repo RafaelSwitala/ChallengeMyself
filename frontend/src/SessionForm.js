@@ -6,20 +6,22 @@ function SessionForm({ fields, onSubmit }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
+  // Initialisiere values bei Änderung von fields
   useEffect(() => {
     const initial = {};
     fields.forEach((f) => {
-      initial[f] = "";
+      initial[f.name] = "";
     });
     setValues(initial);
   }, [fields]);
 
-  const handleChange = (field, value) => {
-    setValues((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (fieldName, value) => {
+    setValues((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!date || !time) return;
 
     onSubmit({
       date,
@@ -27,8 +29,14 @@ function SessionForm({ fields, onSubmit }) {
       values,
     });
 
+    // Formular zurücksetzen
     setDate("");
     setTime("");
+    const cleared = {};
+    fields.forEach((f) => {
+      cleared[f.name] = "";
+    });
+    setValues(cleared);
   };
 
   if (fields.length === 0) {
@@ -58,13 +66,32 @@ function SessionForm({ fields, onSubmit }) {
       </Form.Group>
 
       {fields.map((f) => (
-        <Form.Group className="mb-3" key={f}>
-          <Form.Label>{f}</Form.Label>
-          <Form.Control
-            type="text"
-            value={values[f] || ""}
-            onChange={(e) => handleChange(f, e.target.value)}
-          />
+        <Form.Group className="mb-3" key={f.name}>
+          <Form.Label>
+            {f.name} {f.unit ? `(${f.unit})` : ""}
+          </Form.Label>
+
+          {f.type === "enum" ? (
+            <Form.Select
+              value={values[f.name] || ""}
+              onChange={(e) => handleChange(f.name, e.target.value)}
+              required
+            >
+              <option value="">Bitte wählen</option>
+              {f.values?.map((v) => (
+                <option key={v} value={v}>
+                  {v}
+                </option>
+              ))}
+            </Form.Select>
+          ) : (
+            <Form.Control
+              type={f.type === "number" ? "number" : "text"}
+              value={values[f.name] || ""}
+              onChange={(e) => handleChange(f.name, e.target.value)}
+              required
+            />
+          )}
         </Form.Group>
       ))}
 

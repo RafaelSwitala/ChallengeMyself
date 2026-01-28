@@ -1,128 +1,170 @@
-ACTIVITIES = {
+from dataclasses import dataclass
+from typing import Optional, List
+
+
+@dataclass
+class Field:
+    name: str
+    type: str
+    unit: Optional[str] = None
+    values: Optional[List[str]] = None
+
+    def to_dict(self) -> dict:
+        """
+        Wandelt das Field-Objekt in ein JSON-kompatibles dict um
+        (für API / Frontend)
+        """
+        data = {
+            "name": self.name,
+            "type": self.type,
+        }
+        if self.unit is not None:
+            data["unit"] = self.unit
+        if self.values is not None:
+            data["values"] = self.values
+        return data
+
+
+ACTIVITIES: dict[str, list[Field]] = {
+
     # Bewegung & Sport
     "Laufen": [
-        "distanz_km",
-        "dauer_min",
-        "pausen_anzahl",
-        "pausen_dauer_min",
-        "durchschnittstempo_min_pro_km",
-        "intensitaet",
-        "strecke_typ"
+        Field("distanz_km", "number", "km"),
+        Field("dauer_min", "number", "min"),
+        Field("pausen_anzahl", "number"),
+        Field("pausen_dauer_min", "number", "min"),
+        Field("durchschnittstempo_min_pro_km", "number"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
+        Field("strecke_typ", "text"),
     ],
+
     "Radfahren": [
-        "distanz_km",
-        "dauer_min",
-        "pausen_anzahl",
-        "pausen_dauer_min",
-        "durchschnittsgeschwindigkeit_kmh",
-        "intensitaet",
-        "strecke_typ"
+        Field("distanz_km", "number", "km"),
+        Field("dauer_min", "number", "min"),
+        Field("pausen_anzahl", "number"),
+        Field("pausen_dauer_min", "number", "min"),
+        Field("durchschnittsgeschwindigkeit_kmh", "number", "km/h"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
+        Field("strecke_typ", "text"),
     ],
 
     "Spazieren": [
-        "distanz_km",
-        "dauer_min",
-        "schritte_anzahl",
-        "intensitaet"
+        Field("distanz_km", "number", "km"),
+        Field("dauer_min", "number", "min"),
+        Field("schritte_anzahl", "number"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel"]),
     ],
 
     "Schwimmen": [
-        "distanz_m",
-        "dauer_min",
-        "pausen_anzahl",
-        "beckenlaenge_m",
-        "schwimmstil"
+        Field("distanz_m", "number", "m"),
+        Field("dauer_min", "number", "min"),
+        Field("pausen_anzahl", "number"),
+        Field("beckenlaenge_m", "number", "m"),
+        Field("schwimmstil", "text"),
     ],
 
     "Workout": [
-        "dauer_min",
-        "uebungen_anzahl",
-        "uebung_name",
-        "intensitaet",
-        "trainingsart"
+        Field("dauer_min", "number", "min"),
+        Field("uebungen_anzahl", "number"),
+        Field("uebung_name", "text"),
+        Field("intensitaet", "enum", values=["leicht", "mittel", "hart"]),
+        Field("trainingsart", "text"),
     ],
 
     "Liegestütze": [
-        "wiederholungen_anzahl",
-        "sets_anzahl",
-        "set_definition",
-        "saubere_wiederholungen_anzahl"
+        Field("wiederholungen_anzahl", "number"),
+        Field("sets_anzahl", "number"),
+        Field("set_definition", "text"),
+        Field("saubere_wiederholungen_anzahl", "number"),
     ],
 
     # Lernen & Fokus
     "Lesen": [
-        "dauer_min",
-        "unterbrechungen_anzahl",
-        "seiten_anzahl",
-        "medium"
+        Field("dauer_min", "number", "min"),
+        Field("unterbrechungen_anzahl", "number"),
+        Field("seiten_anzahl", "number"),
+        Field("medium", "text"),
     ],
 
     "Lernen": [
-        "dauer_min",
-        "unterbrechungen_anzahl",
-        "thema",
-        "lernform"
+        Field("dauer_min", "number", "min"),
+        Field("unterbrechungen_anzahl", "number"),
+        Field("thema", "text"),
+        Field("lernform", "text"),
     ],
 
     # Schlaf & Regeneration
     "Schlaf": [
-        "dauer_stunden",
-        "dauer_min",
-        "schlafqualitaet",
-        "einschlafdauer_min",
-        "aufwach_anzahl"
+        Field("dauer_stunden", "number", "h"),
+        Field("dauer_min", "number", "min"),
+        Field("schlafqualitaet", "number"),
+        Field("einschlafdauer_min", "number", "min"),
+        Field("aufwach_anzahl", "number"),
     ],
 
     # Alltag & Medien
     "Bildschirmzeit": [
-        "dauer_min",
-        "geraet_typ",
-        "hauptnutzung"
+        Field("dauer_min", "number", "min"),
+        Field("geraet_typ", "text"),
+        Field("hauptnutzung", "text"),
     ],
 
     # Konsum
     "Wasser": [
-        "menge_ml",
-        "quelle",
-        "temperatur"
+        Field("menge_ml", "number", "ml"),
+        Field("quelle", "text"),
+        Field("temperatur", "text"),
     ],
 
     "Alkohol": [
-        "menge_ml",
-        "getraenk_typ",
-        "alkohol_prozent",
-        "anlass"
+        Field("menge_ml", "number", "ml"),
+        Field("getraenk_typ", "text"),
+        Field("alkohol_prozent", "number"),
+        Field("anlass", "text"),
     ],
 
     "Rauchen": [
-        "anzahl_pro_tag",
-        "abstand_min",
-        "produkt_typ",
-        "verlangen_wert"
+        Field("anzahl_pro_tag", "number"),
+        Field("abstand_min", "number", "min"),
+        Field("produkt_typ", "text"),
+        Field("verlangen_wert", "number"),
     ],
 
     # Mentales & Wohlbefinden
     "Stimmung": [
-        "wert",
-        "hauptgefuehl",
-        "ausloeser"
+        Field("wert", "number"),
+        Field("hauptgefuehl", "text"),
+        Field("ausloeser", "text"),
     ],
 
     "Stress": [
-        "wert",
-        "hauptursache",
-        "koerperliche_symptome"
+        Field("wert", "number"),
+        Field("hauptursache", "text"),
+        Field("koerperliche_symptome", "text"),
     ],
 
     "Energielevel": [
-        "wert",
-        "tageszeit",
-        "koerperliches_gefuehl"
+        Field("wert", "number"),
+        Field("tageszeit", "text"),
+        Field("koerperliches_gefuehl", "text"),
     ],
 
     "Motivation": [
-        "wert",
-        "bezogen_auf",
-        "hindernis"
+        Field("wert", "number"),
+        Field("bezogen_auf", "text"),
+        Field("hindernis", "text"),
     ],
 }
+
+
+def get_activity_names() -> list[str]:
+    return list(ACTIVITIES.keys())
+
+
+def get_fields(activity: str) -> list[dict]:
+    """
+    Gibt die Felder einer Aktivität als JSON-kompatible dicts zurück
+    (für Frontend & API)
+    """
+    fields = ACTIVITIES.get(activity, [])
+    return [f.to_dict() for f in fields]

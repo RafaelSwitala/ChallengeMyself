@@ -20,7 +20,11 @@ function ChallengePlot({ challengeName, availableFields }) {
       params.append("intensities", selectedIntensities.join(","));
     }
 
-    const res = await fetch(`http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/plot?${params.toString()}`);
+    const res = await fetch(
+      `http://localhost:5000/challenges/${encodeURIComponent(
+        challengeName
+      )}/plot?${params.toString()}`
+    );
     const data = await res.json();
     setChartData(data);
   };
@@ -29,15 +33,19 @@ function ChallengePlot({ challengeName, availableFields }) {
     loadData();
   }, [selectedFields, selectedIntensities]);
 
-  const toggleField = (field) => {
-    setSelectedFields(prev =>
-      prev.includes(field) ? prev.filter(f => f !== field) : [...prev, field]
+  const toggleField = (fieldName) => {
+    setSelectedFields((prev) =>
+      prev.includes(fieldName)
+        ? prev.filter((f) => f !== fieldName)
+        : [...prev, fieldName]
     );
   };
 
   const toggleIntensity = (intensity) => {
-    setSelectedIntensities(prev =>
-      prev.includes(intensity) ? prev.filter(i => i !== intensity) : [...prev, intensity]
+    setSelectedIntensities((prev) =>
+      prev.includes(intensity)
+        ? prev.filter((i) => i !== intensity)
+        : [...prev, intensity]
     );
   };
 
@@ -46,26 +54,28 @@ function ChallengePlot({ challengeName, availableFields }) {
       <h4>Filter</h4>
       <div>
         <strong>Felder:</strong>
-        {availableFields.map(f => (
-          <label key={f} style={{ marginLeft: "10px" }}>
+        {availableFields.map((f) => (
+          <label key={f.name} style={{ marginLeft: "10px" }}>
             <input
               type="checkbox"
-              checked={selectedFields.includes(f)}
-              onChange={() => toggleField(f)}
-            /> {f}
+              checked={selectedFields.includes(f.name)}
+              onChange={() => toggleField(f.name)}
+            />{" "}
+            {f.name} {f.unit ? `(${f.unit})` : ""}
           </label>
         ))}
       </div>
 
       <div style={{ marginTop: "10px" }}>
         <strong>Intensität:</strong>
-        {intensities.map(i => (
+        {intensities.map((i) => (
           <label key={i} style={{ marginLeft: "10px" }}>
             <input
               type="checkbox"
               checked={selectedIntensities.includes(i)}
               onChange={() => toggleIntensity(i)}
-            /> {i}
+            />{" "}
+            {i}
           </label>
         ))}
       </div>
