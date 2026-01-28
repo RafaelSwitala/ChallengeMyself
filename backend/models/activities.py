@@ -10,7 +10,7 @@ class Field:
     type: str
     unit: Optional[str] = None
     values: Optional[List[str]] = None
-    chart_type: Optional[str] = None  # "line", "bar" oder None für Filter/Text
+    chart_type: Optional[str] = None
 
     def to_dict(self) -> dict:
         """
@@ -38,7 +38,7 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("dauer_min", "number", "min", chart_type="line"),
         Field("pausen_anzahl", "number", chart_type="line"),
         Field("pausen_dauer_min", "number", "min", chart_type="line"),
-        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),  # Filter
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
         Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "schotter", "park"]),
     ],
 
@@ -70,9 +70,9 @@ ACTIVITIES: dict[str, list[Field]] = {
     "Workout": [
         Field("dauer_min", "number", "min", chart_type="line"),
         Field("uebungen_anzahl", "number", chart_type="line"),
-        Field("uebung_name", "text"),  # Filter
-        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),  # Filter
-        Field("trainingsart", "text"),  # Filter
+        Field("uebung_name", "text"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
+        Field("trainingsart", "text"),
     ],
 
     "Liegestütze": [
@@ -110,8 +110,8 @@ ACTIVITIES: dict[str, list[Field]] = {
     # Alltag & Medien
     "Bildschirmzeit": [
         Field("dauer_min", "number", "min", chart_type="line"),
-        Field("geraet_typ", "text"),  # Filter für Säulenvergleich
-        Field("hauptnutzung", "text"),  # Filter
+        Field("geraet_typ", "text"),
+        Field("hauptnutzung", "text"),
     ],
 
     # Konsum

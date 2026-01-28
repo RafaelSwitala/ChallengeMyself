@@ -2,41 +2,27 @@ from utils.logger import setup_logging, get_logger
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
-import logging
-
 from models.challenge import Challenge
 from models.session import Session
 from models.goal import Goal
 from models.activities import ACTIVITIES, get_activity_names, get_fields
 from storage.json_storage import save_challenge, load_challenge, list_challenges
 
-# --------------------------------------------------
 # Logging
-# --------------------------------------------------
-
 setup_logging()
 logger = get_logger(__name__)
 
-# --------------------------------------------------
 # App Setup
-# --------------------------------------------------
-
 app = Flask(__name__)
 CORS(app)
 
-# --------------------------------------------------
 # Health
-# --------------------------------------------------
-
 @app.get("/health")
 def health():
     logger.debug("Health check called")
     return {"status": "ok"}
 
-# --------------------------------------------------
 # Challenges
-# --------------------------------------------------
-
 @app.route("/challenges", methods=["GET", "POST"])
 def challenges():
     if request.method == "GET":
@@ -95,10 +81,7 @@ def get_challenge(name):
         logger.exception("Failed to load challenge %s", name)
         return {"error": "internal server error"}, 500
 
-# --------------------------------------------------
 # Sessions
-# --------------------------------------------------
-
 @app.post("/challenges/<name>/sessions")
 def add_session(name):
     try:
@@ -129,10 +112,7 @@ def add_session(name):
         logger.exception("Failed to add session to challenge %s", name)
         return {"error": "internal server error"}, 500
 
-# --------------------------------------------------
 # Goals
-# --------------------------------------------------
-
 @app.post("/challenges/<name>/goal")
 def set_goal(name):
     try:
@@ -162,10 +142,7 @@ def set_goal(name):
         logger.exception("Failed to set goal for %s", name)
         return {"error": "internal server error"}, 500
 
-# --------------------------------------------------
 # Activities & Meta
-# --------------------------------------------------
-
 @app.get("/activities")
 def list_activities():
     try:
@@ -209,10 +186,7 @@ def challenge_meta(name):
         logger.exception("Failed to load challenge meta for %s", name)
         return {"error": "internal server error"}, 500
 
-# --------------------------------------------------
 # Plot
-# --------------------------------------------------
-
 @app.get("/challenges/<name>/plot")
 def plot_challenge(name):
     try:
@@ -281,8 +255,6 @@ def plot_challenge(name):
     except Exception:
         logger.exception("Failed to generate plot for %s", name)
         return {"error": "internal server error"}, 500
-
-# --------------------------------------------------
 
 if __name__ == "__main__":
     logger.info("Starting Flask app")

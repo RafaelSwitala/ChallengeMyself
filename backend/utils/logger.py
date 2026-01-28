@@ -1,38 +1,26 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
-
 from config import LOG_ENABLED, LOG_LEVEL, LOG_DIR, LOG_FILE
 
-# --------------------------------------------------
 # Logging-Konfiguration
-# --------------------------------------------------
-
 LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-
 
 def setup_logging():
     """
     Initialisiert Logging abhängig von config.py
-
-    - NUR Datei-Logging (keine Console)
-    - Optional komplett deaktivierbar
-    - Rotating File Handler
     """
 
     root_logger = logging.getLogger()
 
-    # ⚠️ Wichtig: keine doppelten Handler
     root_logger.handlers.clear()
 
     if not LOG_ENABLED:
-        # 🔕 Logging vollständig deaktivieren
         root_logger.addHandler(logging.NullHandler())
         return
 
     os.makedirs(LOG_DIR, exist_ok=True)
 
-    # Log-Level aus config (String → logging-Level)
     level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
     root_logger.setLevel(level)
 
@@ -40,7 +28,7 @@ def setup_logging():
 
     file_handler = RotatingFileHandler(
         os.path.join(LOG_DIR, LOG_FILE),
-        maxBytes=2_000_000,   # ~2 MB
+        maxBytes=2_000_000,
         backupCount=5,
         encoding="utf-8"
     )

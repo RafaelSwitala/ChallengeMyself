@@ -30,7 +30,7 @@ function App() {
         const data = await res.json();
         setActivities(data.activities || []);
         if (data.activities && data.activities.length > 0) {
-          setSelectedActivity(data.activities[0].name); // Name als default
+          setSelectedActivity(data.activities[0].name);
         }
       } catch (err) {
         console.error("Failed to load activities", err);

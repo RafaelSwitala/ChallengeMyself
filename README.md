@@ -137,3 +137,37 @@ curl -X POST http://localhost:5000/challenges/Wandermarathon/goal \
   "target": "",
   "period": "4 mal in der Woche"
 }'
+
+
+## Logging & Fehlerbehandlung
+Das Backend verwendet ein zentrales, konfigurierbares Logging-System, um Fehler, Warnungen und Debug-Informationen ausschließlich in Logdateien zu schreiben (keine Console-Ausgabe).
+
+### 1. Logging-Konfiguration
+LOG_ENABLED = True          # Logging an / aus
+LOG_LEVEL = "DEBUG"        # DEBUG | INFO | WARNING | ERROR
+LOG_DIR = "logs"           # Log-Verzeichnis
+LOG_FILE = "app.log"       # Logdatei
+
+- Logging kann vollständig deaktiviert werden (LOG_ENABLED = False)
+- Log-Level steuert die Detailtiefe der Einträge
+- Logs werden rotierend gespeichert (max. ~2 MB pro Datei, 5 Backups)
+
+### 2. Log-Dateien
+Bei aktiviertem Logging werden Logdateien automatisch erzeugt unter:
+backend/logs/app.log
+
+Hinweis: Die Flask-Konsole bleibt bewusst ruhig – alle Logs gehen ausschließlich in die Datei.
+
+### 3. Fehlerbehandlung (Backend)
+- Validierungsfehler (Client-Fehler, 4xx)
+- Beispiele: Fehlende Pflichtfelder, Ungültige Activity, Nicht existierende Challenge
+- HTTP-Statuscodes:
+- 400 Bad Request
+- 404 Not Found
+- Diese Fehler werden als WARNING geloggt.
+
+- Laufzeitfehler (Server-Fehler, 5xx)
+- Unerwartete Fehler im Backend (z. B. Parsing-, IO- oder Pandas-Fehler) werden abgefangen.
+- Beispiele: Ungültiges Datum, Falscher Datentyp in values, Schreibfehler beim Speichern einer JSON-Datei
+- 500 Internal Server Error
+- Diese Fehler werden als ERROR inklusive Stacktrace in der Logdatei gespeichert.
