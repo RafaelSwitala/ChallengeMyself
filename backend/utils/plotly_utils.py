@@ -31,10 +31,8 @@ def create_line_chart_json(df: pd.DataFrame, fields: list[str], title: str = "")
     data = []
 
     for f in fields:
-        # Prüfen, ob Spalte existiert
         if f not in df.columns:
             continue
-        # y-Werte in Listen umwandeln (falls NumPy-Arrays)
         y_vals = df[f].tolist() if hasattr(df[f], "tolist") else list(df[f])
         x_vals = df["date"].tolist() if hasattr(df["date"], "tolist") else list(df["date"])
         data.append({

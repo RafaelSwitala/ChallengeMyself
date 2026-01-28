@@ -6,9 +6,8 @@ function ChallengePlot({ challengeName, availableFields }) {
   const [selectedIntensities, setSelectedIntensities] = useState([]);
   const [chartData, setChartData] = useState(null);
 
-  const intensities = ["gemuetlich", "stark"]; // optional dynamisch aus Sessions ziehen
+  const intensities = ["gemuetlich", "stark"];
 
-  // Daten vom Backend laden
   const loadData = async () => {
     if (selectedFields.length === 0) {
       setChartData(null);
@@ -30,7 +29,6 @@ function ChallengePlot({ challengeName, availableFields }) {
     loadData();
   }, [selectedFields, selectedIntensities]);
 
-  // Checkbox-Handler
   const toggleField = (field) => {
     setSelectedFields(prev =>
       prev.includes(field) ? prev.filter(f => f !== field) : [...prev, field]

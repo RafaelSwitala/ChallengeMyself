@@ -8,8 +8,8 @@ class Challenge:
         if activity_type not in ACTIVITIES:
             raise ValueError(f"Unknown activity type {activity_type}")
 
-        self.name = name                      # z. B. "Übung-Marathon"
-        self.activity_type = activity_type    # z. B. "Laufen"
+        self.name = name
+        self.activity_type = activity_type
         self.sessions: list[Session] = []
         self.goal: Goal | None = None
         self.allowed_keys = ACTIVITIES[activity_type]
@@ -18,8 +18,6 @@ class Challenge:
         filtered = {k: session.values.get(k) for k in self.allowed_keys}
         session.values = filtered
         self.sessions.append(session)
-
-        # nach Datum + Uhrzeit sortieren
         self.sessions.sort(key=lambda s: (s.date, s.time))
 
     def set_goal(self, goal: Goal):

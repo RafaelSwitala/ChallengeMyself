@@ -1,7 +1,7 @@
 class Session:
     def __init__(self, date: str, time: str, values: dict):
-        self.date = date      # YYYY-MM-DD
-        self.time = time      # HH:MM
+        self.date = date
+        self.time = time
         self.values = values
 
     def to_dict(self):

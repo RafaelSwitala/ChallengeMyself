@@ -19,26 +19,16 @@ from storage.json_storage import (
 app = Flask(__name__)
 CORS(app)
 
-# ---------------------------
-# Health
-# ---------------------------
-
 @app.route("/health", methods=["GET"])
 def health():
     return {"status": "ok"}
 
 
-# ---------------------------
-# Challenges (GET + POST)
-# ---------------------------
-
 @app.route("/challenges", methods=["GET", "POST"])
 def challenges():
-    # GET → Liste aller Challenges
     if request.method == "GET":
         return jsonify(list_challenges())
 
-    # POST → neue Challenge erstellen
     data = request.json
 
     name = data.get("name")
@@ -59,10 +49,6 @@ def challenges():
     return jsonify(challenge.to_dict()), 201
 
 
-# ---------------------------
-# Single Challenge
-# ---------------------------
-
 @app.route("/challenges/<name>", methods=["GET"])
 def get_challenge(name):
     challenge = load_challenge(name)
@@ -71,10 +57,6 @@ def get_challenge(name):
 
     return jsonify(challenge.to_dict())
 
-
-# ---------------------------
-# Sessions
-# ---------------------------
 
 @app.route("/challenges/<name>/sessions", methods=["POST"])
 def add_session(name):
@@ -97,10 +79,6 @@ def add_session(name):
     return jsonify(challenge.to_dict()), 200
 
 
-# ---------------------------
-# Goal
-# ---------------------------
-
 @app.route("/challenges/<name>/goal", methods=["POST"])
 def set_goal(name):
     challenge = load_challenge(name)
@@ -121,10 +99,6 @@ def set_goal(name):
 
     return jsonify(challenge.to_dict()), 200
 
-
-# ---------------------------
-# Activities
-# ---------------------------
 
 @app.route("/activities/<activity_name>", methods=["GET"])
 def get_activity_fields(activity_name):
@@ -173,11 +147,6 @@ def plot_challenge(name):
     chart_json = create_line_chart_json(df, existing_fields, title=f"{challenge.name} - Verlauf")
     return jsonify(chart_json)
 
-
-
-# ---------------------------
-# App start (IMMER GANZ UNTEN)
-# ---------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

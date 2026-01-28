@@ -5,6 +5,7 @@ UMLAUT_MAP = {
     "ä": "ae",
     "ö": "oe",
     "ü": "ue",
+    "ß": "ss",
 }
 
 def replace_umlauts(text: str) -> str:

@@ -5,20 +5,13 @@ import SessionForm from "./SessionForm";
 import ChallengePlot from "./ChallengePlot";
 
 function ChallengeDetail() {
-  const { name } = useParams(); // <-- aus URL
+  const { name } = useParams();
   const challengeName = decodeURIComponent(name);
-
   const [challenge, setChallenge] = useState(null);
   const [fields, setFields] = useState([]);
-
-  // Goal state
   const [goalDescription, setGoalDescription] = useState("");
   const [goalTarget, setGoalTarget] = useState("");
   const [goalPeriod, setGoalPeriod] = useState("");
-
-  // ---------------------------
-  // Load Challenge
-  // ---------------------------
 const loadChallenge = async () => {
   try {
     const res = await fetch(
@@ -40,10 +33,6 @@ const loadChallenge = async () => {
   }
 };
 
-
-  // ---------------------------
-  // Load Activity Fields
-  // ---------------------------
   const loadFields = async (activity) => {
     const res = await fetch(`http://localhost:5000/activities/${encodeURIComponent(activity)}`);
     const data = await res.json();
@@ -60,9 +49,7 @@ const loadChallenge = async () => {
     }
   }, [challenge]);
 
-  // ---------------------------
-  // Sessions
-  // ---------------------------
+
   const addSession = async (sessionData) => {
     const res = await fetch(
       `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/sessions`,
@@ -75,9 +62,7 @@ const loadChallenge = async () => {
     if (res.ok) loadChallenge();
   };
 
-  // ---------------------------
-  // Goal
-  // ---------------------------
+
   const saveGoal = async () => {
     const res = await fetch(
       `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal`,
@@ -118,22 +103,19 @@ const deleteGoal = async () => {
 
   return (
     <Container className="mt-4">
-      <Link to="/">← Zurück</Link>
+      <Link to="/">Zurück</Link>
 
       <h2 className="mt-3">
         {challenge.name} ({challenge.activity_type})
       </h2>
 
-      {/* ---------------------------
-          Goal
-      --------------------------- */}
-      <h4 className="mt-4">🎯 Ziel</h4>
+      <h4 className="mt-4">Ziel</h4>
 
       {challenge.goal ? (
         <div className="mb-3">
           <p>
             <strong>{challenge.goal.description}</strong><br />
-            Ziel: {challenge.goal.target} – Zeitraum: {challenge.goal.period}
+            Ziel: {challenge.goal.target} - Zeitraum: {challenge.goal.period}
           </p>
           <Button variant="secondary" size="sm" onClick={deleteGoal}>
             Ziel bearbeiten
@@ -171,16 +153,10 @@ const deleteGoal = async () => {
         </Form>
       )}
 
-      {/* ---------------------------
-          Session Form
-      --------------------------- */}
-      <h4>➕ Neue Session</h4>
+      <h4>Neue Session</h4>
       <SessionForm fields={fields} onSubmit={addSession} />
 
-      {/* ---------------------------
-          Sessions
-      --------------------------- */}
-      <h4 className="mt-4">📅 Sessions</h4>
+      <h4 className="mt-4">Sessions</h4>
       {challenge.sessions.length === 0 && <p>Noch keine Sessions.</p>}
 
       <ul>
@@ -192,7 +168,6 @@ const deleteGoal = async () => {
       </ul>
 
       <h2>{name}</h2>
-      {/* z.B. "menge_ml" für Alkohol */}
     <ChallengePlot challengeName={challengeName} availableFields={fields} />
     </Container>
   );

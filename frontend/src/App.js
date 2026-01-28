@@ -28,11 +28,6 @@ function App() {
   const [challengeName, setChallengeName] = useState("");
   const [message, setMessage] = useState("");
   const [challenges, setChallenges] = useState([]);
-
-  // ---------------------------
-  // Backend calls
-  // ---------------------------
-
   const loadChallenges = async () => {
     try {
       const res = await fetch("http://localhost:5000/challenges");
@@ -68,7 +63,7 @@ function App() {
         return;
       }
 
-      setMessage(`Challenge "${challengeName}" erstellt 🎉`);
+      setMessage(`Challenge "${challengeName}" erstellt`);
       setChallengeName("");
       loadChallenges();
     } catch (err) {
@@ -77,24 +72,13 @@ function App() {
     }
   };
 
-  // ---------------------------
-  // Initial load
-  // ---------------------------
-
   useEffect(() => {
     loadChallenges();
   }, []);
 
-  // ---------------------------
-  // UI
-  // ---------------------------
-
   return (
     <Container className="mt-5">
       <Routes>
-        {/* ---------------------------
-            Startseite
-        --------------------------- */}
         <Route
           path="/"
           element={
@@ -152,10 +136,6 @@ function App() {
             </>
           }
         />
-
-        {/* ---------------------------
-            Challenge Detailseite
-        --------------------------- */}
         <Route
           path="/challenge/:name"
           element={<ChallengeDetail />}

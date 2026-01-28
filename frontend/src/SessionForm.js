@@ -6,7 +6,6 @@ function SessionForm({ fields, onSubmit }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // Wenn sich fields ändern → values neu initialisieren
   useEffect(() => {
     const initial = {};
     fields.forEach((f) => {
@@ -28,7 +27,6 @@ function SessionForm({ fields, onSubmit }) {
       values,
     });
 
-    // Reset
     setDate("");
     setTime("");
   };
