@@ -38,26 +38,25 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("dauer_min", "number", "min", chart_type="line"),
         Field("pausen_anzahl", "number", chart_type="line"),
         Field("pausen_dauer_min", "number", "min", chart_type="line"),
-        Field("durchschnittstempo_min_pro_km", "number", chart_type="line"),
         Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),  # Filter
-        Field("strecke_typ", "text"),  # Filter
+        Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "schotter", "park"]),
     ],
 
     "Radfahren": [
-        Field("distanz_km", "number", "km"),
-        Field("dauer_min", "number", "min"),
-        Field("pausen_anzahl", "number"),
-        Field("pausen_dauer_min", "number", "min"),
-        Field("durchschnittsgeschwindigkeit_kmh", "number", "km/h"),
+        Field("distanz_km", "number", "km", chart_type="line"),
+        Field("dauer_min", "number", "min", chart_type="line"),
+        Field("pausen_anzahl", "number", chart_type="bar"),
+        Field("pausen_dauer_min", "number", "min", chart_type="line"),
         Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
-        Field("strecke_typ", "text"),
+        Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "schotter", "park"]),
     ],
 
     "Spazieren": [
         Field("distanz_km", "number", "km"),
         Field("dauer_min", "number", "min"),
         Field("schritte_anzahl", "number"),
-        Field("intensitaet", "enum", values=["gemuetlich", "mittel"]),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
+        Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "schotter", "park"]),
     ],
 
     "Schwimmen": [
@@ -72,7 +71,7 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("dauer_min", "number", "min", chart_type="line"),
         Field("uebungen_anzahl", "number", chart_type="line"),
         Field("uebung_name", "text"),  # Filter
-        Field("intensitaet", "enum", values=["leicht", "mittel", "hart"]),  # Filter
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),  # Filter
         Field("trainingsart", "text"),  # Filter
     ],
 
@@ -81,6 +80,7 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("sets_anzahl", "number"),
         Field("set_definition", "text"),
         Field("saubere_wiederholungen_anzahl", "number"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
     ],
 
     # Lernen & Fokus
@@ -118,7 +118,7 @@ ACTIVITIES: dict[str, list[Field]] = {
     "Wasser": [
         Field("menge_ml", "number", "ml"),
         Field("quelle", "text"),
-        Field("temperatur", "text"),
+        Field("temperatur", "enum", values=["kalt", "zimmertemperatur", "warm", "heiß"]),
     ],
 
     "Alkohol": [
