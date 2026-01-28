@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 class Goal:
     def __init__(self, description: str, target: float, period: str):
         self.description = description
@@ -5,8 +10,12 @@ class Goal:
         self.period = period
 
     def to_dict(self):
-        return {
-            "description": self.description,
-            "target": self.target,
-            "period": self.period
-        }
+        try:
+            return {
+                "description": self.description,
+                "target": self.target,
+                "period": self.period
+            }
+        except Exception:
+            logger.exception("Failed to serialize Goal")
+            return {}

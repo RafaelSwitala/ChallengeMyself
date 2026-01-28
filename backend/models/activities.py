@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional, List
+import logging
 
+logger = logging.getLogger(__name__)
 
 @dataclass
 class Field:
@@ -8,6 +10,7 @@ class Field:
     type: str
     unit: Optional[str] = None
     values: Optional[List[str]] = None
+    chart_type: Optional[str] = None  # "line", "bar" oder None für Filter/Text
 
     def to_dict(self) -> dict:
         """
@@ -22,6 +25,8 @@ class Field:
             data["unit"] = self.unit
         if self.values is not None:
             data["values"] = self.values
+        if self.chart_type is not None:
+            data["chart_type"] = self.chart_type
         return data
 
 
@@ -29,13 +34,13 @@ ACTIVITIES: dict[str, list[Field]] = {
 
     # Bewegung & Sport
     "Laufen": [
-        Field("distanz_km", "number", "km"),
-        Field("dauer_min", "number", "min"),
-        Field("pausen_anzahl", "number"),
-        Field("pausen_dauer_min", "number", "min"),
-        Field("durchschnittstempo_min_pro_km", "number"),
-        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),
-        Field("strecke_typ", "text"),
+        Field("distanz_km", "number", "km", chart_type="line"),
+        Field("dauer_min", "number", "min", chart_type="line"),
+        Field("pausen_anzahl", "number", chart_type="line"),
+        Field("pausen_dauer_min", "number", "min", chart_type="line"),
+        Field("durchschnittstempo_min_pro_km", "number", chart_type="line"),
+        Field("intensitaet", "enum", values=["gemuetlich", "mittel", "stark"]),  # Filter
+        Field("strecke_typ", "text"),  # Filter
     ],
 
     "Radfahren": [
@@ -64,11 +69,11 @@ ACTIVITIES: dict[str, list[Field]] = {
     ],
 
     "Workout": [
-        Field("dauer_min", "number", "min"),
-        Field("uebungen_anzahl", "number"),
-        Field("uebung_name", "text"),
-        Field("intensitaet", "enum", values=["leicht", "mittel", "hart"]),
-        Field("trainingsart", "text"),
+        Field("dauer_min", "number", "min", chart_type="line"),
+        Field("uebungen_anzahl", "number", chart_type="line"),
+        Field("uebung_name", "text"),  # Filter
+        Field("intensitaet", "enum", values=["leicht", "mittel", "hart"]),  # Filter
+        Field("trainingsart", "text"),  # Filter
     ],
 
     "Liegestütze": [
@@ -104,9 +109,9 @@ ACTIVITIES: dict[str, list[Field]] = {
 
     # Alltag & Medien
     "Bildschirmzeit": [
-        Field("dauer_min", "number", "min"),
-        Field("geraet_typ", "text"),
-        Field("hauptnutzung", "text"),
+        Field("dauer_min", "number", "min", chart_type="line"),
+        Field("geraet_typ", "text"),  # Filter für Säulenvergleich
+        Field("hauptnutzung", "text"),  # Filter
     ],
 
     # Konsum
@@ -158,13 +163,17 @@ ACTIVITIES: dict[str, list[Field]] = {
 
 
 def get_activity_names() -> list[str]:
-    return list(ACTIVITIES.keys())
+    try:
+        return list(ACTIVITIES.keys())
+    except Exception:
+        logger.exception("Failed to get activity names")
+        return []
 
 
 def get_fields(activity: str) -> list[dict]:
-    """
-    Gibt die Felder einer Aktivität als JSON-kompatible dicts zurück
-    (für Frontend & API)
-    """
-    fields = ACTIVITIES.get(activity, [])
-    return [f.to_dict() for f in fields]
+    try:
+        fields = ACTIVITIES.get(activity, [])
+        return [f.to_dict() for f in fields]
+    except Exception:
+        logger.exception("Failed to get fields for activity %s", activity)
+        return []

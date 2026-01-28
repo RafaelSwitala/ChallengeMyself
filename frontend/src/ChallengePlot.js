@@ -3,10 +3,11 @@ import Plot from "react-plotly.js";
 
 function ChallengePlot({ challengeName, availableFields }) {
   const [selectedFields, setSelectedFields] = useState([]);
+  const [selectedChartType, setSelectedChartType] = useState("line"); // line oder bar
   const [selectedIntensities, setSelectedIntensities] = useState([]);
   const [chartData, setChartData] = useState(null);
 
-  const intensities = ["gemuetlich", "stark"];
+  const intensities = ["gemuetlich", "mittel", "stark"];
 
   const loadData = async () => {
     if (selectedFields.length === 0) {
@@ -26,12 +27,21 @@ function ChallengePlot({ challengeName, availableFields }) {
       )}/plot?${params.toString()}`
     );
     const data = await res.json();
+
+    // Bei Säulen: barmode auf 'group' setzen
+    if (selectedChartType === "bar") {
+      data.layout.barmode = "group";
+      data.data = data.data.map((d) => ({ ...d, type: "bar" }));
+    } else {
+      data.data = data.data.map((d) => ({ ...d, type: "scatter", mode: "lines+markers" }));
+    }
+
     setChartData(data);
   };
 
   useEffect(() => {
     loadData();
-  }, [selectedFields, selectedIntensities]);
+  }, [selectedFields, selectedIntensities, selectedChartType]);
 
   const toggleField = (fieldName) => {
     setSelectedFields((prev) =>
@@ -53,6 +63,14 @@ function ChallengePlot({ challengeName, availableFields }) {
     <div style={{ marginTop: "20px" }}>
       <h4>Filter</h4>
       <div>
+        <strong>Chart-Typ:</strong>
+        <select value={selectedChartType} onChange={(e) => setSelectedChartType(e.target.value)} style={{ marginLeft: "10px" }}>
+          <option value="line">Liniendiagramm</option>
+          <option value="bar">Säulendiagramm</option>
+        </select>
+      </div>
+
+      <div style={{ marginTop: "10px" }}>
         <strong>Felder:</strong>
         {availableFields.map((f) => (
           <label key={f.name} style={{ marginLeft: "10px" }}>
@@ -60,6 +78,7 @@ function ChallengePlot({ challengeName, availableFields }) {
               type="checkbox"
               checked={selectedFields.includes(f.name)}
               onChange={() => toggleField(f.name)}
+              disabled={f.chart_type && f.chart_type !== selectedChartType && selectedChartType !== "line"}
             />{" "}
             {f.name} {f.unit ? `(${f.unit})` : ""}
           </label>
