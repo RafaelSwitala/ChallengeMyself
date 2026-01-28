@@ -1,27 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
 function SessionForm({ fields, onSubmit }) {
-  // Initialwerte für alle Felder
-  const initialValues = {};
-  fields.forEach(f => (initialValues[f] = ""));
-  
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState({});
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
+  // Wenn sich fields ändern → values neu initialisieren
+  useEffect(() => {
+    const initial = {};
+    fields.forEach((f) => {
+      initial[f] = "";
+    });
+    setValues(initial);
+  }, [fields]);
+
   const handleChange = (field, value) => {
-    setValues(prev => ({ ...prev, [field]: value }));
+    setValues((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ date, time, values });
-    // Reset optional
-    setValues(initialValues);
+
+    onSubmit({
+      date,
+      time,
+      values,
+    });
+
+    // Reset
     setDate("");
     setTime("");
   };
+
+  if (fields.length === 0) {
+    return <p>Keine Felder für diese Activity gefunden.</p>;
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -45,12 +59,12 @@ function SessionForm({ fields, onSubmit }) {
         />
       </Form.Group>
 
-      {fields.map(f => (
+      {fields.map((f) => (
         <Form.Group className="mb-3" key={f}>
           <Form.Label>{f}</Form.Label>
           <Form.Control
             type="text"
-            value={values[f]}
+            value={values[f] || ""}
             onChange={(e) => handleChange(f, e.target.value)}
           />
         </Form.Group>

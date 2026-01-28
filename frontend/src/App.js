@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { Routes, Route, Link } from "react-router-dom";
+import ChallengeDetail from "./ChallengeDetail";
 
 const activities = [
   "Laufen",
@@ -89,52 +91,76 @@ function App() {
 
   return (
     <Container className="mt-5">
-      <h1>ChallengeMyself</h1>
+      <Routes>
+        {/* ---------------------------
+            Startseite
+        --------------------------- */}
+        <Route
+          path="/"
+          element={
+            <>
+              <h1>ChallengeMyself</h1>
 
-      <Form className="mt-4">
-        <Form.Group className="mb-3">
-          <Form.Label>Challenge-Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="z. B. Übung-Marathon"
-            value={challengeName}
-            onChange={(e) => setChallengeName(e.target.value)}
-          />
-        </Form.Group>
+              <Form className="mt-4">
+                <Form.Group className="mb-3">
+                  <Form.Label>Challenge-Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="z. B. Übung-Marathon"
+                    value={challengeName}
+                    onChange={(e) => setChallengeName(e.target.value)}
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Activity</Form.Label>
-          <Form.Select
-            value={selectedActivity}
-            onChange={(e) => setSelectedActivity(e.target.value)}
-          >
-            {activities.map((a) => (
-              <option key={a} value={a}>
-                {a}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Activity</Form.Label>
+                  <Form.Select
+                    value={selectedActivity}
+                    onChange={(e) => setSelectedActivity(e.target.value)}
+                  >
+                    {activities.map((a) => (
+                      <option key={a} value={a}>
+                        {a}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
 
-        <Button type="button" onClick={createChallenge}>
-          Neue Challenge erstellen
-        </Button>
-      </Form>
+                <Button type="button" onClick={createChallenge}>
+                  Neue Challenge erstellen
+                </Button>
+              </Form>
 
-      {message && <p className="mt-3">{message}</p>}
+              {message && <p className="mt-3">{message}</p>}
 
-      <hr />
+              <hr />
 
-      <h3>Deine Challenges</h3>
-      {challenges.length === 0 && <p>Noch keine Challenges vorhanden.</p>}
+              <h3>Deine Challenges</h3>
+              {challenges.length === 0 && (
+                <p>Noch keine Challenges vorhanden.</p>
+              )}
 
-      <ul>
-        {challenges.map((c) => (
-          <li key={c.name}>
-            <strong>{c.name}</strong> ({c.activity_type})
-          </li>
-        ))}
-      </ul>
+              <ul>
+                {challenges.map((c) => (
+                  <li key={c.name}>
+                    <Link to={`/challenge/${encodeURIComponent(c.name)}`}>
+                      <strong>{c.name}</strong> ({c.activity_type})
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          }
+        />
+
+        {/* ---------------------------
+            Challenge Detailseite
+        --------------------------- */}
+        <Route
+          path="/challenge/:name"
+          element={<ChallengeDetail />}
+        />
+      </Routes>
     </Container>
   );
 }

@@ -1,43 +1,187 @@
 import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Container, Button, Form } from "react-bootstrap";
 import SessionForm from "./SessionForm";
 
-function ChallengeDetail({ challengeName }) {
-  const [challenge, setChallenge] = useState(null);
+function ChallengeDetail() {
+  const { name } = useParams(); // <-- aus URL
+  const challengeName = decodeURIComponent(name);
 
-  const loadChallenge = async () => {
-    const res = await fetch(`http://localhost:5000/challenges/${challengeName}`);
+  const [challenge, setChallenge] = useState(null);
+  const [fields, setFields] = useState([]);
+
+  // Goal state
+  const [goalDescription, setGoalDescription] = useState("");
+  const [goalTarget, setGoalTarget] = useState("");
+  const [goalPeriod, setGoalPeriod] = useState("");
+
+  // ---------------------------
+  // Load Challenge
+  // ---------------------------
+const loadChallenge = async () => {
+  try {
+    const res = await fetch(
+      `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}`
+    );
+
+    if (!res.ok) throw new Error("Challenge nicht gefunden");
+
     const data = await res.json();
     setChallenge(data);
+
+    if (data.goal) {
+      setGoalDescription(data.goal.description);
+      setGoalTarget(data.goal.target);
+      setGoalPeriod(data.goal.period);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+  // ---------------------------
+  // Load Activity Fields
+  // ---------------------------
+  const loadFields = async (activity) => {
+    const res = await fetch(`http://localhost:5000/activities/${encodeURIComponent(activity)}`);
+    const data = await res.json();
+    setFields(data.fields);
   };
 
   useEffect(() => {
     loadChallenge();
   }, [challengeName]);
 
+  useEffect(() => {
+    if (challenge?.activity_type) {
+      loadFields(challenge.activity_type);
+    }
+  }, [challenge]);
+
+  // ---------------------------
+  // Sessions
+  // ---------------------------
   const addSession = async (sessionData) => {
-    const res = await fetch(`http://localhost:5000/challenges/${challengeName}/sessions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sessionData),
-    });
+    const res = await fetch(
+      `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/sessions`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sessionData),
+      }
+    );
     if (res.ok) loadChallenge();
   };
+
+  // ---------------------------
+  // Goal
+  // ---------------------------
+  const saveGoal = async () => {
+    const res = await fetch(
+      `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          description: goalDescription,
+          target: goalTarget,
+          period: goalPeriod,
+        }),
+      }
+    );
+
+    if (res.ok) loadChallenge();
+  };
+
+const deleteGoal = async () => {
+  const res = await fetch(
+    `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(null),
+    }
+  );
+
+  if (res.ok) {
+    setGoalDescription("");
+    setGoalTarget("");
+    setGoalPeriod("");
+    loadChallenge();
+  }
+};
+
 
   if (!challenge) return <p>Lade Challenge…</p>;
 
   return (
-    <div>
-      <h2>{challenge.name} ({challenge.activity_type})</h2>
+    <Container className="mt-4">
+      <Link to="/">← Zurück</Link>
 
-      <h3>Neue Session</h3>
-      <SessionForm
-        fields={challenge.sessions.length > 0 
-          ? Object.keys(challenge.sessions[0].values) 
-          : []} // oder vom Backend per GET /activities/<activity_type>
-        onSubmit={addSession}
-      />
+      <h2 className="mt-3">
+        {challenge.name} ({challenge.activity_type})
+      </h2>
 
-      <h3>Sessions</h3>
+      {/* ---------------------------
+          Goal
+      --------------------------- */}
+      <h4 className="mt-4">🎯 Ziel</h4>
+
+      {challenge.goal ? (
+        <div className="mb-3">
+          <p>
+            <strong>{challenge.goal.description}</strong><br />
+            Ziel: {challenge.goal.target} – Zeitraum: {challenge.goal.period}
+          </p>
+          <Button variant="secondary" size="sm" onClick={deleteGoal}>
+            Ziel bearbeiten
+          </Button>
+        </div>
+      ) : (
+        <Form className="mb-4">
+          <Form.Group className="mb-2">
+            <Form.Label>Beschreibung</Form.Label>
+            <Form.Control
+              value={goalDescription}
+              onChange={(e) => setGoalDescription(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Zielwert</Form.Label>
+            <Form.Control
+              type="number"
+              value={goalTarget}
+              onChange={(e) => setGoalTarget(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Zeitraum</Form.Label>
+            <Form.Control
+              placeholder="z. B. pro Woche"
+              value={goalPeriod}
+              onChange={(e) => setGoalPeriod(e.target.value)}
+            />
+          </Form.Group>
+
+          <Button onClick={saveGoal}>Ziel speichern</Button>
+        </Form>
+      )}
+
+      {/* ---------------------------
+          Session Form
+      --------------------------- */}
+      <h4>➕ Neue Session</h4>
+      <SessionForm fields={fields} onSubmit={addSession} />
+
+      {/* ---------------------------
+          Sessions
+      --------------------------- */}
+      <h4 className="mt-4">📅 Sessions</h4>
+      {challenge.sessions.length === 0 && <p>Noch keine Sessions.</p>}
+
       <ul>
         {challenge.sessions.map((s, i) => (
           <li key={i}>
@@ -45,7 +189,7 @@ function ChallengeDetail({ challengeName }) {
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 }
 
