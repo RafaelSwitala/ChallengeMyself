@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}{{ challenge_name }} - ChallengeMyself{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start">
+    <div>
+        <h2 class="mb-1">{{ challenge_name }}</h2>
+        <div class="muted">Activity: {{ activity_type }}</div>
+    </div>
+    <div class="muted">{{ sessions | length }} Sessions</div>
+</div>
+
+{% if message %}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+{% endif %}
+
+<section class="row g-4">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h4>🎯 Ziel</h4>
+            {% if goal %}
+                <div class="mb-3">
+                    <p class="mb-1"><strong>{{ goal.description }}</strong></p>
+                    <small class="muted">Ziel: <strong>{{ goal.target }}</strong> · {{ goal.period }}</small>
+                </div>
+                <a href="#" onclick="document.getElementById('goalForm').style.display='block'; return false;" class="btn btn-sm btn-outline-secondary">Bearbeiten</a>
+            {% else %}
+                <div class="alert alert-secondary">Noch kein Ziel definiert.</div>
+            {% endif %}
+
+            <div id="goalForm" {% if goal %}style="display:none"{% else %}style="display:block"{% endif %} class="mt-3">
+                <form method="POST" action="/challenges/{{ challenge_name | urlencode }}/goal">
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Beschreibung</label>
+                        <input type="text" class="form-control" id="description" name="description" value="{{ goal.description if goal else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="target" class="form-label">Zielwert</label>
+                        <input type="number" step="0.01" class="form-control" id="target" name="target" value="{{ goal.target if goal else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="period" class="form-label">Zeitraum</label>
+                        <input type="text" class="form-control" id="period" name="period" placeholder="z.B. pro Woche" value="{{ goal.period if goal else '' }}" required>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-accent">Speichern</button>
+                        {% if goal %}
+                            <a href="?delete_goal=1" class="btn btn-outline-danger" onclick="return confirm('Ziel wirklich löschen?')">Löschen</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h4>➕ Neue Session</h4>
+            <form method="POST" action="/challenges/{{ challenge_name | urlencode }}/sessions">
+    <div class="mb-3">
+        <label for="date" class="form-label">Datum</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+    <div class="mb-3">
+        <label for="time" class="form-label">Uhrzeit</label>
+        <input type="time" class="form-control" id="time" name="time" required>
+    </div>
+
+    <h5>Werte eingeben</h5>
+    {% for field in fields %}
+        <div class="mb-3">
+            <label for="field_{{ field.name }}" class="form-label">
+                {{ field.name }}
+                {% if field.unit %}
+                    <small>({{ field.unit }})</small>
+                {% endif %}
+            </label>
+
+            {% if field.type == 'enum' %}
+                <select class="form-select" id="field_{{ field.name }}" name="{{ field.name }}" required>
+                    <option value="">-- Bitte wählen --</option>
+                    {% for val in field.values %}
+                        <option value="{{ val }}">{{ val }}</option>
+                    {% endfor %}
+                </select>
+            {% elif field.type == 'number' %}
+                <input type="number" step="0.01" class="form-control" id="field_{{ field.name }}" 
+                       name="{{ field.name }}" required>
+            {% else %}
+                <input type="text" class="form-control" id="field_{{ field.name }}" 
+                       name="{{ field.name }}" required>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Session speichern</button>
+                    <a href="/challenges/{{ challenge_name | urlencode }}/plot" class="btn btn-outline-secondary">Zum Diagramm</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<h3>📊 Bisherige Sessions</h3>
+{% if sessions %}
+    <div class="table-responsive mt-4">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Zeit</th>
+                    {% for field in fields %}
+                        <th>{{ field.name }} {% if field.unit %}<small>({{ field.unit }})</small>{% endif %}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for session in sessions %}
+                    <tr>
+                        <td>{{ session.date }}</td>
+                        <td>{{ session.time }}</td>
+                        {% for field in fields %}
+                            <td>{{ session.values.get(field.name, '-') }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-warning mt-4">Noch keine Sessions vorhanden. Füge deine erste oben hinzu! 📝</div>
+{% endif %}
+
+<hr>
+
+<h3>📈 Visualisierung</h3>
+<div class="alert alert-info">
+    <p>Wähle Felder und einen Chart-Typ, um die Daten zu visualisieren:</p>
+    <a href="/challenges/{{ challenge_name | urlencode }}/plot" class="btn btn-info">Zum Diagramm</a>
+</div>
+
+{% endblock %}

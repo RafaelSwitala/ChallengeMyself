@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}{{ challenge_name }} - Visualisierung - ChallengeMyself{% endblock %}
+
+
+
+
+
+
+
+{% block content %}
+<style>
+.controls-card {
+    background: linear-gradient(180deg, var(--glass), var(--surface));
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(15,23,42,0.03);
+    box-shadow: 0 6px 18px rgba(37,41,49,0.06);
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group h6 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.checkbox-group, .radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.checkbox-group label, .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.checkbox-group label:hover, .radio-group label:hover {
+    background-color: rgba(91, 110, 246, 0.08);
+}
+
+.chart-container {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(37,41,49,0.06);
+    border: 1px solid rgba(15,23,42,0.03);
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.comparison-selector {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.comparison-selector select {
+    flex: 1;
+    min-width: 150px;
+}
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0">{{ challenge_name }} – Visualisierung</h2>
+        <div class="muted" style="font-size: 0.95rem;">{{ activity_type }}</div>
+    </div>
+    <div>
+        <a href="/challenges/{{ challenge_name | urlencode }}" class="btn btn-outline-secondary btn-sm">← Zurück</a>
+    </div>
+</div>
+
+<!-- ===== CONTROLS PANEL ===== -->
+<form method="GET" class="controls-card">
+    <input type="hidden" name="name" value="{{ challenge_name }}">
+    
+    <!-- ROW 1: Chart-Typ & Vergleichsfeld -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="control-group">
+                <h6>📊 Chart-Typ</h6>
+                <select class="form-select form-select-sm" name="chart_type" onchange="this.form.submit()" style="background: var(--surface); border: 1px solid #e5e7eb;">
+                    <option value="line" {% if chart_type == 'line' %}selected{% endif %}>📈 Liniendiagramm</option>
+                    <option value="bar" {% if chart_type == 'bar' %}selected{% endif %}>📊 Säulendiagramm</option>
+                    <option value="scatter" {% if chart_type == 'scatter' %}selected{% endif %}>🔵 Scatter Plot</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="control-group">
+                <h6>🔄 Vergleich nach Kategorie</h6>
+                <div class="comparison-selector">
+                    <select class="form-select form-select-sm" name="comparison_field" onchange="this.form.submit()" style="background: var(--surface); border: 1px solid #e5e7eb;">
+                        <option value="">-- Kein Vergleich --</option>
+                        {% for feature in comparison_features %}
+                            <option value="{{ feature }}" {% if feature == comparison_field %}selected{% endif %}>{{ feature }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if comparison_values %}
+                        <small class="muted" style="white-space: nowrap;">Werte: {{ comparison_values | join(', ') }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ROW 2: Numerische Felder (Checkboxen) -->
+    <div class="control-group">
+        <h6>📈 Datenfelder auswählen</h6>
+        <div class="checkbox-group">
+            {% for field in numeric_fields %}
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="fields" value="{{ field }}" 
+                           {% if field in selected_fields %}checked{% endif %} 
+                           onchange="this.form.submit()">
+                    {{ field }}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- ROW 3: Intensitäts-Filter (Checkboxen) -->
+    {% if 'intensitaet' in category_fields %}
+    <div class="control-group">
+        <h6>💪 Intensität filtern</h6>
+        <div class="checkbox-group">
+            {% for intensity in available_intensities %}
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="intensities" value="{{ intensity }}" 
+                           {% if intensity in selected_intensities %}checked{% endif %} 
+                           onchange="this.form.submit()">
+                    {{ intensity }}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Action Buttons -->
+    <div class="button-row mt-4">
+        <button type="submit" class="btn btn-primary btn-sm">🔄 Aktualisieren</button>
+        <a href="/challenges/{{ challenge_name | urlencode }}/plot" class="btn btn-outline-secondary btn-sm">↻ Zurücksetzen</a>
+    </div>
+</form>
+
+<!-- ===== CHART ===== -->
+{% if chart_html %}
+    <div class="chart-container mb-4">
+        {{ chart_html | safe }}
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        <strong>⚠️ Keine Daten verfügbar</strong><br>
+        Wähle mindestens ein Datenfeld und erstelle einige Sessions.
+    </div>
+{% endif %}
+
+<!-- ===== INFO PANEL ===== -->
+<div class="controls-card" style="background: #f0f7ff; border-color: rgba(91,110,246,0.2);">
+    <h6 style="color: var(--primary); margin-bottom: 12px;">💡 Tipps zur Visualisierung</h6>
+    <ul class="mb-0" style="font-size: 0.9rem; color: #444;">
+        <li><strong>Mehrere Felder:</strong> Wähle mehrere Felder um sie zu vergleichen (z.B. Distanz + Dauer)</li>
+        <li><strong>Vergleich:</strong> Nutze "Vergleich nach Kategorie" um verschiedene Typen gegeneinander zu sehen</li>
+        <li><strong>Intensität:</strong> Filtere nach Intensität um z.B. nur mittel-intensive Sessions zu sehen</li>
+        <li><strong>Interaktion:</strong> Hover über den Chart, zoom rein/raus, und klick auf die Legende um Spuren zu de-/aktivieren</li>
+    </ul>
+</div>
+
+{% endblock %}

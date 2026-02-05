@@ -1,173 +1,245 @@
-# ChallengeMyself
+# 🎯 ChallengeMyself
 
-## Projektbeschreibung
-ChallengeMyself ist eine Web-App zur persönlichen Ziel- und Aufgabenverfolgung.  
-Benutzer können **verschiedene Challenges** (z. B. Lernen, Laufen, Rauchen reduzieren) erstellen und ihre Fortschritte verfolgen.
-
-- Jede Challenge kann Sessions/Einträge mit Datum, Dauer, Menge etc. enthalten.  
-- Ziele/Target-Werte für Challenges sind definierbar.  
-- Backend speichert Daten lokal in JSON-Dateien.  
-- Frontend visualisiert und verwaltet die Daten, inklusive interaktiver Plots mit Plotly.
+Eine Webanwendung zur persönlichen Ziel- und Aufgabenverfolgung. Verfolge deine Fortschritte bei verschiedenen Aktivitäten und visualisiere deine Erfolge mit interaktiven Diagrammen.
 
 ---
 
-## Technologien & Versionen
+## Features
 
-### Backend
-- Python 3.14.0  
-- Flask (REST-API)  
-- flask-cors (für Cross-Origin Requests)  
-- Pandas, NumPy, Plotly  
-- Backend-Abhängigkeiten siehe `backend/requirements.txt`  
-
-### Frontend
-- React 19.2.3  
-- React-Bootstrap 2.10.10  
-- Bootstrap 5.3.8  
-- React-Scripts 5.0.1  
-- Node.js & npm (aktuelle LTS-Versionen)  
-- `react-plotly.js` & `plotly.js` für interaktive Diagramme  
-
-### Betriebssystem & IDE
-- Windows 11  
-- Visual Studio Code mit Python-Erweiterung  
+- **Challenge-Verwaltung**: Erstelle und verwalte verschiedene Challenges (z.B. "Fit für den Sommer", "Laufen", "Lernen")
+- **Flexible Datenerfassung**: Jede Challenge kann unterschiedliche Daten erfassen (km, Minuten, Anzahl, etc.)
+- **Zieltracking**: Definiere Ziele und Zeiträume für jede Challenge
+- **Interaktive Visualisierungen**: Visualisiere deine Sessions mit Liniendiagrammen und Säulendiagrammen
+- **Intensitäts-Filter**: Filtere deine Daten nach Intensität (gemütlich, mittel, stark)
+- **Lokal gespeichert**: Alle Daten werden lokal im JSON-Format gespeichert
 
 ---
 
-## Backend Setup
+## Technologie-Stack
 
-### Virtuelle Umgebung erstellen
+### Backend (Python)
+- **Python 3.14+** – Hauptprogrammiersprache
+- **Flask** – Web-Framework für HTML-Rendering & API
+- **Pandas** – Datenverarbeitung und Diagramm-Erstellung
+- **Plotly** – Interaktive Diagramme
+
+### Frontend (Minimal)
+- **Jinja2-Templates** – HTML vom Backend generiert
+- **Bootstrap 5** – Responsive UI
+- **Plotly.js** – Interaktive Charts im Browser
+
+### Datenspeicherung
+- **JSON-Dateien** – Lokal im `backend/data/`
+
+---
+
+## Schnellstart
+
+### 1️⃣ Voraussetzungen
+- Python 3.10+
+- Node.js & npm (LTS)
+
+### 2️⃣ Installation
+
 ```powershell
-python -m venv venv
-venv\Scripts\activate
+# Backend-Umgebung
+python -m venv backend/venv
+backend\venv\Scripts\activate
 pip install -r backend/requirements.txt
 
-
-
-
-| Technologie     | Version                |
-| --------------- | ---------------------- |
-| Python          | 3.14.0                 |
-| Flask           | siehe requirements.txt |
-| React           | 19.2.3                 |
-| React-Bootstrap | 2.10.10                |
-| Bootstrap       | 5.3.8                  |
-| Node.js         | aktuelle LTS           |
-| npm             | aktuelle LTS           |
-| react-scripts   | 5.0.1                  |
-
-
-
-| Activity    | Was wird getrackt                      | Beispiel-Ziel                |
-| ----------- | -------------------------------------- | ---------------------------- |
-| Laufen      | Datum, km, Dauer, Pausen               | 5 km pro Tag                 |
-| Radfahren   | Datum, km, Dauer, Pausen               | 50 km pro Woche              |
-| Lesen       | Datum, Minuten gelesen, Seiten         | 1000 Seiten pro Monat        |
-| Lernen      | Datum, Minuten                         | 100 Stunden pro Monat        |
-| Liegestütze | Datum, Anzahl, Sets                    | Wöchentlich 10 mehr          |
-| Rauchen     | Datum, Zigaretten                      | 2 Zigaretten weniger pro Tag |
-| Schlaf      | Datum, Stunden                         | 8 Stunden Schlaf pro Nacht   |
-| Wasser      | Datum, ml                              | 2 Liter pro Tag              |
-| Ernährung   | Datum, Mahlzeiten, Kalorien (optional) | 2000 kcal pro Tag            |
-| Meditation  | Datum, Minuten                         | 10 Minuten täglich           |
-
-
-
-### Backend starten
-cd backend
-python app.py
-
-### Frontend starten
+# Frontend-Abhängigkeiten
 cd frontend
 npm install
-npm start
+cd ..
+```
 
-### Interaktive Plots
-Das Backend erzeugt Plotly-kompatibles JSON, das im Frontend über react-plotly.js interaktiv angezeigt wird.
+### 3️⃣ Anwendung starten
 
-Benutzer können:
+**Einfach mit einem Befehl:**
+```powershell
+.\start.ps1
+```
 
-Beliebige Felder per Checkbox auswählen (z. B. distanz_km, dauer_min, schritte_anzahl)
+Die App öffnet sich automatisch unter: `http://localhost:5000`
 
-Nach Intensität filtern (gemuetlich, stark etc.)
-
----
-
-## Beispiele: Backend testen mit cURL & Plot-URLs
-
-### 1. Neue Challenge erstellen
-```bash
-curl -X POST http://localhost:5000/challenges \
--H "Content-Type: application/json" \
--d '{
-  "name": "Wandermarathon",
-  "activity": "Spazieren"
-}'
+Warte ~5 Sekunden beim ersten Start!
 
 ---
 
+## Projektstruktur
+
+```
+ChallengeMyself/
+├── start.ps1                    # Start-Script (alles mit einem Befehl!)
+├── README.md                    # Diese Dokumentation
+├── backend/
+│   ├── app.py                   # Flask-Hauptanwendung
+│   ├── config.py                # Konfiguration
+│   ├── requirements.txt          # Python-Dependencies
+│   ├── templates/               # HTML-Templates (vom Backend generiert)
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── challenge_detail.html
+│   │   └── plot.html
+│   ├── data/                    # JSON-Speicherung
+│   ├── models/                  # Python-Datenmodelle
+│   ├── storage/                 # Persistierungs-Logik
+│   └── utils/                   # Hilfsfunktionen
+├── frontend/
+│   ├── package.json
+│   └── src/
+│       └── App.js               # React-Einstiegspunkt
+└── venv/                        # (wird erstellt)
+```
+
+---
+
+## Unterstützte Activities
+
+| Kategorie | Activities |
+|-----------|-----------|
+| **Sport** | Laufen, Radfahren, Spazieren, Schwimmen, Workout, Liegestütze |
+| **Lernen** | Lesen, Lernen |
+| **Schlaf** | Schlaf |
+| **Medien** | Bildschirmzeit |
+| **Konsum** | Wasser, Alkohol, Rauchen |
+| **Wohlbefinden** | Stimmung, Stress |
+
+---
+
+## Verwendungsbeispiel
+
+### 1. Challenge erstellen
+- Name: "Marathon vorbereitung"
+- Activity: "Laufen"
+
+### 2. Ziel setzen
+- "5 km pro Tag"
+- Zielwert: 5
+- Zeitraum: täglich
+
+### 3. Sessions hinzufügen
+- Datum: Heute
+- Uhrzeit: 18:30
+- Distanz: 5.2 km
+- Dauer: 45 Minuten
+- Intensität: mittel
+
+### 4. Visualisieren
+- Wähle "Distanz (km)" & "Dauer (min)"
+- Filter nach Intensität
+- Wechsle Chart-Typ (Linie / Säule)
+
+---
+
+## Architektur
+
+### Backend als Haupt-Interface
+- **HTML-Rendering mit Jinja2**: Alle Seiten werden vom Python-Backend generiert
+- **Formular-Management**: Challenge-Erstellung, Goals, Sessions – alles in Python
+- **Business-Logic in Python**: Datenverarbeitung, Persistierung, Visualisierung
+
+### Minimal Viable React
+- React wird nur für **Plotly-Visualisierungen** verwendet
+- Keine komplexe State-Management, keine React-Router
+- Navigation erfolgt über HTML-Links
+
+### Datenfluss
+```
+Browser → Flask (HTML-Templates) → Benutzer füllt Form
+User-Input → Backend (POST-Form) → JSON-Speicherung
+Visualisierung → Plotly-API → React rendert Chart
+```
+
+**Warum?** Python bietet bessere Datenverarbeitung (Pandas), Persistierung und simplere Business-Logic als React.
+
+---
+
+## FAQ
+
+**F: Wo sind meine Daten?**
+A: In `backend/data/` als `.json`-Dateien (keine Cloud!)
+
+**F: Kann ich Challenges löschen?**
+A: Aktuell nur manuell: Lösche die `.json`-Datei in `backend/data/`
+
+**F: Warum Python überall?**
+A: Bessere Datenverarbeitung, lokale Speicherung, einfachere Business-Logic
+
+**F: Warum noch React?**
+A: Plotly-Visualisierungen brauchen JavaScript
+
+---
+
+## Troubleshooting
+
+**Port bereits in Verwendung:**
+```powershell
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
+```
+
+**venv-Probleme:**
+```powershell
+backend\venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
+
+**npm-Fehler:**
+```powershell
+cd frontend
+rm -r node_modules package-lock.json
+npm install
+```
+
+**PS1-Script wird nicht ausgeführt:**
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+---
+
+## JSON-Format
+
+Jede Challenge wird als `.json` gespeichert:
+
+```json
 {
-  "name": "Wandermarathon",
-  "activity_type": "Spazieren",
-  "goal": null,
-  "sessions": []
+  "name": "Laufen",
+  "activity_type": "Laufen",
+  "goal": {
+    "description": "5 km täglich",
+    "target": 5.0,
+    "period": "täglich"
+  },
+  "sessions": [
+    {
+      "date": "2026-02-02",
+      "time": "18:30",
+      "values": {
+        "distanz_km": 5.2,
+        "dauer_min": 45,
+        "intensitaet": "mittel"
+      }
+    }
+  ]
 }
+```
 
 ---
 
-curl -X POST http://localhost:5000/challenges/Wandermarathon/sessions \
--H "Content-Type: application/json" \
--d '{
-  "date": "2026-01-01",
-  "time": "09:00",
-  "values": {
-    "distanz_km": 10,
-    "dauer_min": 150,
-    "schritte_anzahl": 16000,
-    "intensitaet": "gemuetlich"
-  }
-}'
+## Roadmap
+
+- ✅ Challenges verwalten
+- ✅ Sessions erfassen
+- ✅ Ziele setzen
+- ✅ Visualisierungen
+- ✅ Backend als Haupt-Interface
+- 🔄 Sessions löschen/bearbeiten
+- 🔄 Datenbankunterstützung
+- 🔄 Export-Funktionen
+- 🔄 Mobile-App
 
 ---
 
-curl -X POST http://localhost:5000/challenges/Wandermarathon/goal \
--H "Content-Type: application/json" \
--d '{
-  "description": "Wandermarathon im Wald nächsten Sommer",
-  "target": "",
-  "period": "4 mal in der Woche"
-}'
-
-
-## Logging & Fehlerbehandlung
-Das Backend verwendet ein zentrales, konfigurierbares Logging-System, um Fehler, Warnungen und Debug-Informationen ausschließlich in Logdateien zu schreiben (keine Console-Ausgabe).
-
-### 1. Logging-Konfiguration
-LOG_ENABLED = True          # Logging an / aus
-LOG_LEVEL = "DEBUG"        # DEBUG | INFO | WARNING | ERROR
-LOG_DIR = "logs"           # Log-Verzeichnis
-LOG_FILE = "app.log"       # Logdatei
-
-- Logging kann vollständig deaktiviert werden (LOG_ENABLED = False)
-- Log-Level steuert die Detailtiefe der Einträge
-- Logs werden rotierend gespeichert (max. ~2 MB pro Datei, 5 Backups)
-
-### 2. Log-Dateien
-Bei aktiviertem Logging werden Logdateien automatisch erzeugt unter:
-backend/logs/app.log
-
-Hinweis: Die Flask-Konsole bleibt bewusst ruhig – alle Logs gehen ausschließlich in die Datei.
-
-### 3. Fehlerbehandlung (Backend)
-- Validierungsfehler (Client-Fehler, 4xx)
-- Beispiele: Fehlende Pflichtfelder, Ungültige Activity, Nicht existierende Challenge
-- HTTP-Statuscodes:
-- 400 Bad Request
-- 404 Not Found
-- Diese Fehler werden als WARNING geloggt.
-
-- Laufzeitfehler (Server-Fehler, 5xx)
-- Unerwartete Fehler im Backend (z. B. Parsing-, IO- oder Pandas-Fehler) werden abgefangen.
-- Beispiele: Ungültiges Datum, Falscher Datentyp in values, Schreibfehler beim Speichern einer JSON-Datei
-- 500 Internal Server Error
-- Diese Fehler werden als ERROR inklusive Stacktrace in der Logdatei gespeichert.
+**Happy Tracking!**
