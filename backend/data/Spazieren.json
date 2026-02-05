@@ -2,9 +2,10 @@
     "name": "Spazieren",
     "activity_type": "Spazieren",
     "goal": {
-        "description": "Ich möchte täglich an die frische Luft.",
-        "target": "1",
-        "period": "täglich"
+        "description": "Ich möchte monatlich 100 km spazieren.",
+        "target": 100.0,
+        "period": "monthly",
+        "reference": "distanz_km"
     },
     "sessions": [
         {

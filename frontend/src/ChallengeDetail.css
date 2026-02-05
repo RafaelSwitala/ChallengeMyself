@@ -375,3 +375,93 @@
     font-size: 0.85rem;
   }
 }
+
+/* Goal Progress Tracker */
+.goal-progress {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #f0f7ff;
+  border-left: 4px solid #2196F3;
+  border-radius: 0.5rem;
+}
+
+.goal-progress h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+.goal-progress p {
+  margin: 0.5rem 0;
+  color: #212529;
+}
+
+.progress-bar {
+  height: 24px;
+  background: linear-gradient(to right, #4CAF50 50%, #e0e0e0 50%);
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.progress-message {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1976D2;
+  margin-top: 0.75rem !important;
+}
+
+.progress-status {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 0.75rem !important;
+}
+
+.period-selector {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
+}
+
+.period-selector label {
+  display: inline-block;
+  margin-right: 0.75rem;
+  font-weight: 600;
+  color: #212529;
+  vertical-align: middle;
+}
+
+.period-selector select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.period-selector select:hover {
+  border-color: #2196F3;
+}
+
+.period-selector select:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.consecutive-days {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4CAF50;
+  margin-top: 1rem !important;
+  padding: 0.75rem;
+  background: #f1f8e9;
+  border-left: 4px solid #4CAF50;
+  border-radius: 0.25rem;
+}

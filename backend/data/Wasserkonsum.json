@@ -1,0 +1,57 @@
+{
+    "name": "Wasserkonsum",
+    "activity_type": "Wasser",
+    "goal": {
+        "description": "Ich möchte mehr Wasser trinken",
+        "target": 2000.0,
+        "period": "daily",
+        "reference": "menge_ml"
+    },
+    "sessions": [
+        {
+            "date": "2026-02-01",
+            "time": "23:59",
+            "values": {
+                "menge_ml": 1900.0,
+                "quelle": "leitungswasser",
+                "temperatur": "zimmertemperatur"
+            }
+        },
+        {
+            "date": "2026-02-02",
+            "time": "23:59",
+            "values": {
+                "menge_ml": 2100.0,
+                "quelle": "leitungswasser",
+                "temperatur": "zimmertemperatur"
+            }
+        },
+        {
+            "date": "2026-02-03",
+            "time": "23:59",
+            "values": {
+                "menge_ml": 2200.0,
+                "quelle": "flasche",
+                "temperatur": "kalt"
+            }
+        },
+        {
+            "date": "2026-02-04",
+            "time": "23:59",
+            "values": {
+                "menge_ml": 2050.0,
+                "quelle": "leitungswasser",
+                "temperatur": "kalt"
+            }
+        },
+        {
+            "date": "2026-02-05",
+            "time": "23:59",
+            "values": {
+                "menge_ml": 2300.0,
+                "quelle": "flasche",
+                "temperatur": "zimmertemperatur"
+            }
+        }
+    ]
+}

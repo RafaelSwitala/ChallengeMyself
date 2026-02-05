@@ -1,10 +1,11 @@
 {
-    "name": "Franz\u00f6sisch lernen",
+    "name": "Französisch lernen",
     "activity_type": "Lernen",
     "goal": {
-        "description": "neue Fremdsprache",
-        "target": "1",
-        "period": "so oft wie m\u00f6glich"
+        "description": "Neue Fremdsprache",
+        "target": 300.0,
+        "period": "weekly",
+        "reference": "dauer_min"
     },
     "sessions": [
         {
@@ -13,7 +14,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Alphabet",
                 "lernform": "lesen"
             }
         },
@@ -23,7 +23,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Begr\u00fc\u00dfung",
                 "lernform": "lesen"
             }
         },
@@ -33,7 +32,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Begr\u00fc\u00dfung",
                 "lernform": "Vokabeln"
             }
         },
@@ -43,7 +41,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Begr\u00fc\u00dfung",
                 "lernform": "schreiben"
             }
         },
@@ -53,7 +50,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Begr\u00fc\u00dfung",
                 "lernform": "lesen,schreiben"
             }
         },
@@ -63,8 +59,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Begr\u00fc\u00dfung",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -73,7 +68,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Zahlen",
                 "lernform": "lesen"
             }
         },
@@ -83,7 +77,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Zahlen",
                 "lernform": "Vokabeln,schreiben"
             }
         },
@@ -93,8 +86,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Zahlen",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -103,7 +95,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Tiere",
                 "lernform": "Vokabeln"
             }
         },
@@ -113,7 +104,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Tiere",
                 "lernform": "schreiben"
             }
         },
@@ -123,7 +113,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Tiere",
                 "lernform": "lesen,Grammatik"
             }
         },
@@ -133,7 +122,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wochentage",
                 "lernform": "Vokabeln"
             }
         },
@@ -143,7 +131,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Wochentage",
                 "lernform": "lesen,schreiben"
             }
         },
@@ -153,8 +140,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Wochentage",
-                "lernform": "Grammatik,\u00dcbungen"
+                "lernform": "Grammatik,Übungen"
             }
         },
         {
@@ -163,8 +149,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -173,8 +158,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -183,7 +167,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Lebensmittel",
                 "lernform": "lesen"
             }
         },
@@ -193,7 +176,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Lebensmittel",
                 "lernform": "Vokabeln"
             }
         },
@@ -203,8 +185,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
-                "lernform": "\u00dcbungen,schreiben,lesen"
+                "lernform": "Übungen,schreiben,lesen"
             }
         },
         {
@@ -213,7 +194,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Lebensmittel",
                 "lernform": "Vokabeln,schreiben"
             }
         },
@@ -223,7 +203,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Lebensmittel",
                 "lernform": "Grammatik"
             }
         },
@@ -233,8 +212,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Lebensmittel",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -243,7 +221,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Natur",
                 "lernform": "Vokabeln"
             }
         },
@@ -253,7 +230,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Natur",
                 "lernform": "Vokabeln"
             }
         },
@@ -263,7 +239,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Natur",
                 "lernform": "lesen"
             }
         },
@@ -273,7 +248,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Natur",
                 "lernform": "schreiben"
             }
         },
@@ -283,7 +257,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Natur",
                 "lernform": "Grammatik"
             }
         },
@@ -293,8 +266,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Natur",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -303,8 +275,7 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Natur",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -313,7 +284,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
                 "lernform": "Grammatik"
             }
         },
@@ -323,7 +293,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
                 "lernform": "Grammatik"
             }
         },
@@ -333,7 +302,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "Pr\u00fcfung",
                 "lernform": "lesen,verstehen"
             }
         },
@@ -343,7 +311,6 @@
             "values": {
                 "dauer_min": "180",
                 "unterbrechungen_anzahl": "2",
-                "thema": "Pr\u00fcfung",
                 "lernform": "sprechen,schreiben"
             }
         },
@@ -353,7 +320,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "B\u00fcro",
                 "lernform": "Vokabeln"
             }
         },
@@ -363,7 +329,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "1",
-                "thema": "B\u00fcro",
                 "lernform": "lesen"
             }
         },
@@ -373,7 +338,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "1",
-                "thema": "B\u00fcro",
                 "lernform": "Grammatik,schreiben"
             }
         },
@@ -383,8 +347,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "B\u00fcro",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -393,8 +356,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "B\u00fcro",
-                "lernform": "Formulare ausf\u00fcllen"
+                "lernform": "Formulare ausfüllen"
             }
         },
         {
@@ -403,8 +365,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "B\u00fcro",
-                "lernform": "Formulare ausf\u00fcllen"
+                "lernform": "Formulare ausfüllen"
             }
         },
         {
@@ -413,7 +374,6 @@
             "values": {
                 "dauer_min": "180",
                 "unterbrechungen_anzahl": "2",
-                "thema": "Weihnachten in Frankreich",
                 "lernform": "sprechen"
             }
         },
@@ -423,7 +383,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Haushalt",
                 "lernform": "Vokabeln"
             }
         },
@@ -433,7 +392,6 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Haushalt",
                 "lernform": "lesen"
             }
         },
@@ -443,7 +401,6 @@
             "values": {
                 "dauer_min": "120",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Haushalt",
                 "lernform": "Grammatik,schreiben"
             }
         },
@@ -453,8 +410,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Haushalt",
-                "lernform": "\u00dcbungen"
+                "lernform": "Übungen"
             }
         },
         {
@@ -463,8 +419,7 @@
             "values": {
                 "dauer_min": "60",
                 "unterbrechungen_anzahl": "0",
-                "thema": "Wiederholung",
-                "lernform": "Lesen,schreiben,Grammatik,\u00dcbung"
+                "lernform": "Lesen,schreiben,Grammatik,Übung"
             }
         }
     ]

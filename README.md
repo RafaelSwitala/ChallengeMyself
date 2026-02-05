@@ -8,14 +8,13 @@ Eine Python-basierte Webanwendung zur Verfolgung persönlicher Ziele, Aktivität
 
 - **Challenge-Verwaltung**: Erstelle und verwalte mehrere persönliche Challenges (z.B. "Marathon-Training", "Python lernen", "Alkoholkonsum reduzieren")
 - **Flexible Datenerfassung**: Jede Challenge kann verschiedene Metriken verfolgen (Distanz, Dauer, Anzahl, Intensität, Wetter, etc.)
-- **Ziel-Verfolgung**: Definiere Ziele und Zeiträume für jede Challenge, um dich zu motivieren
+- **Ziel-Verfolgung**: Definiere Ziele für jede Challenge, um dich zu motivieren
 - **Interaktive Visualisierungen**: Sehe deine Daten mit mehreren Diagrammtypen (Liniendiagramme, Balkendiagramme, Kategoriehäufigkeit)
 - **Erweiterte Charting**:
   - Mische Diagrammtypen in einer Ansicht (Linie + Balken gleichzeitig)
   - Duale Y-Achsen für unterschiedliche Skalen
   - Datumsbereichs-Filterung
   - Dynamische Achsen-Skalierungskontrollen
-  - Achsen als sichtbare Linien dargestellt
 - **Lokale Speicherung**: Alle Daten werden persistent als leicht lesbare JSON-Dateien gespeichert (keine Datenbank notwendig)
 - **Plattformübergreifend**: Läuft auf Windows, macOS und Linux
 
@@ -32,7 +31,7 @@ Eine Python-basierte Webanwendung zur Verfolgung persönlicher Ziele, Aktivität
 - **Logging** - Anwendungs-Logging und Debugging
 
 ### Frontend (Minimalistischer Ansatz)
-- **React** - UI-Komponentenbibliothek (leichtgewichtig)
+- **React** - UI-Komponentenbibliothek
 - **Bootstrap 5** - Responsive Styling
 - **Plotly.js** - Interaktives Diagramm-Rendering
 - **Fetch API** - Kommunikation mit Backend
@@ -128,7 +127,6 @@ ChallengeMyself/
 ├── start.ps1                        # Schnellstart-Automatisierung
 ├── install.ps1                      # Automatisierte Installation
 ├── README.md                        # Diese Dokumentation
-├── Präsentation.md                  # 15-Minuten-Präsentationsgliederung
 │
 ├── backend/                         # Python Flask Backend
 │   ├── app.py                       # Flask REST API Server
@@ -231,6 +229,6 @@ Bildungsprojekt für "Projekt: Einführung in die Programmierung mit Python"
 
 ---
 
-**Version:** 2.0 (Python Plotly Backend)  
+**Version:** 1.0 (Python Plotly Backend)  
 **Python:** 3.10+  
 **Status:** Produktionsbereit

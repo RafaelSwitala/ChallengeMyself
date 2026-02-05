@@ -81,7 +81,13 @@ def load_challenge(name: str) -> Challenge | None:
         # Restore goal if it exists
         if data.get("goal"):
             g = data["goal"]
-            c.set_goal(Goal(g["description"], g["target"], g["period"]))
+            # Handle both old format (without reference) and new format (with reference)
+            c.set_goal(Goal(
+                description=g["description"],
+                target=g.get("target"),
+                period=g.get("period", ""),
+                reference=g.get("reference")  # New field
+            ))
 
         # Restore all sessions
         for s in data.get("sessions", []):

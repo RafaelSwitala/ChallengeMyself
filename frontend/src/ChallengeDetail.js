@@ -12,8 +12,13 @@ function ChallengeDetail() {
   const [challenge, setChallenge] = useState(null);
   const [fields, setFields] = useState([]);
   const [goalDescription, setGoalDescription] = useState("");
+  const [goalReference, setGoalReference] = useState("");
   const [goalTarget, setGoalTarget] = useState("");
   const [goalPeriod, setGoalPeriod] = useState("");
+  const [goalProgress, setGoalProgress] = useState(null);
+  const [goalDef, setGoalDef] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availablePeriods, setAvailablePeriods] = useState([]);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [editingGoal, setEditingGoal] = useState(false);
@@ -29,13 +34,17 @@ function ChallengeDetail() {
 
       if (data.goal) {
         setGoalDescription(data.goal.description || "");
+        setGoalReference(data.goal.reference || "");
         setGoalTarget(data.goal.target || "");
         setGoalPeriod(data.goal.period || "");
       } else {
         setGoalDescription("");
+        setGoalReference("");
         setGoalTarget("");
         setGoalPeriod("");
       }
+      
+      loadGoalProgress(data.name);
     } catch (err) {
       console.error(err);
       setMessage("Fehler beim Laden der Challenge");
@@ -58,12 +67,85 @@ function ChallengeDetail() {
     }
   };
 
+  const loadGoalDefinition = async (activity) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/activities/${encodeURIComponent(activity)}/goals`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setGoalDef(data);
+      }
+    } catch (err) {
+      console.error("Error loading goal definition:", err);
+    }
+  };
+
+  const loadGoalProgress = async (challengeName, dateParam = null) => {
+    try {
+      let url = `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal/progress`;
+      if (dateParam) {
+        url += `?selected_date=${dateParam}`;
+      }
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setGoalProgress(data.progress);
+        
+        // Generate available periods for dropdown if monthly or daily
+        if (data.progress && (data.progress.period_label.includes("Monat") || data.progress.period_label.includes("Tag"))) {
+          generateAvailablePeriods(data.goal.period);
+        }
+      }
+    } catch (err) {
+      console.error("Error loading goal progress:", err);
+    }
+  };
+
+  const generateAvailablePeriods = (period) => {
+    const periods = [];
+    const today = new Date();
+    
+    if (period === "monthly") {
+      // Generate last 12 months
+      for (let i = 0; i < 12; i++) {
+        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const label = date.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+        periods.push({
+          value: `${year}-${month}`,
+          label: label.charAt(0).toUpperCase() + label.slice(1)
+        });
+      }
+    } else if (period === "daily") {
+      // Generate last 30 days
+      for (let i = 0; i < 30; i++) {
+        const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const dateStr = `${year}-${month}-${day}`;
+        const label = date.toLocaleDateString("de-DE");
+        periods.push({
+          value: dateStr,
+          label: label
+        });
+      }
+    }
+    
+    setAvailablePeriods(periods);
+  };
+
   useEffect(() => {
     loadChallenge();
   }, [challengeName]);
 
   useEffect(() => {
-    if (challenge?.activity_type) loadFields(challenge.activity_type);
+    if (challenge?.activity_type) {
+      loadFields(challenge.activity_type);
+      loadGoalDefinition(challenge.activity_type);
+    }
   }, [challenge]);
 
   const addSession = async (sessionData) => {
@@ -102,6 +184,7 @@ function ChallengeDetail() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             description: goalDescription,
+            reference: goalReference,
             target: goalTarget,
             period: goalPeriod,
           }),
@@ -113,6 +196,8 @@ function ChallengeDetail() {
         setEditingGoal(false);
         setTimeout(() => setMessage(""), 3000);
         loadChallenge();
+        setSelectedDate(null);
+        loadGoalProgress(challengeName);
       } else {
         const errorData = await res.json().catch(() => ({}));
         setMessage(`Fehler: ${errorData.error || 'Ziel konnte nicht gespeichert werden'}`);
@@ -134,8 +219,10 @@ function ChallengeDetail() {
       );
       if (res.ok) {
         setGoalDescription("");
+        setGoalReference("");
         setGoalTarget("");
         setGoalPeriod("");
+        setGoalProgress(null);
         setEditingGoal(false);
         setMessage("Goal deleted");
         setMessageType("success");
@@ -187,12 +274,63 @@ function ChallengeDetail() {
               <div className="goal-display">
                 <div className="goal-content">
                   <h3>{challenge.goal.description}</h3>
+                  {challenge.goal.reference && (
+                    <p>
+                      <strong>Messkriterium:</strong> {challenge.goal.reference}
+                    </p>
+                  )}
                   <p>
                     <strong>Zielwert:</strong> {challenge.goal.target}
+                    {goalDef?.reference_units?.[challenge.goal.reference] && ` ${goalDef.reference_units[challenge.goal.reference]}`}
                   </p>
                   <p>
                     <strong>Zeitraum:</strong> {challenge.goal.period}
                   </p>
+                  {goalProgress && (
+                    <div className="goal-progress">
+                      <h4>Fortschritt</h4>
+                      
+                      {/* Period selector for daily and monthly goals */}
+                      {availablePeriods.length > 0 && (
+                        <div className="period-selector">
+                          <label htmlFor="periodSelect">Zeitraum:</label>
+                          <select 
+                            id="periodSelect"
+                            value={selectedDate || (goalProgress.selected_period || "")}
+                            onChange={(e) => {
+                              setSelectedDate(e.target.value);
+                              loadGoalProgress(challengeName, e.target.value);
+                            }}
+                          >
+                            {availablePeriods.map((period) => (
+                              <option key={period.value} value={period.value}>
+                                {period.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                      
+                      <div className="progress-bar" style={{
+                        background: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${Math.min((goalProgress.current / goalProgress.target) * 100, 100)}%, #e0e0e0 ${Math.min((goalProgress.current / goalProgress.target) * 100, 100)}%, #e0e0e0 100%)`
+                      }} />
+                      <p className="progress-message">
+                        {goalProgress.message}
+                      </p>
+                      <p className="progress-status" style={{
+                        color: goalProgress.status === 'completed' ? '#4CAF50' : goalProgress.status === 'in_progress' ? '#2196F3' : '#FF9800'
+                      }}>
+                        <strong>Status:</strong> {goalProgress.status}
+                      </p>
+                      
+                      {/* Show consecutive days for daily goals */}
+                      {challenge.goal.period === "daily" && goalProgress.consecutive_days > 0 && (
+                        <p className="consecutive-days">
+                          <strong>Tage in Folge:</strong> {goalProgress.consecutive_days} 
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="goal-actions">
                   <button className="btn btn-secondary" onClick={() => setEditingGoal(true)}>
@@ -214,9 +352,27 @@ function ChallengeDetail() {
                     id="goalDesc"
                     value={goalDescription}
                     onChange={(e) => setGoalDescription(e.target.value)}
-                    placeholder="z.B. 10 km laufen"
+                    placeholder="z.B. neue Fremdsprache"
                   />
                 </div>
+                {goalDef?.allowed_references && goalDef.allowed_references.length > 0 && (
+                  <div className="form-group">
+                    <label htmlFor="goalRef">Messkriterium</label>
+                    <select
+                      id="goalRef"
+                      value={goalReference}
+                      onChange={(e) => setGoalReference(e.target.value)}
+                    >
+                      <option value="">-- Bitte wählen --</option>
+                      {goalDef.allowed_references.map((ref) => (
+                        <option key={ref} value={ref}>
+                          {ref}
+                          {goalDef.reference_units?.[ref] ? ` (${goalDef.reference_units[ref]})` : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
                 <div className="form-group">
                   <label htmlFor="goalTarget">Zielwert</label>
                   <input
@@ -228,15 +384,34 @@ function ChallengeDetail() {
                     placeholder="z.B. 100"
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="goalPeriod">Zeitraum</label>
-                  <input
-                    id="goalPeriod"
-                    value={goalPeriod}
-                    onChange={(e) => setGoalPeriod(e.target.value)}
-                    placeholder="z.B. pro Woche"
-                  />
-                </div>
+                {goalDef?.allowed_periods && goalDef.allowed_periods.length > 0 && (
+                  <div className="form-group">
+                    <label htmlFor="goalPeriod">Zeitraum</label>
+                    <select
+                      id="goalPeriod"
+                      value={goalPeriod}
+                      onChange={(e) => setGoalPeriod(e.target.value)}
+                    >
+                      <option value="">-- Bitte wählen --</option>
+                      {goalDef.allowed_periods.map((p) => (
+                        <option key={p} value={p}>
+                          {p}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {!goalDef?.allowed_periods && (
+                  <div className="form-group">
+                    <label htmlFor="goalPeriod">Zeitraum</label>
+                    <input
+                      id="goalPeriod"
+                      value={goalPeriod}
+                      onChange={(e) => setGoalPeriod(e.target.value)}
+                      placeholder="z.B. pro Woche"
+                    />
+                  </div>
+                )}
                 <div className="form-actions">
                   <button type="submit" className="btn btn-primary">Speichern</button>
                   {challenge.goal && (

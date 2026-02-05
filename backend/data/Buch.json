@@ -3,8 +3,9 @@
     "activity_type": "Lesen",
     "goal": {
         "description": "Ich mag lesen",
-        "target": "1",
-        "period": "t\u00e4glich"
+        "target": 60.0,
+        "period": "daily",
+        "reference": "dauer_min"
     },
     "sessions": [
         {

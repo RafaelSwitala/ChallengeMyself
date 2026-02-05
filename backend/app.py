@@ -462,7 +462,15 @@ def handle_add_session(name):
 
 @app.post("/challenges/<name>/goal")
 def handle_set_goal(name):
-    """POST API: Goal setzen/speichern (für React Frontend)"""
+    """
+    POST API: Set or delete goal for a challenge (for React Frontend).
+    
+    New goal structure includes:
+    - description: Human-readable goal description
+    - reference: Field to track (e.g., 'distance_km')
+    - target: Target value
+    - period: Time period (daily, weekly, monthly, date range, etc.)
+    """
     try:
         challenge = load_challenge(name)
         if not challenge:
@@ -476,17 +484,23 @@ def handle_set_goal(name):
         
         payload = request.get_json() if request.is_json else request.form
         description = payload.get("description", "")
+        reference = payload.get("reference")
         target = payload.get("target", "")
         period = payload.get("period", "")
         
         if not description or not target or not period:
-            return {"error": "description, target und period erforderlich"}, 400
+            return {"error": "description, target, period erforderlich"}, 400
         
         try:
-            goal = Goal(description, float(target), period)
+            goal = Goal(
+                description=description,
+                target=float(target),
+                period=period,
+                reference=reference
+            )
             challenge.set_goal(goal)
             save_challenge(challenge)
-            logger.info(f"Goal set for {name}")
+            logger.info(f"Goal set for {name} with reference {reference}")
             return jsonify(challenge.to_dict()), 200
         except Exception as e:
             logger.exception(f"Error creating goal")
@@ -527,6 +541,74 @@ def handle_activity_fields(activity_name):
     except Exception as e:
         logger.exception(f"Error in GET /activities/{activity_name}")
         return {"error": str(e)}, 500
+
+
+@app.get("/activities/<activity_name>/goals")
+def handle_activity_goals(activity_name):
+    """
+    Get goal configuration for an activity.
+    
+    Returns allowed references, periods, and status types for goal creation.
+    """
+    try:
+        from utils.goal_tracker import get_goal_definition, supports_goals
+        
+        logger.debug(f"GET /activities/{activity_name}/goals")
+        
+        if not supports_goals(activity_name):
+            return {"error": f"Activity '{activity_name}' does not support goals"}, 400
+        
+        goal_def = get_goal_definition(activity_name)
+        if not goal_def:
+            return {"error": f"Goal definition not found for {activity_name}"}, 404
+        
+        return jsonify({
+            "activity": activity_name,
+            "allowed_references": goal_def.allowed_references,
+            "reference_units": goal_def.reference_units,
+            "allowed_periods": goal_def.allowed_periods,
+            "status_types": goal_def.status_types
+        }), 200
+    except Exception as e:
+        logger.exception(f"Error in GET /activities/{activity_name}/goals")
+        return {"error": str(e)}, 500
+
+
+@app.get("/challenges/<name>/goal/progress")
+def handle_goal_progress(name):
+    """
+    Get current progress towards goal.
+    
+    Query parameters:
+    - selected_date: For daily goals, use format YYYY-MM-DD; for monthly, use YYYY-MM
+    
+    Returns current value, target, status, and progress message.
+    """
+    try:
+        from flask import request
+        
+        logger.debug(f"GET /challenges/{name}/goal/progress")
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        if not challenge.goal:
+            return {"error": "No goal set for this challenge"}, 400
+        
+        # Get optional selected_date query parameter
+        selected_date = request.args.get('selected_date', None)
+        
+        progress = challenge.get_goal_progress(selected_date=selected_date)
+        
+        return jsonify({
+            "challenge": name,
+            "goal": challenge.goal.to_dict(),
+            "progress": progress
+        }), 200
+    except Exception as e:
+        logger.exception(f"Error in GET /challenges/{name}/goal/progress")
+        return {"error": str(e)}, 500
+
 
 if __name__ == "__main__":
     logger.info("Starting Flask app on http://127.0.0.1:5000")

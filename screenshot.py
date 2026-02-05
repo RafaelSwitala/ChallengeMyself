@@ -17,36 +17,34 @@ from models.activities import get_fields
 logger = logging.getLogger(__name__)
 
 
+
+
+
+
+
+
+
+
+
 class Challenge:
-    """
-    Represents a personal challenge or goal.
-    
-    A challenge is a collection of sessions (activity records) for a specific
-    activity type with an optional goal/target with reference field.
-    
-    Attributes:
-        name (str): Unique challenge identifier
-        activity_type (str): Type of activity (e.g., 'Laufen', 'Lernen')
-        sessions (List[Session]): Recorded activity sessions
-        goal (Optional[Goal]): Target for the challenge with reference field
-        allowed_keys (List[str]): Valid field names for this activity type
-    """
-    
     def __init__(self, name: str, activity_type: str):
-        """
-        Initialize a new Challenge.
-        
-        Args:
-            name (str): Unique challenge name
-            activity_type (str): Activity type from ACTIVITIES registry
-            
-        Raises:
-            Exception: Caught and logged if activity type is invalid
-        """
         self.name = name
         self.activity_type = activity_type
         self.sessions: list[Session] = []
         self.goal: Goal | None = None
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Get allowed field names for this activity type
         try:
