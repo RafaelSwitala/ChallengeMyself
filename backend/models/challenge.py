@@ -14,7 +14,9 @@ class Challenge:
         self.goal: Goal | None = None
 
         try:
-            self.allowed_keys = [f["name"] for f in get_fields(activity_type)]
+            fields = get_fields(activity_type)
+            # get_fields returns Field objects, extract names
+            self.allowed_keys = [f.name if hasattr(f, 'name') else f["name"] for f in fields]
         except Exception:
             logger.exception("Failed to initialize allowed keys")
             self.allowed_keys = []

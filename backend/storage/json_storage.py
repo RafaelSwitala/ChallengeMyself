@@ -16,8 +16,9 @@ def _path(name: str):
 def save_challenge(challenge: Challenge):
     try:
         os.makedirs(DATA_DIR, exist_ok=True)
+        # Use ensure_ascii=False to prevent UTF-8 escaping (fuer -> fuer instead of f\u00fcr)
         with open(_path(challenge.name), "w", encoding="utf-8") as f:
-            json.dump(challenge.to_dict(), f, indent=4)
+            json.dump(challenge.to_dict(), f, indent=4, ensure_ascii=False)
     except Exception:
         logger.exception("Failed to save challenge %s", challenge.name)
 

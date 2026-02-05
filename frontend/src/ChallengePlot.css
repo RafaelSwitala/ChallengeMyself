@@ -1,0 +1,211 @@
+.challenge-plot-container {
+  margin-top: 1rem;
+}
+
+.plot-filters {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.plot-filters h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #212529;
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #212529;
+  font-size: 0.95rem;
+}
+
+.filter-group select {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.field-checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #212529;
+  padding: 0.5rem;
+  border-radius: 0.35rem;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.checkbox-label:hover {
+  background: #f8f9fa;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #0d6efd;
+}
+
+.checkbox-label span {
+  font-weight: 500;
+}
+
+.checkbox-label small {
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-weight: normal;
+  margin-left: 0.25rem;
+}
+
+.checkbox-label.small {
+  padding: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.date-range {
+  margin-bottom: 1.5rem;
+}
+
+.date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.date-inputs input {
+  flex: 1;
+  max-width: 200px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.date-inputs input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.date-inputs .dash {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.secondary-y-fields {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  border-left: 3px solid #20c997;
+}
+
+.small-text {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.secondary-y-fields .checkbox-label {
+  padding: 0.35rem;
+}
+
+/* Chart Container */
+.plot-chart-container {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  padding: 2rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  min-height: 400px;
+}
+
+.plot-chart-container .plotly-graph-div {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.empty-chart-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #6c757d;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.empty-chart-message p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .plot-filters {
+    padding: 1rem;
+  }
+
+  .field-checkbox-group {
+    grid-template-columns: 1fr;
+  }
+
+  .date-inputs {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .date-inputs input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .date-inputs .dash {
+    display: none;
+  }
+}

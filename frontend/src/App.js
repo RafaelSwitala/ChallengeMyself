@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import { Container, Form, Button } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import ChallengeDetail from "./ChallengeDetail";
+import "./App.css";
 
 function App() {
   const [activities, setActivities] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState("");
   const [challengeName, setChallengeName] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // 'success' or 'error'
   const [challenges, setChallenges] = useState([]);
+  const navigate = useNavigate();
 
   // Challenges laden
   const loadChallenges = async () => {
@@ -19,6 +21,7 @@ function App() {
     } catch (err) {
       console.error("Failed to load challenges", err);
       setMessage("Fehler beim Laden der Challenges");
+      setMessageType("error");
     }
   };
 
@@ -30,11 +33,12 @@ function App() {
         const data = await res.json();
         setActivities(data.activities || []);
         if (data.activities && data.activities.length > 0) {
-          setSelectedActivity(data.activities[0].name);
+          setSelectedActivity(data.activities[0]);
         }
       } catch (err) {
         console.error("Failed to load activities", err);
         setMessage("Fehler beim Laden der Activities");
+        setMessageType("error");
       }
     };
 
@@ -42,14 +46,18 @@ function App() {
     loadChallenges();
   }, []);
 
-  const createChallenge = async () => {
+  const createChallenge = async (e) => {
+    e.preventDefault();
+    
     if (!challengeName.trim()) {
       setMessage("Bitte einen Challenge-Namen eingeben");
+      setMessageType("error");
       return;
     }
 
     if (!selectedActivity) {
       setMessage("Bitte eine Activity auswählen");
+      setMessageType("error");
       return;
     }
 
@@ -69,84 +77,125 @@ function App() {
 
       if (!response.ok) {
         setMessage(`Fehler: ${data.error}`);
+        setMessageType("error");
         return;
       }
 
-      setMessage(`Challenge "${challengeName}" erstellt`);
+      setMessage(`✓ Challenge "${challengeName}" erstellt`);
+      setMessageType("success");
       setChallengeName("");
       loadChallenges();
+      
+      // Auto-clear success message after 3 seconds
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error("Failed to create challenge", err);
-      setMessage("Serverfehler");
+      setMessage("Serverfehler beim Erstellen der Challenge");
+      setMessageType("error");
     }
   };
 
   return (
-    <Container className="mt-5">
+    <div className="App">
       <Routes>
         <Route
           path="/"
           element={
             <>
-              <h1>ChallengeMyself</h1>
+              <header className="App-header">
+                <div className="container">
+                  <h1>🎯 ChallengeMyself</h1>
+                  <p>Verfolge deine persönlichen Ziele und Herausforderungen</p>
+                </div>
+              </header>
 
-              <Form className="mt-4">
-                <Form.Group className="mb-3">
-                  <Form.Label>Challenge-Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="z. B. Übung-Marathon"
-                    value={challengeName}
-                    onChange={(e) => setChallengeName(e.target.value)}
-                  />
-                </Form.Group>
+              <div className="container">
+                <div className="App-content">
+                  {/* Create Challenge Form */}
+                  <div className="form-card">
+                    <h2>Neue Challenge erstellen</h2>
+                    <form onSubmit={createChallenge}>
+                      <div className="form-group">
+                        <label htmlFor="challengeName" className="required">Challenge-Name</label>
+                        <input
+                          id="challengeName"
+                          type="text"
+                          placeholder="z.B. Sommerfit 2026, Marathon-Training"
+                          value={challengeName}
+                          onChange={(e) => setChallengeName(e.target.value)}
+                        />
+                      </div>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Activity</Form.Label>
-                    <Form.Select
-                      value={selectedActivity}
-                      onChange={(e) => setSelectedActivity(e.target.value)}
-                      disabled={activities.length === 0}
-                    >
-                      {activities.map((a) => (
-                        <option key={a} value={a}>
-                          {a}
-                        </option>
-                      ))}
-                    </Form.Select>
+                      <div className="form-group">
+                        <label htmlFor="activity" className="required">Activity-Typ</label>
+                        <select
+                          id="activity"
+                          value={selectedActivity}
+                          onChange={(e) => setSelectedActivity(e.target.value)}
+                          disabled={activities.length === 0}
+                        >
+                          <option value="">-- Bitte wählen --</option>
+                          {activities.map((activity) => (
+                            <option key={activity} value={activity}>
+                              {activity}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
 
-                </Form.Group>
+                      <div className="form-actions">
+                        <button className="btn btn-primary" type="submit">
+                          ✨ Challenge erstellen
+                        </button>
+                      </div>
+                    </form>
 
-                <Button type="button" onClick={createChallenge}>
-                  Neue Challenge erstellen
-                </Button>
-              </Form>
+                    {message && (
+                      <div className={`alert alert-${messageType === "success" ? "success" : "error"}`}>
+                        {message}
+                      </div>
+                    )}
+                  </div>
 
-              {message && <p className="mt-3">{message}</p>}
-
-              <hr />
-
-              <h3>Deine Challenges</h3>
-              {challenges.length === 0 && (
-                <p>Noch keine Challenges vorhanden.</p>
-              )}
-
-              <ul>
-                {challenges.map((c) => (
-                  <li key={c.name}>
-                    <Link to={`/challenge/${encodeURIComponent(c.name)}`}>
-                      <strong>{c.name}</strong> ({c.activity_type})
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                  {/* Challenges List */}
+                  <div style={{ marginTop: "3rem" }}>
+                    <h2>Deine Challenges</h2>
+                    
+                    {challenges.length === 0 ? (
+                      <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
+                        <p style={{ color: "#6c757d", fontSize: "1.1rem" }}>
+                          📝 Noch keine Challenges erstellt. Starten Sie eine neue Challenge oben!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="challenges-grid">
+                        {challenges.map((c) => (
+                          <div
+                            key={c.name}
+                            className="challenge-card"
+                            onClick={() => navigate(`/challenge/${encodeURIComponent(c.name)}`)}
+                          >
+                            <h3>{c.name}</h3>
+                            <div className="challenge-card-meta">
+                              <span>📊 {c.activity_type}</span>
+                            </div>
+                            <p style={{ margin: 0, color: "#6c757d", fontSize: "0.95rem" }}>
+                              Klicken Sie um zu starten →
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </>
           }
         />
 
         <Route path="/challenge/:name" element={<ChallengeDetail />} />
       </Routes>
-    </Container>
+    </div>
   );
 }
 

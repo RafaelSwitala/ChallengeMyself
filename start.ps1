@@ -25,26 +25,36 @@ if (-not (Test-Path $venvPath)) {
     Set-Location $PSScriptRoot
 }
 
-# Backend im Hintergrund starten
+# Backend im Hintergrund starten (versteckt)
 $backendProcess = Start-Process -FilePath "powershell" `
-    -ArgumentList "-NoExit", "-Command", "Set-Location '$backendPath'; & '$venvPath'; python app.py" `
+    -ArgumentList "-NoExit", "-Command", "Set-Location '$backendPath'; & '$venvPath'; python run_server.py" `
     -PassThru `
-    -WindowStyle Normal
+    -WindowStyle Hidden
 
 Write-Host "Backend-PID: $($backendProcess.Id)" -ForegroundColor Green
 
-# 2. Warte, damit Backend startet
-Write-Host ""
-Write-Host "Warte 3 Sekunden, damit Backend initialisiert..." -ForegroundColor Yellow
-Start-Sleep -Seconds 3
+# 2. Frontend starten (auch im Hintergrund)
+Write-Host "2️⃣  Starte Frontend (React) auf Port 3000..." -ForegroundColor Green
+$frontendProcess = Start-Process -FilePath "powershell" `
+    -ArgumentList "-NoExit", "-Command", "Set-Location '$frontendPath'; npm start" `
+    -PassThru `
+    -WindowStyle Hidden
 
-# 3. Öffne App im Browser (nur Flask auf Port 5000)
+Write-Host "Frontend-PID: $($frontendProcess.Id)" -ForegroundColor Green
+
+# 3. Warte, damit beide starten
 Write-Host ""
-Write-Host "2️⃣  Öffne App im Browser unter http://localhost:5000/..." -ForegroundColor Green
-Start-Process "http://localhost:5000/"
+Write-Host "Warte 5 Sekunden, damit beide Services initialisiert..." -ForegroundColor Yellow
+Start-Sleep -Seconds 5
+
+# 4. Öffne App im Browser (React auf Port 3000)
+Write-Host ""
+Write-Host "3️⃣  Öffne App im Browser unter http://localhost:3000/..." -ForegroundColor Green
+Start-Process "http://localhost:3000/"
 
 Write-Host ""
-Write-Host "✅ App lädt! Drücke STRG+C zum Beenden." -ForegroundColor Cyan
+Write-Host "✅ App lädt! Backend auf http://localhost:5000, Frontend auf http://localhost:3000" -ForegroundColor Cyan
+Write-Host "   Drücke STRG+C zum Beenden." -ForegroundColor Cyan
 
 # Warte auf Benutzer-Exit (STRG+C)
 while ($true) {
