@@ -1,0 +1,29 @@
+{
+    "name": "Motivation 2026",
+    "activity_type": "Motivation",
+    "goal": {
+        "description": "Täglich motivierend arbeiten",
+        "target": 6,
+        "period": "pro Woche"
+    },
+    "sessions": [
+        {
+            "date": "2026-01-27",
+            "time": "09:00",
+            "values": {
+                "bezogen_auf": "arbeit",
+                "hindernis": "ablenkung",
+                "motivation_level": 7
+            }
+        },
+        {
+            "date": "2026-02-03",
+            "time": "08:30",
+            "values": {
+                "bezogen_auf": "projekt",
+                "hindernis": "zeitdruck",
+                "motivation_level": 8
+            }
+        }
+    ]
+}

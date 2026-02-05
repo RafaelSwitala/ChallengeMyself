@@ -17,6 +17,12 @@
   color: #212529;
 }
 
+.plot-filters h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #212529;
+}
+
 .filter-group {
   margin-bottom: 1.5rem;
 }
@@ -44,9 +50,39 @@
   box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
 }
 
+.field-with-type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.35rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.field-with-type .checkbox-label {
+  margin: 0;
+  flex: 1;
+}
+
+.chart-type-select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.35rem;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+}
+
+.chart-type-select:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+}
+
 .field-checkbox-group {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.75rem;
   padding: 0.75rem;
   background: white;
@@ -145,7 +181,79 @@
   padding: 0.35rem;
 }
 
-/* Chart Container */
+.scaling-controls {
+  background: #e7f3ff;
+  border: 1px solid #b0d4ff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.scaling-controls h4 {
+  margin-top: 0;
+}
+
+.scaling-section {
+  margin-bottom: 1rem;
+}
+
+.scaling-section:last-child {
+  margin-bottom: 0;
+}
+
+.scaling-section > label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.scaling-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.scaling-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.scaling-input label {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.scaling-input input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.scaling-input input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+}
+
+.x-step-input {
+  max-width: 150px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.35rem;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.x-step-input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+}
+
 .plot-chart-container {
   background: white;
   border: 1px solid #dee2e6;
@@ -154,6 +262,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   position: relative;
   min-height: 400px;
+  width: 100%;
 }
 
 .plot-chart-container .plotly-graph-div {
@@ -185,7 +294,6 @@
   margin: 0;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .plot-filters {
     padding: 1rem;
@@ -208,4 +316,9 @@
   .date-inputs .dash {
     display: none;
   }
+
+  .scaling-inputs {
+    grid-template-columns: 1fr;
+  }
 }
+

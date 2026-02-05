@@ -21,7 +21,7 @@
 <section class="row g-4">
     <div class="col-md-6">
         <div class="card p-3">
-            <h4>🎯 Ziel</h4>
+            <h4>Ziel</h4>
             {% if goal %}
                 <div class="mb-3">
                     <p class="mb-1"><strong>{{ goal.description }}</strong></p>
@@ -59,7 +59,7 @@
 
     <div class="col-md-6">
         <div class="card p-3">
-            <h4>➕ Neue Session</h4>
+            <h4>Neue Session</h4>
             <form method="POST" action="/challenges/{{ challenge_name | urlencode }}/sessions">
     <div class="mb-3">
         <label for="date" class="form-label">Datum</label>
@@ -108,7 +108,7 @@
 
 <hr>
 
-<h3>📊 Bisherige Sessions</h3>
+<h3>Bisherige Sessions</h3>
 {% if sessions %}
     <div class="table-responsive mt-4">
         <table class="table table-hover">
@@ -140,7 +140,7 @@
 
 <hr>
 
-<h3>📈 Visualisierung</h3>
+<h3>Visualisierung</h3>
 <div class="alert alert-info">
     <p>Wähle Felder und einen Chart-Typ, um die Daten zu visualisieren:</p>
     <a href="/challenges/{{ challenge_name | urlencode }}/plot" class="btn btn-info">Zum Diagramm</a>

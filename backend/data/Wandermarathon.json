@@ -1,0 +1,96 @@
+{
+    "name": "Wandermarathon",
+    "activity_type": "Spazieren",
+    "goal": {
+        "description": "Marathon-Vorbereitung (42 km)",
+        "target": 50,
+        "period": "pro Monat"
+    },
+    "sessions": [
+{"date":"2026-01-01","time":"09:00","values":{"distanz_km":2.1,"dauer_min":28,"schritte":3100,"kalorien":95,"gelaende":"stadt"}},
+{"date":"2026-01-01","time":"17:30","values":{"distanz_km":3.4,"dauer_min":45,"schritte":4800,"kalorien":140,"gelaende":"park"}},
+
+{"date":"2026-01-02","time":"10:15","values":{"distanz_km":2.8,"dauer_min":36,"schritte":4100,"kalorien":115,"gelaende":"walDweg"}},
+{"date":"2026-01-02","time":"18:20","values":{"distanz_km":1.9,"dauer_min":25,"schritte":2700,"kalorien":80,"gelaende":"stadt"}},
+
+{"date":"2026-01-03","time":"14:10","values":{"distanz_km":4.2,"dauer_min":56,"schritte":6000,"kalorien":185,"gelaende":"hügel"}},
+
+{"date":"2026-01-04","time":"09:40","values":{"distanz_km":3.7,"dauer_min":48,"schritte":5200,"kalorien":160,"gelaende":"waldweg"}},
+
+{"date":"2026-01-05","time":"11:00","values":{"distanz_km":2.3,"dauer_min":30,"schritte":3300,"kalorien":100,"gelaende":"stadt"}},
+{"date":"2026-01-05","time":"19:10","values":{"distanz_km":1.5,"dauer_min":20,"schritte":2100,"kalorien":60,"gelaende":"park"}},
+
+{"date":"2026-01-06","time":"10:00","values":{"distanz_km":3.1,"dauer_min":40,"schritte":4500,"kalorien":140,"gelaende":"waldweg"}},
+
+{"date":"2026-01-07","time":"16:30","values":{"distanz_km":2.0,"dauer_min":27,"schritte":2900,"kalorien":85,"gelaende":"stadt"}},
+
+{"date":"2026-01-08","time":"13:10","values":{"distanz_km":4.5,"dauer_min":60,"schritte":6400,"kalorien":195,"gelaende":"hügel"}},
+
+{"date":"2026-01-09","time":"09:20","values":{"distanz_km":3.3,"dauer_min":43,"schritte":4900,"kalorien":150,"gelaende":"park"}},
+
+{"date":"2026-01-10","time":"11:30","values":{"distanz_km":2.8,"dauer_min":37,"schritte":4100,"kalorien":120,"gelaende":"stadt"}},
+
+{"date":"2026-01-11","time":"10:00","values":{"distanz_km":4.9,"dauer_min":65,"schritte":7000,"kalorien":210,"gelaende":"waldweg"}},
+
+{"date":"2026-01-12","time":"15:50","values":{"distanz_km":2.4,"dauer_min":31,"schritte":3400,"kalorien":105,"gelaende":"stadt"}},
+
+{"date":"2026-01-13","time":"09:10","values":{"distanz_km":3.6,"dauer_min":47,"schritte":5100,"kalorien":160,"gelaende":"park"}},
+
+{"date":"2026-01-14","time":"12:40","values":{"distanz_km":4.1,"dauer_min":54,"schritte":5800,"kalorien":180,"gelaende":"waldweg"}},
+
+{"date":"2026-01-15","time":"10:20","values":{"distanz_km":3.0,"dauer_min":39,"schritte":4300,"kalorien":130,"gelaende":"stadt"}},
+
+{"date":"2026-01-16","time":"16:00","values":{"distanz_km":2.7,"dauer_min":35,"schritte":3900,"kalorien":115,"gelaende":"park"}},
+
+{"date":"2026-01-17","time":"09:45","values":{"distanz_km":4.4,"dauer_min":59,"schritte":6200,"kalorien":190,"gelaende":"hügel"}},
+
+{"date":"2026-01-18","time":"13:00","values":{"distanz_km":2.5,"dauer_min":33,"schritte":3600,"kalorien":110,"gelaende":"stadt"}},
+
+{"date":"2026-01-19","time":"10:30","values":{"distanz_km":3.8,"dauer_min":50,"schritte":5400,"kalorien":170,"gelaende":"waldweg"}},
+
+{"date":"2026-01-20","time":"15:10","values":{"distanz_km":4.6,"dauer_min":62,"schritte":6500,"kalorien":200,"gelaende":"hügel"}},
+
+{"date":"2026-01-21","time":"11:00","values":{"distanz_km":2.2,"dauer_min":29,"schritte":3200,"kalorien":95,"gelaende":"stadt"}},
+
+{"date":"2026-01-22","time":"16:40","values":{"distanz_km":3.4,"dauer_min":44,"schritte":4800,"kalorien":150,"gelaende":"park"}},
+
+{"date":"2026-01-23","time":"09:15","values":{"distanz_km":4.0,"dauer_min":52,"schritte":5600,"kalorien":175,"gelaende":"waldweg"}},
+
+{"date":"2026-01-24","time":"14:25","values":{"distanz_km":2.9,"dauer_min":38,"schritte":4200,"kalorien":125,"gelaende":"stadt"}},
+
+{"date":"2026-01-25","time":"10:50","values":{"distanz_km":3.7,"dauer_min":49,"schritte":5200,"kalorien":160,"gelaende":"park"}},
+
+{"date":"2026-01-26","time":"12:00","values":{"distanz_km":4.3,"dauer_min":57,"schritte":6100,"kalorien":185,"gelaende":"waldweg"}},
+
+{"date":"2026-01-27","time":"15:00","values":{"distanz_km":2.6,"dauer_min":34,"schritte":3800,"kalorien":115,"gelaende":"stadt"}},
+
+{"date":"2026-01-28","time":"09:30","values":{"distanz_km":3.5,"dauer_min":46,"schritte":5000,"kalorien":155,"gelaende":"park"}},
+
+{"date":"2026-01-29","time":"14:45","values":{"distanz_km":4.7,"dauer_min":63,"schritte":6600,"kalorien":205,"gelaende":"waldweg"}},
+
+{"date":"2026-01-30","time":"11:20","values":{"distanz_km":2.0,"dauer_min":27,"schritte":2900,"kalorien":85,"gelaende":"stadt"}},
+
+{"date":"2026-01-31","time":"16:10","values":{"distanz_km":3.1,"dauer_min":40,"schritte":4500,"kalorien":140,"gelaende":"park"}},
+
+{"date":"2026-02-01","time":"10:00","values":{"distanz_km":4.8,"dauer_min":64,"schritte":6800,"kalorien":210,"gelaende":"hügel"}},
+
+{"date":"2026-02-02","time":"12:30","values":{"distanz_km":2.4,"dauer_min":32,"schritte":3500,"kalorien":110,"gelaende":"stadt"}},
+
+{"date":"2026-02-03","time":"09:50","values":{"distanz_km":3.9,"dauer_min":51,"schritte":5600,"kalorien":170,"gelaende":"waldweg"}},
+
+{"date":"2026-02-04","time":"15:20","values":{"distanz_km":4.2,"dauer_min":55,"schritte":5900,"kalorien":180,"gelaende":"park"}},
+
+{"date":"2026-02-05","time":"11:15","values":{"distanz_km":2.3,"dauer_min":30,"schritte":3300,"kalorien":100,"gelaende":"stadt"}},
+
+{"date":"2026-02-06","time":"16:30","values":{"distanz_km":3.2,"dauer_min":41,"schritte":4600,"kalorien":145,"gelaende":"walDweg"}},
+
+{"date":"2026-02-07","time":"10:20","values":{"distanz_km":4.6,"dauer_min":62,"schritte":6500,"kalorien":195,"gelaende":"hügel"}},
+
+{"date":"2026-02-08","time":"13:50","values":{"distanz_km":2.7,"dauer_min":36,"schritte":3900,"kalorien":115,"gelaende":"stadt"}},
+
+{"date":"2026-02-09","time":"11:40","values":{"distanz_km":3.8,"dauer_min":49,"schritte":5400,"kalorien":165,"gelaende":"park"}},
+
+{"date":"2026-02-10","time":"15:30","values":{"distanz_km":4.4,"dauer_min":58,"schritte":6200,"kalorien":185,"gelaende":"waldweg"}}
+]
+
+}

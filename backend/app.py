@@ -1,3 +1,18 @@
+"""
+ChallengeMyself Flask REST API Server
+
+This module implements the backend REST API for the ChallengeMyself application.
+It provides endpoints for:
+- Challenge management (create, list, retrieve)
+- Session management (add, list)
+- Goal management (set, delete)
+- Activity definitions (list fields)
+- Charting and data visualization
+
+The API supports both HTML (for browser views) and JSON (for React frontend).
+All endpoints include comprehensive error handling and logging.
+"""
+
 from utils.logger import setup_logging, get_logger
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_cors import CORS
@@ -16,19 +31,27 @@ import plotly.io as pio
 import os
 import numpy as np
 
-# Logging
+# Initialize logging configuration
 setup_logging()
 logger = get_logger(__name__)
 
-# App Setup
+# Initialize Flask app with CORS support for frontend communication
 app = Flask(__name__, template_folder="templates")
-# Erlaube CORS für alle Routen/Origins (Development-friendly)
 CORS(app, resources={r"/*": {"origins": "*"}}, send_wildcard=True)
+
 
 
 @app.after_request
 def add_cors_headers(response):
-    """Stelle sicher, dass auch bei Fehlern CORS-Header vorhanden sind."""
+    """
+    Add CORS headers to all responses (even errors).
+    
+    This ensures that the React frontend can communicate with the Flask backend
+    from different origins (localhost:3000 to localhost:5000).
+    
+    Returns:
+        Flask Response: Response object with CORS headers attached
+    """
     response.headers.setdefault("Access-Control-Allow-Origin", "*")
     response.headers.setdefault("Access-Control-Allow-Headers", "Content-Type,Authorization")
     response.headers.setdefault("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
@@ -37,7 +60,15 @@ def add_cors_headers(response):
 
 @app.before_request
 def handle_options():
-    """Return early for preflight OPTIONS requests with proper headers."""
+    """
+    Handle preflight OPTIONS requests from browsers.
+    
+    Browsers send an OPTIONS request before making actual requests to check CORS permissions.
+    This function returns early with proper CORS headers for these requests.
+    
+    Returns:
+        Tuple[str, int]: Empty response with status 204 No Content
+    """
     if request.method == 'OPTIONS':
         from flask import make_response
         resp = make_response(('', 204))
@@ -49,7 +80,18 @@ def handle_options():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    """Return JSON error with CORS headers for unexpected exceptions."""
+    """
+    Global error handler for unhandled exceptions.
+    
+    Catches any exception not caught by specific handlers, logs it with full traceback,
+    and returns a JSON error response with CORS headers.
+    
+    Args:
+        e (Exception): The exception that was raised
+        
+    Returns:
+        Tuple[Dict, int]: JSON error response with status 500
+    """
     from flask import make_response
     logger.exception("Unhandled exception: %s", e)
     body = {"error": "internal server error", "message": str(e)}
@@ -59,28 +101,25 @@ def handle_exception(e):
     resp.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
     return resp
 
-
-# ============================================================
-# HELPER: Content Negotiation
-# ============================================================
-
 def wants_json():
-    """Prüfe ob Client JSON will basierend auf Accept-Header"""
-    # Wenn Accept-Header application/json enthält -> JSON
+    """
+    Determine if the client wants JSON response instead of HTML.
+    
+    Checks multiple indicators:
+    - Accept header explicitly requests JSON
+    - Content-Type indicates JSON
+    - Request has Origin header (typical of AJAX)
+    
+    Returns:
+        bool: True if JSON is preferred, False if HTML is preferred
+    """
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         return True
-    # Wenn Content-Type JSON ist -> AJAX -> JSON
     if request.content_type and "application/json" in request.content_type:
         return True
-    # If request contains an Origin header (likely CORS fetch), treat as JSON/AJAX
     if request.headers.get('Origin'):
         return True
     return False
-
-
-# ============================================================
-# DEBUG ROUTES
-# ============================================================
 
 @app.get("/debug/list-files")
 def debug_list_files():
@@ -129,11 +168,6 @@ def debug_challenges():
         logger.exception("Debug error")
         return {"error": str(e)}
 
-
-# ============================================================
-# MAIN ROUTES: Smart Content-Negotiation
-# ============================================================
-
 @app.route("/", methods=["GET"])
 @app.route("/challenges", methods=["GET", "POST"])
 def handle_challenges():
@@ -146,7 +180,6 @@ def handle_challenges():
     """
     logger.debug(f"handle_challenges: {request.method} | wants_json={wants_json()}")
     
-    # GET Request
     if request.method == "GET":
         try:
             challenge_list = list_challenges()
@@ -157,12 +190,10 @@ def handle_challenges():
                 if challenge:
                     challenges.append(challenge.to_dict())
             
-            # JSON Response für AJAX
             if wants_json():
                 logger.debug(f"GET /challenges -> JSON ({len(challenges)} challenges)")
                 return jsonify(challenges), 200
             
-            # HTML Response für Browser
             logger.debug(f"GET / -> HTML ({len(challenges)} challenges)")
             activities = get_activity_names()
             message = request.args.get("message", "")
@@ -174,10 +205,8 @@ def handle_challenges():
                 return {"error": str(e)}, 500
             return render_template("index.html", challenges=[], activities=[], message=f"Fehler: {str(e)}")
     
-    # POST Request
     if request.method == "POST":
         try:
-            # JSON POST (von React/AJAX)
             if request.is_json:
                 data = request.get_json()
                 name = data.get("name", "").strip()
@@ -195,7 +224,6 @@ def handle_challenges():
                 logger.info(f"Challenge created (JSON): {name}")
                 return jsonify(challenge.to_dict()), 201
             
-            # Form POST (von HTML-Form)
             else:
                 name = request.form.get("name", "").strip()
                 activity = request.form.get("activity", "").strip()
@@ -236,16 +264,13 @@ def handle_challenge_detail(name):
                 return {"error": "Challenge not found"}, 404
             return redirect(url_for("handle_challenges", message="Challenge nicht gefunden"))
         
-        # GET Request
         if request.method == "GET":
             if wants_json():
-                # JSON für AJAX
                 logger.debug(f"GET /challenges/{name} -> JSON")
                 return jsonify(challenge.to_dict()), 200
             else:
-                # HTML für Browser
                 logger.debug(f"GET /challenges/{name} -> HTML")
-                fields = get_fields(challenge.activity_type)  # Already returns dicts
+                fields = get_fields(challenge.activity_type)
                 goal_dict = challenge.goal.to_dict() if challenge.goal else None
                 message = request.args.get("message", "")
                 return render_template(
@@ -258,17 +283,14 @@ def handle_challenge_detail(name):
                     message=message
                 )
         
-        # POST Request
         if request.method == "POST":
             logger.debug(f"POST /challenges/{name}")
             payload = request.get_json() if request.is_json else request.form
             
-            # Session hinzufügen
             if "date" in payload and "time" in payload:
                 date = payload.get("date", "")
                 time = payload.get("time", "")
                 
-                # Values extrahieren
                 values = {}
                 fields = get_fields(challenge.activity_type)
                 for field in fields:
@@ -284,7 +306,6 @@ def handle_challenge_detail(name):
                         else:
                             values[field_name] = val
                 
-                # Berechne versteckte Felder automatisch
                 hidden_values = calculate_hidden_fields(challenge.activity_type, values)
                 values.update(hidden_values)
                 
@@ -297,7 +318,6 @@ def handle_challenge_detail(name):
                     return jsonify(challenge.to_dict()), 200
                 return redirect(url_for("handle_challenge_detail", name=name))
             
-            # Goal speichern oder löschen
             elif "description" in payload or request.args.get("delete_goal"):
                 if request.args.get("delete_goal"):
                     challenge.goal = None
@@ -339,7 +359,7 @@ def handle_challenge_plot(name):
     - Enum-Feld Aggregation (Häufigkeitszählung)
     - Datum-Range Filterung
     - Dual-Y-Achse für verschiedene Skalen
-    - Line + Bar Diagramme
+    - Line + Bar Diagramme pro Feld
     """
     try:
         from utils.plotly_utils import (
@@ -354,41 +374,36 @@ def handle_challenge_plot(name):
         if not challenge.sessions:
             return {"error": "No sessions available"}, 400
         
-        # Parameter auslesen
-        chart_type = request.args.get("chart_type", "line")
         fields_param = request.args.get("fields", "")
         enum_field = request.args.get("enum_field", "")
         date_from = request.args.get("date_from", "")
         date_to = request.args.get("date_to", "")
         secondary_y_fields_param = request.args.get("secondary_y_fields", "")
-        
-        # Arrays parsen
         selected_fields = [f.strip() for f in fields_param.split(",") if f.strip()] if fields_param else []
         secondary_y_fields = [f.strip() for f in secondary_y_fields_param.split(",") if f.strip()] if secondary_y_fields_param else []
         
-        # DataFrame erzeugen
+        field_types = {}
+        for field in selected_fields:
+            chart_type_param = request.args.get(f"field_type_{field}", "line")
+            field_types[field] = chart_type_param
+        
         df = sessions_to_dataframe([s.to_dict() for s in challenge.sessions])
         if df.empty:
             return {"error": "No valid session data"}, 400
         
-        # Datums-Filter anwenden
         df = filter_by_date_range(df, date_from, date_to)
         if df.empty:
             return {"error": "No sessions in date range"}, 400
         
-        # Chart-Generation
         if enum_field and enum_field in df.columns:
-            # Enum-Feld Häufigkeitszählung
             result = create_enum_bar_chart_json(df, enum_field, title=f"{challenge.name} – {enum_field}")
         
-        elif chart_type == "bar":
-            result = create_bar_chart_json(df, selected_fields, title=f"{challenge.name} – Säulendiagramm")
-        
-        else:  # line (default)
+        else:
             result = create_line_chart_json(
                 df, 
                 selected_fields, 
-                title=f"{challenge.name} – Liniendiagramm",
+                field_types=field_types,
+                title=f"{challenge.name} – Analyse",
                 secondary_y_fields=secondary_y_fields if secondary_y_fields else None
             )
         
@@ -398,6 +413,89 @@ def handle_challenge_plot(name):
         logger.exception(f"Error in handle_challenge_plot for {name}")
         return {"error": str(e)}, 500
 
+@app.post("/challenges/<name>/sessions")
+def handle_add_session(name):
+    """POST API: Neue Session hinzufügen (für React Frontend)"""
+    try:
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        payload = request.get_json() if request.is_json else request.form
+        date = payload.get("date", "")
+        time = payload.get("time", "")
+        
+        if not date or not time:
+            return {"error": "date und time erforderlich"}, 400
+        
+        field_values = payload.get("values", {}) if isinstance(payload.get("values"), dict) else {}
+        
+        values = {}
+        fields = get_fields(challenge.activity_type)
+        for field in fields:
+            field_name = field["name"]
+            val = field_values.get(field_name) or payload.get(field_name)
+            if val is not None and val != "":
+                field_type = field["type"]
+                if field_type == "number":
+                    try:
+                        values[field_name] = float(val)
+                    except (ValueError, TypeError):
+                        values[field_name] = val
+                else:
+                    values[field_name] = val
+        
+        hidden_values = calculate_hidden_fields(challenge.activity_type, values)
+        values.update(hidden_values)
+        
+        session = Session(date, time, values)
+        challenge.add_session(session)
+        save_challenge(challenge)
+        logger.info(f"Session added to {name}")
+        
+        return jsonify(challenge.to_dict()), 201
+        
+    except Exception as e:
+        logger.exception(f"Error adding session to {name}")
+        return {"error": str(e)}, 500
+
+
+@app.post("/challenges/<name>/goal")
+def handle_set_goal(name):
+    """POST API: Goal setzen/speichern (für React Frontend)"""
+    try:
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        if request.args.get("delete"):
+            challenge.goal = None
+            save_challenge(challenge)
+            logger.info(f"Goal deleted for {name}")
+            return jsonify(challenge.to_dict()), 200
+        
+        payload = request.get_json() if request.is_json else request.form
+        description = payload.get("description", "")
+        target = payload.get("target", "")
+        period = payload.get("period", "")
+        
+        if not description or not target or not period:
+            return {"error": "description, target und period erforderlich"}, 400
+        
+        try:
+            goal = Goal(description, float(target), period)
+            challenge.set_goal(goal)
+            save_challenge(challenge)
+            logger.info(f"Goal set for {name}")
+            return jsonify(challenge.to_dict()), 200
+        except Exception as e:
+            logger.exception(f"Error creating goal")
+            return {"error": str(e)}, 400
+            
+    except Exception as e:
+        logger.exception(f"Error in handle_set_goal for {name}")
+        return {"error": str(e)}, 500
+
 
 @app.get("/activities")
 def handle_activities():
@@ -405,7 +503,6 @@ def handle_activities():
     try:
         logger.debug("GET /activities")
         activities = get_activity_names()
-        # React erwartet {activities: [...]} Format
         return jsonify({"activities": activities}), 200
     except Exception as e:
         logger.exception("Error in GET /activities")
@@ -430,11 +527,6 @@ def handle_activity_fields(activity_name):
     except Exception as e:
         logger.exception(f"Error in GET /activities/{activity_name}")
         return {"error": str(e)}, 500
-
-
-# ============================================================
-# APP ENTRY POINT
-# ============================================================
 
 if __name__ == "__main__":
     logger.info("Starting Flask app on http://127.0.0.1:5000")

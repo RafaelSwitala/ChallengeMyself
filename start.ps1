@@ -13,11 +13,11 @@ $backendPath = Join-Path $PSScriptRoot "backend"
 $frontendPath = Join-Path $PSScriptRoot "frontend"
 
 # 1. Backend venv aktivieren und starten
-Write-Host "1️⃣  Starte Backend (Flask) auf Port 5000..." -ForegroundColor Green
+Write-Host "1. Starting Backend (Flask) on Port 5000..." -ForegroundColor Green
 $venvPath = Join-Path $backendPath "venv\Scripts\Activate.ps1"
 
 if (-not (Test-Path $venvPath)) {
-    Write-Host "⚠️  Virtuelle Umgebung nicht gefunden. Erstelle sie..." -ForegroundColor Yellow
+    Write-Host "Virtual environment not found. Creating it..." -ForegroundColor Yellow
     Set-Location $backendPath
     python -m venv venv
     & $venvPath
@@ -34,7 +34,7 @@ $backendProcess = Start-Process -FilePath "powershell" `
 Write-Host "Backend-PID: $($backendProcess.Id)" -ForegroundColor Green
 
 # 2. Frontend starten (auch im Hintergrund)
-Write-Host "2️⃣  Starte Frontend (React) auf Port 3000..." -ForegroundColor Green
+Write-Host "2. Starting Frontend (React) on Port 3000..." -ForegroundColor Green
 $frontendProcess = Start-Process -FilePath "powershell" `
     -ArgumentList "-NoExit", "-Command", "Set-Location '$frontendPath'; npm start" `
     -PassThru `
@@ -49,7 +49,7 @@ Start-Sleep -Seconds 5
 
 # 4. Öffne App im Browser (React auf Port 3000)
 Write-Host ""
-Write-Host "3️⃣  Öffne App im Browser unter http://localhost:3000/..." -ForegroundColor Green
+Write-Host "3. Opening app in browser at http://localhost:3000/..." -ForegroundColor Green
 Start-Process "http://localhost:3000/"
 
 Write-Host ""

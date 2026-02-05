@@ -1,0 +1,396 @@
+{
+    "name": "Spazieren",
+    "activity_type": "Spazieren",
+    "goal": {
+        "description": "Ich möchte täglich an die frische Luft.",
+        "target": "1",
+        "period": "täglich"
+    },
+    "sessions": [
+        {
+            "date": "2026-01-01",
+            "time": "14:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "120",
+                "schritte_anzahl": "12000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-02",
+            "time": "13:00",
+            "values": {
+                "distanz_km": "6",
+                "dauer_min": "180",
+                "schritte_anzahl": "18000",
+                "intensitaet": "mittel",
+                "strecke_typ": "waldweg"
+            }
+        },
+        {
+            "date": "2026-01-03",
+            "time": "14:00",
+            "values": {
+                "distanz_km": "5.5",
+                "dauer_min": "128",
+                "schritte_anzahl": "13000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-04",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "2",
+                "dauer_min": "30",
+                "schritte_anzahl": "3000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-05",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "2",
+                "dauer_min": "30",
+                "schritte_anzahl": "4000",
+                "intensitaet": "mittel",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-06",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "4",
+                "dauer_min": "60",
+                "schritte_anzahl": "7000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-07",
+            "time": "13:00",
+            "values": {
+                "distanz_km": "4",
+                "dauer_min": "55",
+                "schritte_anzahl": "7000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-08",
+            "time": "11:30",
+            "values": {
+                "distanz_km": "3",
+                "dauer_min": "45",
+                "schritte_anzahl": "4500",
+                "intensitaet": "mittel",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-09",
+            "time": "17:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "90",
+                "schritte_anzahl": "10000",
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-10",
+            "time": "15:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "120",
+                "schritte_anzahl": "13000",
+                "intensitaet": "mittel",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-11",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "4",
+                "dauer_min": "40",
+                "schritte_anzahl": "7000",
+                "intensitaet": "stark",
+                "strecke_typ": "asphalt"
+            }
+        },
+        {
+            "date": "2026-01-12",
+            "time": "12:00",
+            "values": {
+                "distanz_km": "8",
+                "dauer_min": "240",
+                "schritte_anzahl": "23000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "waldweg"
+            }
+        },
+        {
+            "date": "2026-01-13",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "3",
+                "dauer_min": "40",
+                "schritte_anzahl": "4500",
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt"
+            }
+        },
+        {
+            "date": "2026-01-14",
+            "time": "14:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "110",
+                "schritte_anzahl": "11000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-15",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "4",
+                "dauer_min": "40",
+                "schritte_anzahl": "6800",
+                "intensitaet": "stark",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-15",
+            "time": "22:00",
+            "values": {
+                "distanz_km": 5.0,
+                "dauer_min": 40.0,
+                "schritte_anzahl": 7000.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "natur"
+            }
+        },
+        {
+            "date": "2026-01-16",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "4",
+                "dauer_min": "40",
+                "schritte_anzahl": "6800",
+                "intensitaet": "stark",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-17",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "6",
+                "dauer_min": "180",
+                "schritte_anzahl": "18000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-20",
+            "time": "11:00",
+            "values": {
+                "distanz_km": "3",
+                "dauer_min": "45",
+                "schritte_anzahl": "4500",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-21",
+            "time": "16:00",
+            "values": {
+                "distanz_km": "4.5",
+                "dauer_min": "80",
+                "schritte_anzahl": "10000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-22",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "4.5",
+                "dauer_min": "75",
+                "schritte_anzahl": "9000",
+                "intensitaet": "mittel",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-01-23",
+            "time": "09:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "110",
+                "schritte_anzahl": "12000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-24",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "120",
+                "schritte_anzahl": "12000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "asphalt"
+            }
+        },
+        {
+            "date": "2026-01-25",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "6",
+                "dauer_min": "180",
+                "schritte_anzahl": "18000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-26",
+            "time": "15:00",
+            "values": {
+                "distanz_km": "6",
+                "dauer_min": "160",
+                "schritte_anzahl": "17000",
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-27",
+            "time": "14:00",
+            "values": {
+                "distanz_km": "7",
+                "dauer_min": "220",
+                "schritte_anzahl": "20000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-28",
+            "time": "09:00",
+            "values": {
+                "distanz_km": "7",
+                "dauer_min": "210",
+                "schritte_anzahl": "19500",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-29",
+            "time": "09:00",
+            "values": {
+                "distanz_km": "8",
+                "dauer_min": "260",
+                "schritte_anzahl": "24000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "waldweg"
+            }
+        },
+        {
+            "date": "2026-01-30",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "8",
+                "dauer_min": "240",
+                "schritte_anzahl": "22500",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-01-31",
+            "time": "09:00",
+            "values": {
+                "distanz_km": "8",
+                "dauer_min": "230",
+                "schritte_anzahl": "22000",
+                "intensitaet": "stark",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-02-01",
+            "time": "08:00",
+            "values": {
+                "distanz_km": "9",
+                "dauer_min": "270",
+                "schritte_anzahl": "28000",
+                "intensitaet": "mittel",
+                "strecke_typ": "mix"
+            }
+        },
+        {
+            "date": "2026-02-02",
+            "time": "11:00",
+            "values": {
+                "distanz_km": "5",
+                "dauer_min": "120",
+                "schritte_anzahl": "12000",
+                "intensitaet": "gemuetlich",
+                "strecke_typ": "park"
+            }
+        },
+        {
+            "date": "2026-02-03",
+            "time": "12:00",
+            "values": {
+                "distanz_km": "7",
+                "dauer_min": "200",
+                "schritte_anzahl": "19000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-02-04",
+            "time": "10:00",
+            "values": {
+                "distanz_km": "7",
+                "dauer_min": "190",
+                "schritte_anzahl": "19000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        },
+        {
+            "date": "2026-02-05",
+            "time": "14:00",
+            "values": {
+                "distanz_km": "7",
+                "dauer_min": "190",
+                "schritte_anzahl": "19000",
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg"
+            }
+        }
+    ]
+}

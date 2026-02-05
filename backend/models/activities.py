@@ -28,10 +28,10 @@ class Field:
     type: str
     unit: Optional[str] = None
     values: Optional[List[str]] = None
-    chart_type: str = "both"  # 'line', 'bar', 'both', 'none', 'enum_bar'
-    required: bool = False  # Is this field required from user?
-    hidden: bool = False  # Is this calculated automatically?
-    calculator: Optional[Callable] = None  # Function(session_dict) -> value
+    chart_type: str = "both"
+    required: bool = False
+    hidden: bool = False
+    calculator: Optional[Callable] = None
 
     def to_dict(self) -> dict:
         """Converts Field to JSON-compatible dict."""
@@ -47,11 +47,6 @@ class Field:
         if self.values is not None:
             data["values"] = self.values
         return data
-
-
-# ============================================================================
-# CALCULATOR FUNCTIONS - For hidden fields
-# ============================================================================
 
 def calc_geschwindigkeit_kmh(session: dict) -> Optional[float]:
     """Calculate speed: distance / duration * 60"""
@@ -89,31 +84,15 @@ def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[
             return round((distanz / dauer) * 60, 2)
     return None
 
-
-# ============================================================================
-# ACTIVITIES DEFINITION - Alle Aktivitäten mit logischen Feldkategorisierungen
-# ============================================================================
-
 ACTIVITIES: dict[str, list[Field]] = {
-
-    # ========================================================================
-    # SPORT & BEWEGUNG
-    # ========================================================================
     "Laufen": [
-        # Numerische Messwerte (gut für Linien) - REQUIRED
         Field("distanz_km", "number", "km", chart_type="line", required=True),
         Field("dauer_min", "number", "min", chart_type="line", required=True),
-        
-        # Automatisch berechnet
         Field("geschwindigkeit_kmh", "number", "km/h", chart_type="line", 
               hidden=True, calculator=calc_geschwindigkeit_kmh),
-        
-        # Optional numerische Messwerte
         Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
         Field("pausen_anzahl", "number", chart_type="both", required=False),
         Field("pausen_dauer_min", "number", "min", chart_type="both", required=False),
-        
-        # Kategorische Felder (für Enum-Bar-Charts)
         Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
               chart_type="enum_bar", required=False),
         Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "schotter", "park"], 
@@ -191,9 +170,6 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    # ========================================================================
-    # LERNEN & FOKUS
-    # ========================================================================
     "Lesen": [
         Field("dauer_min", "number", "min", chart_type="line", required=True),
         Field("seiten_anzahl", "number", chart_type="both", required=True),
@@ -219,9 +195,6 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    # ========================================================================
-    # SCHLAF & REGENERATION
-    # ========================================================================
     "Schlaf": [
         Field("dauer_stunden", "number", "h", chart_type="line", required=True),
         Field("schlafqualitaet", "number", "%", chart_type="line", required=True),
@@ -232,9 +205,6 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("ruhequalitaet", "number", "%", chart_type="line", required=False),
     ],
 
-    # ========================================================================
-    # ALLTAG & MEDIEN
-    # ========================================================================
     "Bildschirmzeit": [
         Field("dauer_min", "number", "min", chart_type="line", required=True),
         
@@ -244,9 +214,6 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    # ========================================================================
-    # KONSUM & SUBSTANZEN
-    # ========================================================================
     "Wasser": [
         Field("menge_ml", "number", "ml", chart_type="line", required=True),
         
@@ -275,13 +242,8 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    # ========================================================================
-    # MENTALES & WOHLBEFINDEN - MIT SKALA 1-10
-    # ========================================================================
     "Stimmung": [
-        Field("stimmung_wert", "number", "(1-10)", chart_type="line", required=True),
-        # 1 = sehr schlecht/traurig, 10 = ausgezeichnet/sehr glücklich
-        
+        Field("stimmung_wert", "number", "(1-10)", chart_type="line", required=True),        
         Field("hauptgefuehl", "enum", values=["glücklich", "traurig", "neutral", "gestresst", "vergnügt"], 
               chart_type="enum_bar", required=False),
         Field("ausloeser", "enum", values=["erfolg", "freunde", "natur", "hobby", "stress", "unbekannt"], 
@@ -289,18 +251,14 @@ ACTIVITIES: dict[str, list[Field]] = {
     ],
 
     "Stress": [
-        Field("stress_wert", "number", "(1-10)", chart_type="line", required=True),
-        # 10 = stressfrei, 1 = sehr gestresst
-        
+        Field("stress_wert", "number", "(1-10)", chart_type="line", required=True),       
         Field("physisches_unbehagen", "number", "%", chart_type="line", required=False),
         Field("hauptursache", "enum", values=["arbeit", "privat", "gesundheit", "finanzen", "beziehung"], 
               chart_type="enum_bar", required=False),
     ],
 
     "Energielevel": [
-        Field("energie_wert", "number", "(1-10)", chart_type="line", required=True),
-        # 10 = viel Energie, 1 = keine Energie
-        
+        Field("energie_wert", "number", "(1-10)", chart_type="line", required=True),       
         Field("koerperliche_energie", "number", "%", chart_type="line", required=False),
         Field("mentale_energie", "number", "%", chart_type="line", required=False),
         Field("tageszeit", "enum", values=["morgens", "mittags", "nachmittags", "abends", "nacht"], 
@@ -308,9 +266,7 @@ ACTIVITIES: dict[str, list[Field]] = {
     ],
 
     "Motivation": [
-        Field("motivation_wert", "number", "(1-10)", chart_type="line", required=True),
-        # 10 = sehr motiviert, 1 = völlig unmotiviert
-        
+        Field("motivation_wert", "number", "(1-10)", chart_type="line", required=True),        
         Field("selbstvertrauen", "number", "%", chart_type="line", required=False),
         Field("bezogen_auf", "enum", values=["sport", "lernen", "arbeit", "kreativität", "allgemein"], 
               chart_type="enum_bar", required=False),
@@ -318,33 +274,19 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    # ========================================================================
-    # EVENTS - NEU
-    # ========================================================================
     "Events": [
-        # REQUIRED
-        Field("datum", "text", chart_type="none", required=True),  # YYYY-MM-DD
-        Field("uhrzeit", "text", chart_type="none", required=True),  # HH:MM
         Field("ort_typ", "enum", values=["kino", "oper", "restaurant", "kneipenabend", "konzert", 
                                           "theater", "museum", "park", "strand", "sport_event", 
                                           "freunde_treffen", "festival", "hochzeit", "geburtstag", "sonstige"],
               chart_type="enum_bar", required=True),
-        
-        # OPTIONAL
         Field("kosten", "number", "€", chart_type="bar", required=False),
         Field("begleitung_anzahl", "number", chart_type="bar", required=False),
         Field("begleitung_typ", "enum", values=["alleine", "partner", "familie", "freunde", "freunde+partner", "gruppe"],
               chart_type="enum_bar", required=False),
         Field("bewertung", "number", "(1-10)", chart_type="line", required=False),
-        # 10 = ausgezeichnet, 1 = schrecklich
         Field("notizen", "text", chart_type="none", required=False),
     ],
 }
-
-
-# ============================================================================
-# COMPARISON FEATURES - Automatische Vergleichsfeatures pro Activity
-# ============================================================================
 
 COMPARISON_FEATURES: dict[str, List[str]] = {
     "Laufen": ["strecke_typ", "intensitaet", "wetter"],
@@ -363,11 +305,6 @@ COMPARISON_FEATURES: dict[str, List[str]] = {
     "Motivation": ["bezogen_auf", "hindernis"],
     "Events": ["ort_typ", "begleitung_typ"],
 }
-
-
-# ============================================================================
-# HELPER FUNCTIONS
-# ============================================================================
 
 def get_activity_names() -> list[str]:
     """Returns all available activity names."""

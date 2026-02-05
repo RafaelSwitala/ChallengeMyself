@@ -38,10 +38,19 @@ def filter_by_date_range(df: pd.DataFrame, date_from: Optional[str] = None, date
 def create_line_chart_json(
     df: pd.DataFrame,
     fields: List[str],
+    field_types: dict = None,
     title: str = "",
     secondary_y_fields: Optional[List[str]] = None,
 ) -> dict:
-    """Create line chart JSON with support for dual Y-axis."""
+    """Create line chart JSON with support for dual Y-axis and mixed chart types.
+    
+    Args:
+        df: DataFrame with session data
+        fields: List of field names to plot
+        field_types: Dict mapping field name to chart type ("line" or "bar")
+        title: Chart title
+        secondary_y_fields: Fields to display on secondary Y-axis
+    """
     try:
         data = []
         layout = {
@@ -49,31 +58,50 @@ def create_line_chart_json(
             "xaxis": {"title": "Datum"},
             "yaxis": {"title": "Wert (links)"},
             "hovermode": "x unified",
-            "height": 600,
+            "height": 700,
+            "legend": {
+                "orientation": "h",
+                "x": 0,
+                "y": -0.15,
+                "xanchor": "left",
+                "yanchor": "top",
+            },
+            "margin": {"l": 80, "r": 100, "t": 50, "b": 150},
         }
 
         secondary_y_fields = secondary_y_fields or []
+        field_types = field_types or {}
 
         for f in fields:
             if f not in df.columns:
                 continue
 
+            chart_type = field_types.get(f, "line")
+
+            x_data = [pd.Timestamp(date).strftime("%Y-%m-%d") for date in df["date"].tolist()]
+
             trace = {
-                "x": df["date"].tolist(),
+                "x": x_data,
                 "y": df[f].tolist(),
-                "type": "scatter",
-                "mode": "lines+markers",
                 "name": f,
-                "hovertemplate": f"<b>{f}</b><br>%{{x}}<br>%{{y:.2f}}<extra></extra>",
+                "hovertemplate": (
+                    "<b>%{x}</b><br>"
+                    + f"<b>{f}</b><br>"
+                    + "%{y:,.2f}<extra></extra>"
+                ),
             }
 
-            # Use secondary Y axis if field is in secondary_y_fields
+            if chart_type == "bar":
+                trace["type"] = "bar"
+            else:
+                trace["type"] = "scatter"
+                trace["mode"] = "lines+markers"
+
             if f in secondary_y_fields:
                 trace["yaxis"] = "y2"
 
             data.append(trace)
 
-        # If dual Y-axis is needed, configure it
         if secondary_y_fields and any(f in secondary_y_fields for f in fields):
             layout["yaxis2"] = {
                 "title": "Wert (rechts)",
@@ -88,8 +116,8 @@ def create_line_chart_json(
         return {"data": [], "layout": {}}
 
 
-def create_bar_chart_json(df: pd.DataFrame, fields: List[str], title: str = "") -> dict:
-    """Create bar chart JSON."""
+def create_bar_chart_json(df: pd.DataFrame, fields: List[str], field_types: dict = None, title: str = "") -> dict:
+    """Create bar chart JSON with legend below."""
     try:
         data = []
         layout = {
@@ -98,19 +126,35 @@ def create_bar_chart_json(df: pd.DataFrame, fields: List[str], title: str = "") 
             "yaxis": {"title": "Wert"},
             "barmode": "group",
             "hovermode": "x unified",
-            "height": 600,
+            "height": 700,
+            "legend": {
+                "orientation": "h",
+                "x": 0,
+                "y": -0.15,
+                "xanchor": "left",
+                "yanchor": "top",
+            },
+            "margin": {"l": 80, "r": 100, "t": 50, "b": 150},
         }
+
+        field_types = field_types or {}
 
         for f in fields:
             if f not in df.columns:
                 continue
 
+            x_data = [pd.Timestamp(date).strftime("%Y-%m-%d") for date in df["date"].tolist()]
+
             data.append({
-                "x": df["date"].tolist(),
+                "x": x_data,
                 "y": df[f].tolist(),
                 "type": "bar",
                 "name": f,
-                "hovertemplate": f"<b>{f}</b><br>%{{x}}<br>%{{y}}<extra></extra>",
+                "hovertemplate": (
+                    "<b>%{x}</b><br>"
+                    + f"<b>{f}</b><br>"
+                    + "%{y:,.2f}<extra></extra>"
+                ),
             })
 
         return {"data": data, "layout": layout}
@@ -121,12 +165,11 @@ def create_bar_chart_json(df: pd.DataFrame, fields: List[str], title: str = "") 
 
 
 def create_enum_bar_chart_json(df: pd.DataFrame, enum_field: str, title: str = "") -> dict:
-    """Create bar chart counting occurrences of enum field values."""
+    """Create bar chart counting occurrences of enum field values with legend below."""
     try:
         if enum_field not in df.columns:
             return {"data": [], "layout": {}}
 
-        # Count occurrences
         counts = df[enum_field].value_counts().sort_index()
 
         data = [{
@@ -142,8 +185,16 @@ def create_enum_bar_chart_json(df: pd.DataFrame, enum_field: str, title: str = "
             "title": title or f"Häufigkeitsverteilung: {enum_field}",
             "xaxis": {"title": enum_field},
             "yaxis": {"title": "Anzahl"},
-            "hovermode": "x",
-            "height": 600,
+            "hovermode": "x unified",
+            "height": 700,
+            "legend": {
+                "orientation": "h",
+                "x": 0,
+                "y": -0.15,
+                "xanchor": "left",
+                "yanchor": "top",
+            },
+            "margin": {"l": 80, "r": 100, "t": 50, "b": 150},
         }
 
         return {"data": data, "layout": layout}

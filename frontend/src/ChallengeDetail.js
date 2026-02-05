@@ -18,7 +18,6 @@ function ChallengeDetail() {
   const [messageType, setMessageType] = useState("");
   const [editingGoal, setEditingGoal] = useState(false);
 
-  // Challenge laden
   const loadChallenge = async () => {
     try {
       const res = await fetch(
@@ -28,7 +27,6 @@ function ChallengeDetail() {
       const data = await res.json();
       setChallenge(data);
 
-      // Goal-Felder initialisieren
       if (data.goal) {
         setGoalDescription(data.goal.description || "");
         setGoalTarget(data.goal.target || "");
@@ -45,7 +43,6 @@ function ChallengeDetail() {
     }
   };
 
-  // Meta-Felder laden
   const loadFields = async (activity) => {
     try {
       const res = await fetch(
@@ -69,7 +66,6 @@ function ChallengeDetail() {
     if (challenge?.activity_type) loadFields(challenge.activity_type);
   }, [challenge]);
 
-  // Neue Session hinzufügen
   const addSession = async (sessionData) => {
     try {
       const res = await fetch(
@@ -81,10 +77,14 @@ function ChallengeDetail() {
         }
       );
       if (res.ok) {
-        setMessage("✓ Session erfolgreich hinzugefügt");
+        setMessage("Session successfully added");
         setMessageType("success");
         setTimeout(() => setMessage(""), 3000);
         loadChallenge();
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        setMessage(`Fehler: ${errorData.error || 'Session konnte nicht gespeichert werden'}`);
+        setMessageType("error");
       }
     } catch (err) {
       console.error(err);
@@ -93,7 +93,6 @@ function ChallengeDetail() {
     }
   };
 
-  // Goal speichern
   const saveGoal = async () => {
     try {
       const res = await fetch(
@@ -109,11 +108,15 @@ function ChallengeDetail() {
         }
       );
       if (res.ok) {
-        setMessage("✓ Ziel gespeichert");
+        setMessage("Goal saved");
         setMessageType("success");
         setEditingGoal(false);
         setTimeout(() => setMessage(""), 3000);
         loadChallenge();
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        setMessage(`Fehler: ${errorData.error || 'Ziel konnte nicht gespeichert werden'}`);
+        setMessageType("error");
       }
     } catch (err) {
       console.error(err);
@@ -122,12 +125,11 @@ function ChallengeDetail() {
     }
   };
 
-  // Goal löschen
   const deleteGoal = async () => {
     if (!window.confirm("Ziel wirklich löschen?")) return;
     try {
       const res = await fetch(
-        `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal?delete_goal=1`,
+        `http://localhost:5000/challenges/${encodeURIComponent(challengeName)}/goal?delete=1`,
         { method: "POST", headers: { "Content-Type": "application/json" } }
       );
       if (res.ok) {
@@ -135,10 +137,14 @@ function ChallengeDetail() {
         setGoalTarget("");
         setGoalPeriod("");
         setEditingGoal(false);
-        setMessage("✓ Ziel gelöscht");
+        setMessage("Goal deleted");
         setMessageType("success");
         setTimeout(() => setMessage(""), 3000);
         loadChallenge();
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        setMessage(`Fehler: ${errorData.error || 'Ziel konnte nicht gelöscht werden'}`);
+        setMessageType("error");
       }
     } catch (err) {
       console.error(err);
@@ -157,30 +163,26 @@ function ChallengeDetail() {
 
   return (
     <div className="challenge-detail-container">
-      {/* Header */}
       <header className="challenge-header">
         <div className="container">
           <button className="btn-back" onClick={() => navigate("/")}>&larr; Zurück</button>
           <div>
             <h1>{challenge.name}</h1>
-            <p className="challenge-activity">📊 {challenge.activity_type}</p>
+            <p className="challenge-activity"> {challenge.activity_type}</p>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="container">
         <div className="challenge-content">
-          {/* Messages */}
           {message && (
             <div className={`alert alert-${messageType}`}>
               {message}
             </div>
           )}
 
-          {/* Goals Section */}
           <section className="challenge-section">
-            <h2>🎯 Ziel</h2>
+            <h2>Ziel</h2>
             {challenge.goal && !editingGoal ? (
               <div className="goal-display">
                 <div className="goal-content">
@@ -194,10 +196,10 @@ function ChallengeDetail() {
                 </div>
                 <div className="goal-actions">
                   <button className="btn btn-secondary" onClick={() => setEditingGoal(true)}>
-                    ✏️ Bearbeiten
+                    Bearbeiten
                   </button>
                   <button className="btn btn-danger" onClick={deleteGoal}>
-                    🗑️ Löschen
+                    Löschen
                   </button>
                 </div>
               </div>
@@ -236,7 +238,7 @@ function ChallengeDetail() {
                   />
                 </div>
                 <div className="form-actions">
-                  <button type="submit" className="btn btn-primary">💾 Speichern</button>
+                  <button type="submit" className="btn btn-primary">Speichern</button>
                   {challenge.goal && (
                     <button
                       type="button"
@@ -251,15 +253,13 @@ function ChallengeDetail() {
             )}
           </section>
 
-          {/* New Session Section */}
           <section className="challenge-section">
-            <h2>➕ Neue Session</h2>
+            <h2>Neue Session</h2>
             <SessionForm fields={fields} onSubmit={addSession} />
           </section>
 
-          {/* Sessions List Section */}
           <section className="challenge-section">
-            <h2>📋 Sessions</h2>
+            <h2>Sessions</h2>
             {challenge.sessions.length === 0 ? (
               <div className="empty-state">
                 <p>Noch keine Sessions eingetragen.</p>
@@ -272,7 +272,7 @@ function ChallengeDetail() {
                       <th>Datum</th>
                       <th>Zeit</th>
                       {fields
-                        .filter((f) => !f.hidden) // Hide calculated fields in table
+                        .filter((f) => !f.hidden)
                         .map((f) => (
                           <th key={f.name}>
                             {f.name}{f.unit ? ` (${f.unit})` : ""}
@@ -300,7 +300,7 @@ function ChallengeDetail() {
 
           {/* Chart Section */}
           <section className="challenge-section">
-            <h2>📈 Diagramme & Analysen</h2>
+            <h2>Diagramme & Analysen</h2>
             <ChallengePlot challengeName={challengeName} availableFields={fields} />
           </section>
         </div>

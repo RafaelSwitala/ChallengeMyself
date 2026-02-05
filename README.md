@@ -1,68 +1,123 @@
-# 🎯 ChallengeMyself
+# ChallengeMyself
 
-Eine Webanwendung zur persönlichen Ziel- und Aufgabenverfolgung. Verfolge deine Fortschritte bei verschiedenen Aktivitäten und visualisiere deine Erfolge mit interaktiven Diagrammen.
+Eine Python-basierte Webanwendung zur Verfolgung persönlicher Ziele, Aktivitäten und Fortschritts. Überwache deine Fitness-Routinen, Lernziele und Gesundheitskennzahlen mit interaktiven, responsive Visualisierungen.
 
 ---
 
-## Features
+## Funktionen
 
-- **Challenge-Verwaltung**: Erstelle und verwalte verschiedene Challenges (z.B. "Fit für den Sommer", "Laufen", "Lernen")
-- **Flexible Datenerfassung**: Jede Challenge kann unterschiedliche Daten erfassen (km, Minuten, Anzahl, etc.)
-- **Zieltracking**: Definiere Ziele und Zeiträume für jede Challenge
-- **Interaktive Visualisierungen**: Visualisiere deine Sessions mit Liniendiagrammen und Säulendiagrammen
-- **Intensitäts-Filter**: Filtere deine Daten nach Intensität (gemütlich, mittel, stark)
-- **Lokal gespeichert**: Alle Daten werden lokal im JSON-Format gespeichert
+- **Challenge-Verwaltung**: Erstelle und verwalte mehrere persönliche Challenges (z.B. "Marathon-Training", "Python lernen", "Alkoholkonsum reduzieren")
+- **Flexible Datenerfassung**: Jede Challenge kann verschiedene Metriken verfolgen (Distanz, Dauer, Anzahl, Intensität, Wetter, etc.)
+- **Ziel-Verfolgung**: Definiere Ziele und Zeiträume für jede Challenge, um dich zu motivieren
+- **Interaktive Visualisierungen**: Sehe deine Daten mit mehreren Diagrammtypen (Liniendiagramme, Balkendiagramme, Kategoriehäufigkeit)
+- **Erweiterte Charting**:
+  - Mische Diagrammtypen in einer Ansicht (Linie + Balken gleichzeitig)
+  - Duale Y-Achsen für unterschiedliche Skalen
+  - Datumsbereichs-Filterung
+  - Dynamische Achsen-Skalierungskontrollen
+  - Achsen als sichtbare Linien dargestellt
+- **Lokale Speicherung**: Alle Daten werden persistent als leicht lesbare JSON-Dateien gespeichert (keine Datenbank notwendig)
+- **Plattformübergreifend**: Läuft auf Windows, macOS und Linux
 
 ---
 
 ## Technologie-Stack
 
 ### Backend (Python)
-- **Python 3.14+** – Hauptprogrammiersprache
-- **Flask** – Web-Framework für HTML-Rendering & API
-- **Pandas** – Datenverarbeitung und Diagramm-Erstellung
-- **Plotly** – Interaktive Diagramme
+- **Python 3.10+** - Kernsprache
+- **Flask** - REST API Server und HTML-Rendering
+- **Pandas** - Datenverarbeitung und -manipulation
+- **Plotly** - Interaktive Visualisierungen (Python Backend)
+- **Dataclasses** - Saubere Datenmodellierung
+- **Logging** - Anwendungs-Logging und Debugging
 
-### Frontend (Minimal)
-- **Jinja2-Templates** – HTML vom Backend generiert
-- **Bootstrap 5** – Responsive UI
-- **Plotly.js** – Interaktive Charts im Browser
+### Frontend (Minimalistischer Ansatz)
+- **React** - UI-Komponentenbibliothek (leichtgewichtig)
+- **Bootstrap 5** - Responsive Styling
+- **Plotly.js** - Interaktives Diagramm-Rendering
+- **Fetch API** - Kommunikation mit Backend
 
 ### Datenspeicherung
-- **JSON-Dateien** – Lokal im `backend/data/`
+- **JSON-Dateien** - Lokale Dateisystem-Persistierung in `backend/data/`
 
 ---
 
 ## Schnellstart
 
-### 1️⃣ Voraussetzungen
-- Python 3.10+
-- Node.js & npm (LTS)
+### Voraussetzungen
 
-### 2️⃣ Installation
+- **Python 3.10+** - [Python herunterladen](https://www.python.org/downloads/)
+- **Node.js LTS** - [Node.js herunterladen](https://nodejs.org/) (für React Frontend)
+
+### Installation
+
+#### Methode 1: Automatisierte Installation (Empfohlen - Windows)
 
 ```powershell
-# Backend-Umgebung
-python -m venv backend/venv
-backend\venv\Scripts\activate
-pip install -r backend/requirements.txt
+# Zum Projektverzeichnis navigieren
+cd c:\Users\<Benutzername>\Desktop\PProjekte\ChallengeMyself
 
-# Frontend-Abhängigkeiten
+# Installationsskript ausführen
+.\install.ps1
+```
+
+Das Skript führt automatisch aus:
+1. Python-Version überprüfen
+2. Virtuelle Umgebung erstellen
+3. Python-Abhängigkeiten installieren
+4. Node.js-Pakete installieren
+
+#### Methode 2: Manuelle Installation
+
+**Backend-Setup:**
+```powershell
+# Virtuelle Umgebung erstellen
+python -m venv backend\venv
+
+# Virtuelle Umgebung aktivieren
+backend\venv\Scripts\activate
+
+# Python-Pakete installieren
+pip install -r backend\requirements.txt
+```
+
+**Frontend-Setup:**
+```powershell
+# Node.js-Pakete installieren
 cd frontend
 npm install
 cd ..
 ```
 
-### 3️⃣ Anwendung starten
+### Anwendung ausführen
 
-**Einfach mit einem Befehl:**
+#### Option 1: Schnellstart (Empfohlen)
 ```powershell
 .\start.ps1
 ```
 
-Die App öffnet sich automatisch unter: `http://localhost:5000`
+Das macht automatisch:
+1. Aktiviert Python-Virtualumgebung
+2. Startet Flask-Backend auf `http://localhost:5000`
+3. Startet React-Frontend auf `http://localhost:3000`
+4. Öffnet die App im Standard-Browser
 
-Warte ~5 Sekunden beim ersten Start!
+#### Option 2: Manueller Start
+
+**Terminal 1 - Backend:**
+```powershell
+backend\venv\Scripts\activate
+python backend\app.py
+```
+
+**Terminal 2 - Frontend:**
+```powershell
+cd frontend
+npm start
+cd ..
+```
+
+Die Anwendung ist erreichbar unter `http://localhost:5000`.
 
 ---
 
@@ -70,176 +125,112 @@ Warte ~5 Sekunden beim ersten Start!
 
 ```
 ChallengeMyself/
-├── start.ps1                    # Start-Script (alles mit einem Befehl!)
-├── README.md                    # Diese Dokumentation
-├── backend/
-│   ├── app.py                   # Flask-Hauptanwendung
-│   ├── config.py                # Konfiguration
-│   ├── requirements.txt          # Python-Dependencies
-│   ├── templates/               # HTML-Templates (vom Backend generiert)
-│   │   ├── base.html
-│   │   ├── index.html
-│   │   ├── challenge_detail.html
-│   │   └── plot.html
-│   ├── data/                    # JSON-Speicherung
-│   ├── models/                  # Python-Datenmodelle
-│   ├── storage/                 # Persistierungs-Logik
-│   └── utils/                   # Hilfsfunktionen
-├── frontend/
-│   ├── package.json
-│   └── src/
-│       └── App.js               # React-Einstiegspunkt
-└── venv/                        # (wird erstellt)
+├── start.ps1                        # Schnellstart-Automatisierung
+├── install.ps1                      # Automatisierte Installation
+├── README.md                        # Diese Dokumentation
+├── Präsentation.md                  # 15-Minuten-Präsentationsgliederung
+│
+├── backend/                         # Python Flask Backend
+│   ├── app.py                       # Flask REST API Server
+│   ├── config.py                    # Konfiguration
+│   ├── requirements.txt             # Python-Abhängigkeiten
+│   ├── models/                      # Datenmodelle
+│   ├── storage/                     # JSON-Persistierung
+│   ├── utils/                       # Hilfsfunktionen
+│   ├── templates/                   # HTML-Vorlagen
+│   ├── static/                      # CSS-Dateien
+│   ├── data/                        # JSON-Datendateien
+│   └── logs/                        # Anwendungs-Logs
+│
+└── frontend/                        # React Frontend
+    ├── package.json
+    └── src/                         # React-Komponenten
 ```
 
 ---
 
-## Unterstützte Activities
+## Wichtigste Python-Konzepte
 
-| Kategorie | Activities |
+Dieses Projekt demonstriert alle erforderlichen Python-Konzepte:
+
+### 1. **Fehlerbehandlung (Fehlerbehandlung)**
+- `try-except-else-finally` Blöcke im gesamten Backend
+- Exception-Logging mit vollständigen Tracebacks
+
+### 2. **Logging (Protokollierung)**
+- Benutzerdefiniertes Logging-Setup in `backend/utils/logger.py`
+- DEBUG, INFO, WARNING, ERROR Logging-Level
+
+### 3. **Funktionen (Funktionen)**
+- Reine Funktionen mit Type Hints
+- Rückgabewert-Dokumentation
+- Beispiele: `filter_by_date_range()`, `calculate_hidden_fields()`
+
+### 4. **Klassen & Instanziierung (Klassen)**
+- Dataclass-Verwendung: `Challenge`, `Session`, `Goal`, `Field`
+- Instanzmethoden und Klassenvariablen
+- Beispiele in `backend/models/*.py`
+
+### 5. **Bibliotheks-Importe (Bibliotheken)**
+- Flask - REST API
+- Pandas - Datenverarbeitung
+- Plotly - Visualisierung
+- JSON - Datenpersistierung
+
+---
+
+## Unterstützte Aktivitäten
+
+| Kategorie | Aktivitäten |
 |-----------|-----------|
-| **Sport** | Laufen, Radfahren, Spazieren, Schwimmen, Workout, Liegestütze |
-| **Lernen** | Lesen, Lernen |
-| **Schlaf** | Schlaf |
-| **Medien** | Bildschirmzeit |
-| **Konsum** | Wasser, Alkohol, Rauchen |
-| **Wohlbefinden** | Stimmung, Stress |
+| **Sport** | Laufen, Radfahren, Spazieren, Schwimmen, Workout |
+| **Lernen** | Lesen, Studieren |
+| **Gesundheit** | Wasser, Alkohol, Stimmung, Stress |
+| **Spezial** | Ereignisse |
 
 ---
 
-## Verwendungsbeispiel
+## API-Endpunkte
 
-### 1. Challenge erstellen
-- Name: "Marathon vorbereitung"
-- Activity: "Laufen"
+### Challenges
+- `GET /challenges` - Alle Challenges auflisten
+- `POST /challenges` - Neue Challenge erstellen
+- `GET /challenges/<name>` - Challenge-Details abrufen
 
-### 2. Ziel setzen
-- "5 km pro Tag"
-- Zielwert: 5
-- Zeitraum: täglich
+### Sessions
+- `POST /challenges/<name>/sessions` - Neue Session hinzufügen
 
-### 3. Sessions hinzufügen
-- Datum: Heute
-- Uhrzeit: 18:30
-- Distanz: 5.2 km
-- Dauer: 45 Minuten
-- Intensität: mittel
+### Ziele
+- `POST /challenges/<name>/goal` - Ziel setzen
+- `POST /challenges/<name>/goal?delete=true` - Ziel löschen
 
-### 4. Visualisieren
-- Wähle "Distanz (km)" & "Dauer (min)"
-- Filter nach Intensität
-- Wechsle Chart-Typ (Linie / Säule)
+### Visualisierung
+- `GET /challenges/<name>/plot?fields=...&date_from=...&date_to=...` - Diagrammdaten abrufen
+
+### Aktivitäten
+- `GET /activities` - Alle Aktivitäten auflisten
+- `GET /activities/<name>` - Aktivitätsfelder abrufen
 
 ---
 
-## Architektur
+## Fehlerbehandlung
 
-### Backend als Haupt-Interface
-- **HTML-Rendering mit Jinja2**: Alle Seiten werden vom Python-Backend generiert
-- **Formular-Management**: Challenge-Erstellung, Goals, Sessions – alles in Python
-- **Business-Logic in Python**: Datenverarbeitung, Persistierung, Visualisierung
+**Python nicht gefunden**: Installiere Python 3.10+ oder füge es zum system PATH hinzu
 
-### Minimal Viable React
-- React wird nur für **Plotly-Visualisierungen** verwendet
-- Keine komplexe State-Management, keine React-Router
-- Navigation erfolgt über HTML-Links
+**Port 5000 in Verwendung**: Ändere `PORT` in `backend/config.py`
 
-### Datenfluss
-```
-Browser → Flask (HTML-Templates) → Benutzer füllt Form
-User-Input → Backend (POST-Form) → JSON-Speicherung
-Visualisierung → Plotly-API → React rendert Chart
-```
+**Diagramme laden nicht**: Browsercache leeren, `backend/logs/app.log` überprüfen
 
-**Warum?** Python bietet bessere Datenverarbeitung (Pandas), Persistierung und simplere Business-Logic als React.
+**npm nicht gefunden**: Installiere Node.js LTS
 
 ---
 
-## FAQ
+## Lizenz
 
-**F: Wo sind meine Daten?**
-A: In `backend/data/` als `.json`-Dateien (keine Cloud!)
-
-**F: Kann ich Challenges löschen?**
-A: Aktuell nur manuell: Lösche die `.json`-Datei in `backend/data/`
-
-**F: Warum Python überall?**
-A: Bessere Datenverarbeitung, lokale Speicherung, einfachere Business-Logic
-
-**F: Warum noch React?**
-A: Plotly-Visualisierungen brauchen JavaScript
+Bildungsprojekt für "Projekt: Einführung in die Programmierung mit Python"
 
 ---
 
-## Troubleshooting
-
-**Port bereits in Verwendung:**
-```powershell
-netstat -ano | findstr :5000
-taskkill /PID <PID> /F
-```
-
-**venv-Probleme:**
-```powershell
-backend\venv\Scripts\activate
-pip install -r backend/requirements.txt
-```
-
-**npm-Fehler:**
-```powershell
-cd frontend
-rm -r node_modules package-lock.json
-npm install
-```
-
-**PS1-Script wird nicht ausgeführt:**
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
----
-
-## JSON-Format
-
-Jede Challenge wird als `.json` gespeichert:
-
-```json
-{
-  "name": "Laufen",
-  "activity_type": "Laufen",
-  "goal": {
-    "description": "5 km täglich",
-    "target": 5.0,
-    "period": "täglich"
-  },
-  "sessions": [
-    {
-      "date": "2026-02-02",
-      "time": "18:30",
-      "values": {
-        "distanz_km": 5.2,
-        "dauer_min": 45,
-        "intensitaet": "mittel"
-      }
-    }
-  ]
-}
-```
-
----
-
-## Roadmap
-
-- ✅ Challenges verwalten
-- ✅ Sessions erfassen
-- ✅ Ziele setzen
-- ✅ Visualisierungen
-- ✅ Backend als Haupt-Interface
-- 🔄 Sessions löschen/bearbeiten
-- 🔄 Datenbankunterstützung
-- 🔄 Export-Funktionen
-- 🔄 Mobile-App
-
----
-
-**Happy Tracking!**
+**Version:** 2.0 (Python Plotly Backend)  
+**Python:** 3.10+  
+**Status:** Produktionsbereit

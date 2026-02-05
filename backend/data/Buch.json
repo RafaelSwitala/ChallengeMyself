@@ -1,0 +1,351 @@
+{
+    "name": "Buch",
+    "activity_type": "Lesen",
+    "goal": {
+        "description": "Ich mag lesen",
+        "target": "1",
+        "period": "t\u00e4glich"
+    },
+    "sessions": [
+        {
+            "date": "2026-01-01",
+            "time": "19:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "100",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-02",
+            "time": "19:00",
+            "values": {
+                "dauer_min": "70",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "116",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-03",
+            "time": "09:00",
+            "values": {
+                "dauer_min": "30",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "50",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-03",
+            "time": "17:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "210",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-04",
+            "time": "17:00",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "140",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-06",
+            "time": "17:00",
+            "values": {
+                "dauer_min": "80",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "130",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-06",
+            "time": "18:30",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "150",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-08",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "240",
+                "unterbrechungen_anzahl": "2",
+                "seiten_anzahl": "450",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-09",
+            "time": "15:30",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "170",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-10",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "150",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "276",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-11",
+            "time": "18:00",
+            "values": {
+                "dauer_min": "100",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "130",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-12",
+            "time": "18:30",
+            "values": {
+                "dauer_min": "210",
+                "unterbrechungen_anzahl": "2",
+                "seiten_anzahl": "400",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-13",
+            "time": "20:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "110",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-14",
+            "time": "19:30",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "225",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-15",
+            "time": "20:30",
+            "values": {
+                "dauer_min": "70",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "110",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-16",
+            "time": "21:30",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "135",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-17",
+            "time": "17:40",
+            "values": {
+                "dauer_min": "80",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "126",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-20",
+            "time": "19:00",
+            "values": {
+                "dauer_min": "240",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "485",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-21",
+            "time": "20:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "320",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-22",
+            "time": "21:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "105",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-23",
+            "time": "19:00",
+            "values": {
+                "dauer_min": "240",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "415",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-24",
+            "time": "17:00",
+            "values": {
+                "dauer_min": "150",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "270",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-25",
+            "time": "18:30",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "340",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-26",
+            "time": "21:30",
+            "values": {
+                "dauer_min": "30",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "40",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-27",
+            "time": "14:30",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "215",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-28",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "340",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-29",
+            "time": "15:30",
+            "values": {
+                "dauer_min": "300",
+                "unterbrechungen_anzahl": "3",
+                "seiten_anzahl": "490",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-30",
+            "time": "17:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "280",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-01-31",
+            "time": "19:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "105",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-02-01",
+            "time": "20:30",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "170",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-02-02",
+            "time": "18:00",
+            "values": {
+                "dauer_min": "90",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "130",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-02-03",
+            "time": "20:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "375",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-02-04",
+            "time": "21:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "seiten_anzahl": "240",
+                "medium": "Buch"
+            }
+        },
+        {
+            "date": "2026-02-05",
+            "time": "20:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "1",
+                "seiten_anzahl": "315",
+                "medium": "Buch"
+            }
+        }
+    ]
+}

@@ -88,26 +88,24 @@
     </div>
 </div>
 
-<!-- ===== CONTROLS PANEL ===== -->
 <form method="GET" class="controls-card">
     <input type="hidden" name="name" value="{{ challenge_name }}">
     
-    <!-- ROW 1: Chart-Typ & Vergleichsfeld -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="control-group">
-                <h6>📊 Chart-Typ</h6>
+                <h6>Chart-Typ</h6>
                 <select class="form-select form-select-sm" name="chart_type" onchange="this.form.submit()" style="background: var(--surface); border: 1px solid #e5e7eb;">
-                    <option value="line" {% if chart_type == 'line' %}selected{% endif %}>📈 Liniendiagramm</option>
-                    <option value="bar" {% if chart_type == 'bar' %}selected{% endif %}>📊 Säulendiagramm</option>
-                    <option value="scatter" {% if chart_type == 'scatter' %}selected{% endif %}>🔵 Scatter Plot</option>
+                    <option value="line" {% if chart_type == 'line' %}selected{% endif %}> Liniendiagramm</option>
+                    <option value="bar" {% if chart_type == 'bar' %}selected{% endif %}> Säulendiagramm</option>
+                    <option value="scatter" {% if chart_type == 'scatter' %}selected{% endif %}> Scatter Plot</option>
                 </select>
             </div>
         </div>
         
         <div class="col-md-8">
             <div class="control-group">
-                <h6>🔄 Vergleich nach Kategorie</h6>
+                <h6>Vergleich nach Kategorie</h6>
                 <div class="comparison-selector">
                     <select class="form-select form-select-sm" name="comparison_field" onchange="this.form.submit()" style="background: var(--surface); border: 1px solid #e5e7eb;">
                         <option value="">-- Kein Vergleich --</option>
@@ -123,9 +121,8 @@
         </div>
     </div>
     
-    <!-- ROW 2: Numerische Felder (Checkboxen) -->
     <div class="control-group">
-        <h6>📈 Datenfelder auswählen</h6>
+        <h6>Datenfelder auswählen</h6>
         <div class="checkbox-group">
             {% for field in numeric_fields %}
                 <label class="form-check-label">
@@ -138,10 +135,9 @@
         </div>
     </div>
     
-    <!-- ROW 3: Intensitäts-Filter (Checkboxen) -->
     {% if 'intensitaet' in category_fields %}
     <div class="control-group">
-        <h6>💪 Intensität filtern</h6>
+        <h6>Intensität filtern</h6>
         <div class="checkbox-group">
             {% for intensity in available_intensities %}
                 <label class="form-check-label">
@@ -155,28 +151,25 @@
     </div>
     {% endif %}
     
-    <!-- Action Buttons -->
     <div class="button-row mt-4">
-        <button type="submit" class="btn btn-primary btn-sm">🔄 Aktualisieren</button>
+        <button type="submit" class="btn btn-primary btn-sm"> Aktualisieren</button>
         <a href="/challenges/{{ challenge_name | urlencode }}/plot" class="btn btn-outline-secondary btn-sm">↻ Zurücksetzen</a>
     </div>
 </form>
 
-<!-- ===== CHART ===== -->
 {% if chart_html %}
     <div class="chart-container mb-4">
         {{ chart_html | safe }}
     </div>
 {% else %}
     <div class="alert alert-warning">
-        <strong>⚠️ Keine Daten verfügbar</strong><br>
+        <strong> Keine Daten verfügbar</strong><br>
         Wähle mindestens ein Datenfeld und erstelle einige Sessions.
     </div>
 {% endif %}
 
-<!-- ===== INFO PANEL ===== -->
 <div class="controls-card" style="background: #f0f7ff; border-color: rgba(91,110,246,0.2);">
-    <h6 style="color: var(--primary); margin-bottom: 12px;">💡 Tipps zur Visualisierung</h6>
+    <h6 style="color: var(--primary); margin-bottom: 12px;"> Tipps zur Visualisierung</h6>
     <ul class="mb-0" style="font-size: 0.9rem; color: #444;">
         <li><strong>Mehrere Felder:</strong> Wähle mehrere Felder um sie zu vergleichen (z.B. Distanz + Dauer)</li>
         <li><strong>Vergleich:</strong> Nutze "Vergleich nach Kategorie" um verschiedene Typen gegeneinander zu sehen</li>

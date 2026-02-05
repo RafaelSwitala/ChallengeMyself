@@ -1,0 +1,100 @@
+{
+    "name": "Referat im Python-Kurs",
+    "activity_type": "Lernen",
+    "goal": {
+        "description": "Referat fertig vorbereiten",
+        "target": 10,
+        "period": "pro Woche"
+    },
+    "sessions": [
+    {"date": "2026-01-01", "time": "09:30", "values": {"dauer_min": 45, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+    {"date": "2026-01-01", "time": "14:00", "values": {"dauer_min": 60, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-02", "time": "10:15", "values": {"dauer_min": 90, "lernform": "theorie", "kapitel_anzahl": 3, "verstaendnis_level": 8}},
+    {"date": "2026-01-02", "time": "16:20", "values": {"dauer_min": 40, "lernform": "praxis", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+
+    {"date": "2026-01-03", "time": "13:00", "values": {"dauer_min": 75, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-04", "time": "09:00", "values": {"dauer_min": 50, "lernform": "praxis", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+    {"date": "2026-01-04", "time": "11:30", "values": {"dauer_min": 65, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-05", "time": "15:45", "values": {"dauer_min": 80, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-06", "time": "09:10", "values": {"dauer_min": 55, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+    {"date": "2026-01-06", "time": "17:00", "values": {"dauer_min": 95, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-07", "time": "08:45", "values": {"dauer_min": 60, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-08", "time": "10:00", "values": {"dauer_min": 70, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+    {"date": "2026-01-08", "time": "15:00", "values": {"dauer_min": 40, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+
+    {"date": "2026-01-09", "time": "12:30", "values": {"dauer_min": 85, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-10", "time": "09:20", "values": {"dauer_min": 50, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+    {"date": "2026-01-10", "time": "13:40", "values": {"dauer_min": 75, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-11", "time": "14:10", "values": {"dauer_min": 65, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-12", "time": "16:00", "values": {"dauer_min": 90, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-13", "time": "09:50", "values": {"dauer_min": 55, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+
+    {"date": "2026-01-14", "time": "11:00", "values": {"dauer_min": 70, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+    {"date": "2026-01-14", "time": "17:30", "values": {"dauer_min": 45, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-15", "time": "10:25", "values": {"dauer_min": 60, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-16", "time": "13:15", "values": {"dauer_min": 80, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+    {"date": "2026-01-16", "time": "18:00", "values": {"dauer_min": 40, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+
+    {"date": "2026-01-17", "time": "09:05", "values": {"dauer_min": 75, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-18", "time": "15:20", "values": {"dauer_min": 65, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-19", "time": "11:40", "values": {"dauer_min": 90, "lernform": "praxis", "kapitel_anzahl": 4, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-20", "time": "08:55", "values": {"dauer_min": 50, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+
+    {"date": "2026-01-21", "time": "10:45", "values": {"dauer_min": 70, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+    {"date": "2026-01-21", "time": "16:10", "values": {"dauer_min": 45, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-22", "time": "09:30", "values": {"dauer_min": 85, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-23", "time": "13:30", "values": {"dauer_min": 60, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 7}},
+
+    {"date": "2026-01-24", "time": "15:10", "values": {"dauer_min": 75, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-25", "time": "10:00", "values": {"dauer_min": 50, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 6}},
+    {"date": "2026-01-25", "time": "14:45", "values": {"dauer_min": 65, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-27", "time": "09:20", "values": {"dauer_min": 90, "lernform": "theorie", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-28", "time": "12:00", "values": {"dauer_min": 75, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-01-30", "time": "11:35", "values": {"dauer_min": 55, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+    {"date": "2026-01-30", "time": "17:25", "values": {"dauer_min": 85, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-01-31", "time": "09:00", "values": {"dauer_min": 60, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-02-01", "time": "10:40", "values": {"dauer_min": 75, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-02-03", "time": "14:30", "values": {"dauer_min": 90, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-02-04", "time": "09:50", "values": {"dauer_min": 50, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+    {"date": "2026-02-04", "time": "15:20", "values": {"dauer_min": 80, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 8}},
+
+    {"date": "2026-02-05", "time": "13:15", "values": {"dauer_min": 65, "lernform": "theorie", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-02-06", "time": "11:10", "values": {"dauer_min": 75, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 9}},
+
+    {"date": "2026-02-07", "time": "08:45", "values": {"dauer_min": 55, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+    {"date": "2026-02-07", "time": "16:30", "values": {"dauer_min": 85, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}},
+
+    {"date": "2026-02-08", "time": "09:30", "values": {"dauer_min": 70, "lernform": "praxis", "kapitel_anzahl": 2, "verstaendnis_level": 8}},
+
+    {"date": "2026-02-09", "time": "10:20", "values": {"dauer_min": 45, "lernform": "theorie", "kapitel_anzahl": 1, "verstaendnis_level": 7}},
+
+    {"date": "2026-02-10", "time": "14:00", "values": {"dauer_min": 90, "lernform": "praxis", "kapitel_anzahl": 3, "verstaendnis_level": 9}}
+]
+
+}

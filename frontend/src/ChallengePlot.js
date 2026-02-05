@@ -4,7 +4,7 @@ import "./ChallengePlot.css";
 
 function ChallengePlot({ challengeName, availableFields }) {
   const [selectedFields, setSelectedFields] = useState([]);
-  const [selectedChartType, setSelectedChartType] = useState("line");
+  const [fieldChartTypes, setFieldChartTypes] = useState({});
   const [selectedEnumField, setSelectedEnumField] = useState("");
   const [dateRangeStart, setDateRangeStart] = useState("");
   const [dateRangeEnd, setDateRangeEnd] = useState("");
@@ -12,8 +12,10 @@ function ChallengePlot({ challengeName, availableFields }) {
   const [secondYAxisFields, setSecondYAxisFields] = useState([]);
   const [chartData, setChartData] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Separate numeric and enum fields
+  const [yAxisMin, setYAxisMin] = useState("");
+  const [yAxisMax, setYAxisMax] = useState("");
+  const [yAxisStep, setYAxisStep] = useState("");
+  const [xAxisStep, setXAxisStep] = useState(1);
   const numericFields = availableFields.filter(
     (f) => f.type === "number" && f.chart_type !== "none" && !f.hidden
   );
@@ -36,7 +38,9 @@ function ChallengePlot({ challengeName, availableFields }) {
       params.append("chart_type", "enum_bar");
     } else {
       params.append("fields", selectedFields.join(","));
-      params.append("chart_type", selectedChartType);
+      selectedFields.forEach((field) => {
+        params.append(`field_type_${field}`, fieldChartTypes[field] || "line");
+      });
     }
 
     if (dateRangeStart) params.append("date_from", dateRangeStart);
@@ -51,24 +55,65 @@ function ChallengePlot({ challengeName, availableFields }) {
       );
       const data = await res.json();
 
-      // Configure chart type
-      if (selectedEnumField || selectedChartType === "bar") {
-        data.layout.barmode = "group";
-        data.data = data.data.map((d) => ({ ...d, type: "bar" }));
-      } else {
-        data.data = data.data.map((d) => ({
-          ...d,
-          type: "scatter",
-          mode: "lines+markers",
-          hovertemplate: "%{x}<br>%{y:,.2f}<extra></extra>",
-        }));
-      }
+      if (data.layout) {
+        if (yAxisMin || yAxisMax) {
+          data.layout.yaxis = data.layout.yaxis || {};
+          if (yAxisMin) data.layout.yaxis.range = [parseFloat(yAxisMin), data.layout.yaxis.range?.[1] || null];
+          if (yAxisMax) {
+            const minVal = yAxisMin ? parseFloat(yAxisMin) : (data.layout.yaxis.range?.[0] || null);
+            data.layout.yaxis.range = [minVal, parseFloat(yAxisMax)];
+          }
+          if (yAxisStep) {
+            data.layout.yaxis.dtick = parseFloat(yAxisStep);
+          }
+        }
 
-      // Make chart responsive and larger
-      data.layout.height = 600;
-      data.layout.hovermode = "x unified";
-      data.layout.showlegend = true;
-      data.layout.margin = { l: 80, r: 100, t: 50, b: 80 };
+        if (xAxisStep > 1 && data.data.length > 0) {
+          data.data = data.data.map((trace) => ({
+            ...trace,
+            x: trace.x ? trace.x.map((v, i) => (i % xAxisStep === 0 ? v : "")) : [],
+          }));
+        }
+
+        data.layout.height = 700;
+        data.layout.hovermode = "x unified";
+        data.layout.showlegend = true;
+        data.layout.legend = {
+          orientation: "h",
+          x: 0,
+          y: -0.15,
+          xanchor: "left",
+          yanchor: "top",
+        };
+        data.layout.margin = { l: 80, r: 100, t: 50, b: 150 };
+
+        data.data = data.data.map((trace) => {
+          const chartType = fieldChartTypes[trace.name] || "line";
+          
+          if (selectedEnumField) {
+            return { ...trace, type: "bar" };
+          }
+
+          if (chartType === "bar") {
+            return {
+              ...trace,
+              type: "bar",
+              hovertemplate: "<b>%{x|%Y-%m-%d}</b><br>" + 
+                            "<b>" + trace.name + "</b><br>" +
+                            "%{y:,.2f}<extra></extra>",
+            };
+          } else {
+            return {
+              ...trace,
+              type: "scatter",
+              mode: "lines+markers",
+              hovertemplate: "<b>%{x|%Y-%m-%d}</b><br>" +
+                            "<b>" + trace.name + "</b><br>" +
+                            "%{y:,.2f}<extra></extra>",
+            };
+          }
+        });
+      }
 
       setChartData(data);
     } catch (error) {
@@ -83,13 +128,26 @@ function ChallengePlot({ challengeName, availableFields }) {
     loadData();
   }, [
     selectedFields,
+    fieldChartTypes,
     selectedEnumField,
-    selectedChartType,
     dateRangeStart,
     dateRangeEnd,
     useDualYAxis,
     secondYAxisFields,
+    yAxisMin,
+    yAxisMax,
+    yAxisStep,
+    xAxisStep,
   ]);
+
+  useEffect(() => {
+    if (selectedFields.length > 1 && !selectedEnumField) {
+      setUseDualYAxis(true);
+    } else if (selectedFields.length <= 1) {
+      setUseDualYAxis(false);
+      setSecondYAxisFields([]);
+    }
+  }, [selectedFields, selectedEnumField]);
 
   const toggleField = (fieldName) => {
     setSelectedFields((prev) =>
@@ -97,7 +155,10 @@ function ChallengePlot({ challengeName, availableFields }) {
         ? prev.filter((f) => f !== fieldName)
         : [...prev, fieldName]
     );
-    setSelectedEnumField(""); // Clear enum when switching to numeric
+    if (!fieldChartTypes[fieldName]) {
+      setFieldChartTypes((prev) => ({ ...prev, [fieldName]: "line" }));
+    }
+    setSelectedEnumField("");
   };
 
   const toggleSecondYAxis = (fieldName) => {
@@ -108,50 +169,47 @@ function ChallengePlot({ challengeName, availableFields }) {
     );
   };
 
+  const changeFieldChartType = (fieldName, chartType) => {
+    setFieldChartTypes((prev) => ({ ...prev, [fieldName]: chartType }));
+  };
+
   return (
     <div className="challenge-plot-container">
-      {/* Filters Section */}
       <div className="plot-filters">
-        <h3>📊 Diagramm-Einstellungen</h3>
+        <h3>Diagramm-Einstellungen</h3>
 
-        {/* Chart Type Selection */}
-        <div className="filter-group">
-          <label htmlFor="chartType">Diagramm-Typ</label>
-          <select
-            id="chartType"
-            value={selectedChartType}
-            onChange={(e) => {
-              setSelectedChartType(e.target.value);
-              setSelectedEnumField("");
-              setSelectedFields([]); // Reset fields on type change
-            }}
-          >
-            <option value="line">📈 Liniendiagramm</option>
-            <option value="bar">📊 Säulendiagramm</option>
-          </select>
-        </div>
-
-        {/* Numeric Fields */}
         {numericFields.length > 0 && !selectedEnumField && (
           <div className="filter-group">
             <label>Messwerte ({selectedFields.length} ausgewählt)</label>
             <div className="field-checkbox-group">
               {numericFields.map((f) => (
-                <label key={f.name} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedFields.includes(f.name)}
-                    onChange={() => toggleField(f.name)}
-                  />
-                  <span>{f.name}</span>
-                  {f.unit && <small>({f.unit})</small>}
-                </label>
+                <div key={f.name} className="field-with-type">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={selectedFields.includes(f.name)}
+                      onChange={() => toggleField(f.name)}
+                    />
+                    <span>
+                      {f.name} {f.unit && `(${f.unit})`}
+                    </span>
+                  </label>
+                  {selectedFields.includes(f.name) && (
+                    <select
+                      className="chart-type-select"
+                      value={fieldChartTypes[f.name] || "line"}
+                      onChange={(e) => changeFieldChartType(f.name, e.target.value)}
+                    >
+                      <option value="line">Linie</option>
+                      <option value="bar">Säule</option>
+                    </select>
+                  )}
+                </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Enum Fields */}
         {enumFields.length > 0 && (
           <div className="filter-group">
             <label htmlFor="enumField">Nach Kategorie gruppieren</label>
@@ -160,7 +218,7 @@ function ChallengePlot({ challengeName, availableFields }) {
               value={selectedEnumField}
               onChange={(e) => {
                 setSelectedEnumField(e.target.value);
-                setSelectedFields([]); // Clear numeric fields
+                setSelectedFields([]);
               }}
             >
               <option value="">-- Keine --</option>
@@ -173,7 +231,6 @@ function ChallengePlot({ challengeName, availableFields }) {
           </div>
         )}
 
-        {/* Date Range Filter */}
         <div className="filter-group date-range">
           <label htmlFor="dateStart">Zeitraum</label>
           <div className="date-inputs">
@@ -195,46 +252,90 @@ function ChallengePlot({ challengeName, availableFields }) {
           </div>
         </div>
 
-        {/* Dual Y-Axis Option */}
-        {selectedFields.length > 1 && !selectedEnumField && selectedChartType === "line" && (
+        {selectedFields.length > 1 && !selectedEnumField && useDualYAxis && (
           <div className="filter-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={useDualYAxis}
-                onChange={(e) => {
-                  setUseDualYAxis(e.target.checked);
-                  if (!e.target.checked) setSecondYAxisFields([]);
-                }}
-              />
-              <span>Dual-Y-Achse aktivieren</span>
-            </label>
+            <p className="small-text">
+              Dual-Y-Axis active (automatically enabled with multiple metrics)
+            </p>
+            <div className="secondary-y-fields">
+              <p className="small-text">Felder auf rechter Y-Achse:</p>
+              {selectedFields.map((fieldName) => (
+                <label key={fieldName} className="checkbox-label small">
+                  <input
+                    type="checkbox"
+                    checked={secondYAxisFields.includes(fieldName)}
+                    onChange={() => toggleSecondYAxis(fieldName)}
+                  />
+                  <span>{fieldName}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
 
-            {useDualYAxis && (
-              <div className="secondary-y-fields">
-                <p className="small-text">Felder auf rechter Y-Achse:</p>
-                {selectedFields.map((fieldName) => (
-                  <label key={fieldName} className="checkbox-label small">
+        {(selectedFields.length > 0 || selectedEnumField) && (
+          <div className="filter-group scaling-controls">
+            <h4>Achsen-Skalierung</h4>
+
+            {selectedFields.length > 0 && (
+              <div className="scaling-section">
+                <label>Y-Achse (Werte)</label>
+                <div className="scaling-inputs">
+                  <div className="scaling-input">
+                    <label htmlFor="yMin">Min:</label>
                     <input
-                      type="checkbox"
-                      checked={secondYAxisFields.includes(fieldName)}
-                      onChange={() => toggleSecondYAxis(fieldName)}
+                      id="yMin"
+                      type="number"
+                      value={yAxisMin}
+                      onChange={(e) => setYAxisMin(e.target.value)}
+                      placeholder="Auto"
                     />
-                    <span>{fieldName}</span>
-                  </label>
-                ))}
+                  </div>
+                  <div className="scaling-input">
+                    <label htmlFor="yMax">Max:</label>
+                    <input
+                      id="yMax"
+                      type="number"
+                      value={yAxisMax}
+                      onChange={(e) => setYAxisMax(e.target.value)}
+                      placeholder="Auto"
+                    />
+                  </div>
+                  <div className="scaling-input">
+                    <label htmlFor="yStep">Schritte:</label>
+                    <input
+                      id="yStep"
+                      type="number"
+                      step="0.1"
+                      value={yAxisStep}
+                      onChange={(e) => setYAxisStep(e.target.value)}
+                      placeholder="Auto"
+                    />
+                  </div>
+                </div>
               </div>
             )}
+
+            <div className="scaling-section">
+              <label htmlFor="xStep">X-Achse: Jeden n-ten Eintrag anzeigen</label>
+              <input
+                id="xStep"
+                type="number"
+                min="1"
+                value={xAxisStep}
+                onChange={(e) => setXAxisStep(Math.max(1, parseInt(e.target.value) || 1))}
+                className="x-step-input"
+              />
+            </div>
           </div>
         )}
       </div>
 
-      {/* Chart Display */}
       <div className="plot-chart-container">
         {loading && <div className="loading-spinner">Lädt...</div>}
-        {chartData && !selectedEnumField && selectedFields.length === 0 && (
+        {chartData && selectedFields.length === 0 && !selectedEnumField && (
           <div className="empty-chart-message">
-            <p>👈 Bitte mindestens ein Messwert oder eine Kategorie auswählen</p>
+            <p>Bitte mindestens ein Messwert oder eine Kategorie auswählen</p>
           </div>
         )}
         {chartData && (

@@ -7,7 +7,6 @@ function SessionForm({ fields, onSubmit }) {
   const [time, setTime] = useState("");
   const [errors, setErrors] = useState({});
 
-  // Initialisiere values bei Änderung von fields
   useEffect(() => {
     const initial = {};
     fields.forEach((f) => {
@@ -18,7 +17,6 @@ function SessionForm({ fields, onSubmit }) {
 
   const handleChange = (fieldName, value) => {
     setValues((prev) => ({ ...prev, [fieldName]: value }));
-    // Clear error for this field
     if (errors[fieldName]) {
       setErrors((prev) => ({ ...prev, [fieldName]: false }));
     }
@@ -30,7 +28,6 @@ function SessionForm({ fields, onSubmit }) {
     if (!date) newErrors.date = true;
     if (!time) newErrors.time = true;
 
-    // Check required fields
     fields.forEach((f) => {
       if (f.required && !f.hidden && !values[f.name]) {
         newErrors[f.name] = true;
@@ -54,7 +51,6 @@ function SessionForm({ fields, onSubmit }) {
       values,
     });
 
-    // Formular zurücksetzen
     setDate("");
     setTime("");
     const cleared = {};
@@ -69,7 +65,7 @@ function SessionForm({ fields, onSubmit }) {
     return <p>Keine Felder für diese Activity gefunden.</p>;
   }
 
-  const userFields = fields.filter(f => !f.hidden); // Hide calculated fields from form
+  const userFields = fields.filter(f => !f.hidden);
 
   return (
     <form className="session-form" onSubmit={handleSubmit}>
@@ -147,7 +143,7 @@ function SessionForm({ fields, onSubmit }) {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-primary">
-          💾 Session speichern
+          Session speichern
         </button>
       </div>
     </form>

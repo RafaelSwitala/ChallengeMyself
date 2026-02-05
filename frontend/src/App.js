@@ -8,11 +8,9 @@ function App() {
   const [selectedActivity, setSelectedActivity] = useState("");
   const [challengeName, setChallengeName] = useState("");
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState(""); // 'success' or 'error'
+  const [messageType, setMessageType] = useState("");
   const [challenges, setChallenges] = useState([]);
   const navigate = useNavigate();
-
-  // Challenges laden
   const loadChallenges = async () => {
     try {
       const res = await fetch("http://localhost:5000/challenges");
@@ -25,7 +23,6 @@ function App() {
     }
   };
 
-  // Activities aus dem Backend laden
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -81,12 +78,11 @@ function App() {
         return;
       }
 
-      setMessage(`✓ Challenge "${challengeName}" erstellt`);
+      setMessage(`Challenge "${challengeName}" successfully created`);
       setMessageType("success");
       setChallengeName("");
       loadChallenges();
       
-      // Auto-clear success message after 3 seconds
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error("Failed to create challenge", err);
@@ -104,14 +100,13 @@ function App() {
             <>
               <header className="App-header">
                 <div className="container">
-                  <h1>🎯 ChallengeMyself</h1>
+                  <h1>ChallengeMyself</h1>
                   <p>Verfolge deine persönlichen Ziele und Herausforderungen</p>
                 </div>
               </header>
 
               <div className="container">
                 <div className="App-content">
-                  {/* Create Challenge Form */}
                   <div className="form-card">
                     <h2>Neue Challenge erstellen</h2>
                     <form onSubmit={createChallenge}>
@@ -145,7 +140,7 @@ function App() {
 
                       <div className="form-actions">
                         <button className="btn btn-primary" type="submit">
-                          ✨ Challenge erstellen
+                          Challenge erstellen
                         </button>
                       </div>
                     </form>
@@ -157,14 +152,13 @@ function App() {
                     )}
                   </div>
 
-                  {/* Challenges List */}
                   <div style={{ marginTop: "3rem" }}>
                     <h2>Deine Challenges</h2>
                     
                     {challenges.length === 0 ? (
                       <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
                         <p style={{ color: "#6c757d", fontSize: "1.1rem" }}>
-                          📝 Noch keine Challenges erstellt. Starten Sie eine neue Challenge oben!
+                          Noch keine Challenges erstellt. Starten Sie eine neue Challenge oben!
                         </p>
                       </div>
                     ) : (
@@ -177,7 +171,7 @@ function App() {
                           >
                             <h3>{c.name}</h3>
                             <div className="challenge-card-meta">
-                              <span>📊 {c.activity_type}</span>
+                              <span>{c.activity_type}</span>
                             </div>
                             <p style={{ margin: 0, color: "#6c757d", fontSize: "0.95rem" }}>
                               Klicken Sie um zu starten →
