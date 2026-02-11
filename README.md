@@ -16,14 +16,13 @@ Eine Python-basierte Webanwendung zur Verfolgung persönlicher Ziele, Aktivität
   - Datumsbereichs-Filterung
   - Dynamische Achsen-Skalierungskontrollen
 - **Lokale Speicherung**: Alle Daten werden persistent als leicht lesbare JSON-Dateien gespeichert (keine Datenbank notwendig)
-- **Plattformübergreifend**: Läuft auf Windows, macOS und Linux
 
 ---
 
 ## Technologie-Stack
 
 ### Backend (Python)
-- **Python 3.10+** - Kernsprache
+- **Python 3.12** - Kernsprache
 - **Flask** - REST API Server und HTML-Rendering
 - **Pandas** - Datenverarbeitung und -manipulation
 - **Plotly** - Interaktive Visualisierungen (Python Backend)
@@ -45,7 +44,7 @@ Eine Python-basierte Webanwendung zur Verfolgung persönlicher Ziele, Aktivität
 
 ### Voraussetzungen
 
-- **Python 3.10+** - [Python herunterladen](https://www.python.org/downloads/)
+- **Python 3.12** - [Python herunterladen](https://www.python.org/downloads/)
 - **Node.js LTS** - [Node.js herunterladen](https://nodejs.org/) (für React Frontend)
 
 ### Installation
@@ -149,11 +148,11 @@ ChallengeMyself/
 
 ## Wichtigste Python-Konzepte
 
-Dieses Projekt demonstriert alle erforderlichen Python-Konzepte:
+Dieses Projekt demonstriert folgende Python-Konzepte:
 
 ### 1. **Fehlerbehandlung (Fehlerbehandlung)**
 - `try-except-else-finally` Blöcke im gesamten Backend
-- Exception-Logging mit vollständigen Tracebacks
+- Exception-Logging mit Tracebacks
 
 ### 2. **Logging (Protokollierung)**
 - Benutzerdefiniertes Logging-Setup in `backend/utils/logger.py`
@@ -213,7 +212,7 @@ Dieses Projekt demonstriert alle erforderlichen Python-Konzepte:
 
 ## Fehlerbehandlung
 
-**Python nicht gefunden**: Installiere Python 3.10+ oder füge es zum system PATH hinzu
+**Python nicht gefunden**: Installiere Python 3.12 oder füge es zum system PATH hinzu
 
 **Port 5000 in Verwendung**: Ändere `PORT` in `backend/config.py`
 
@@ -230,5 +229,5 @@ Bildungsprojekt für "Projekt: Einführung in die Programmierung mit Python"
 ---
 
 **Version:** 1.0 (Python Plotly Backend)  
-**Python:** 3.10+  
+**Python:** 3.12  
 **Status:** Produktionsbereit
