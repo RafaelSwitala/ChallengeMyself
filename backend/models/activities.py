@@ -123,7 +123,6 @@ ACTIVITIES: dict[str, list[Field]] = {
         Field("distanz_km", "number", "km", chart_type="line", required=True),
         Field("dauer_min", "number", "min", chart_type="line", required=True),
         Field("schritte_anzahl", "number", chart_type="both", required=False),
-        
         Field("intensitaet", "enum", values=["gemütlich", "mittel", "flott"], 
               chart_type="enum_bar", required=False),
         Field("strecke_typ", "enum", values=["mix", "stadt", "natur", "park"], 
@@ -198,7 +197,6 @@ ACTIVITIES: dict[str, list[Field]] = {
     "Schlaf": [
         Field("dauer_stunden", "number", "h", chart_type="line", required=True),
         Field("schlafqualitaet", "number", "%", chart_type="line", required=True),
-        
         Field("tiefschlaf_prozent", "number", "%", chart_type="line", required=False),
         Field("einschlafdauer_min", "number", "min", chart_type="both", required=False),
         Field("aufwach_anzahl", "number", chart_type="both", required=False),

@@ -85,10 +85,9 @@ def create_line_chart_json(
                 "y": df[f].tolist(),
                 "name": f,
                 "hovertemplate": (
-                    "<b>%{x}</b><br>"
-                    + f"<b>{f}</b><br>"
-                    + "%{y:,.2f}<extra></extra>"
+                    f"<b>{f}</b>: %{y:,.2f}<extra></extra>"
                 ),
+                "hoverinfo": "y+name",
             }
 
             if chart_type == "bar":
@@ -151,10 +150,9 @@ def create_bar_chart_json(df: pd.DataFrame, fields: List[str], field_types: dict
                 "type": "bar",
                 "name": f,
                 "hovertemplate": (
-                    "<b>%{x}</b><br>"
-                    + f"<b>{f}</b><br>"
-                    + "%{y:,.2f}<extra></extra>"
+                    f"<b>{f}</b>: %{y:,.2f}<extra></extra>"
                 ),
+                "hoverinfo": "y+name",
             })
 
         return {"data": data, "layout": layout}
@@ -178,7 +176,8 @@ def create_enum_bar_chart_json(df: pd.DataFrame, enum_field: str, title: str = "
             "type": "bar",
             "name": enum_field,
             "marker": {"color": "rgba(13, 110, 253, 0.7)"},
-            "hovertemplate": "<b>%{x}</b><br>Häufigkeit: %{y}<extra></extra>",
+            "hovertemplate": "<b>%{x}</b>: %{y}<extra></extra>",
+            "hoverinfo": "x+y",
         }]
 
         layout = {
