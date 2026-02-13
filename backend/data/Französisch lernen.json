@@ -421,6 +421,16 @@
                 "unterbrechungen_anzahl": "0",
                 "lernform": "Lesen,schreiben,Grammatik,Übung"
             }
+        },
+        {
+            "date": "2026-02-10",
+            "time": "12:00",
+            "values": {
+                "dauer_min": 130.0,
+                "erfolg_wert": 80.0,
+                "unterbrechungen_anzahl": 1.0,
+                "lernform": "wiederholung"
+            }
         }
     ]
 }

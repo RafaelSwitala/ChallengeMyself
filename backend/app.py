@@ -108,7 +108,6 @@ def wants_json():
     Checks multiple indicators:
     - Accept header explicitly requests JSON
     - Content-Type indicates JSON
-    - Request has Origin header (typical of AJAX)
     
     Returns:
         bool: True if JSON is preferred, False if HTML is preferred
@@ -174,8 +173,6 @@ def handle_challenges():
     """
     Smart Router für Challenges:
     - GET /: HTML für Browser
-    - GET /challenges (AJAX): JSON für React
-    - POST /challenges (Form): Redirect
     - POST /challenges (JSON): JSON Response
     """
     logger.debug(f"handle_challenges: {request.method} | wants_json={wants_json()}")
@@ -251,7 +248,6 @@ def handle_challenges():
 def handle_challenge_detail(name):
     """
     Smart Router für Challenge-Details:
-    - GET /challenges/<name> (AJAX): JSON
     - GET /challenges/<name> (Browser): HTML
     - POST /challenges/<name> (Form/JSON): Beide
     """
