@@ -21,11 +21,6 @@ def _path(name: str):
     """
     Generate full file path for a challenge JSON file.
     
-    Args:
-        name (str): Challenge name
-        
-    Returns:
-        str: Full path to JSON file
     """
     return os.path.join(DATA_DIR, f"{name}.json")
 
@@ -37,11 +32,6 @@ def save_challenge(challenge: Challenge):
     Creates the data directory if it doesn't exist, then writes the challenge
     as formatted JSON with UTF-8 encoding.
     
-    Args:
-        challenge (Challenge): Challenge object to save
-        
-    Raises:
-        Exception: Caught and logged if file write fails
     """
     try:
         os.makedirs(DATA_DIR, exist_ok=True)
@@ -57,15 +47,6 @@ def load_challenge(name: str) -> Challenge | None:
     
     Reconstructs the Challenge object with all sessions and goal information.
     Uses try-except-finally pattern for robust error handling.
-    
-    Args:
-        name (str): Challenge name to load
-        
-    Returns:
-        Optional[Challenge]: Loaded challenge or None if not found/error
-        
-    Raises:
-        Exception: Caught and logged if file read or parsing fails
     """
     try:
         path = _path(name)
@@ -105,9 +86,6 @@ def list_challenges() -> list[dict]:
     List all available challenges.
     
     Scans the data directory and returns metadata for each challenge JSON file.
-    
-    Returns:
-        List[Dict]: List of challenge metadata dicts with name and activity_type
     """
     challenges = []
     try:

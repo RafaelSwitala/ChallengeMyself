@@ -23,25 +23,12 @@ class Challenge:
     
     A challenge is a collection of sessions (activity records) for a specific
     activity type with an optional goal/target with reference field.
-    
-    Attributes:
-        name (str): Unique challenge identifier
-        activity_type (str): Type of activity (e.g., 'Laufen', 'Lernen')
-        sessions (List[Session]): Recorded activity sessions
-        goal (Optional[Goal]): Target for the challenge with reference field
-        allowed_keys (List[str]): Valid field names for this activity type
     """
     
     def __init__(self, name: str, activity_type: str):
         """
         Initialize a new Challenge.
         
-        Args:
-            name (str): Unique challenge name
-            activity_type (str): Activity type from ACTIVITIES registry
-            
-        Raises:
-            Exception: Caught and logged if activity type is invalid
         """
         self.name = name
         self.activity_type = activity_type
@@ -62,12 +49,7 @@ class Challenge:
         
         Validates that all session fields are allowed for this activity type,
         then sorts sessions chronologically by date and time.
-        
-        Args:
-            session (Session): Session object to add
-            
-        Raises:
-            Exception: Caught and logged if session addition fails
+
         """
         try:
             # Filter session values to only include allowed fields
@@ -84,9 +66,6 @@ class Challenge:
     def set_goal(self, goal: Goal):
         """
         Set or update the challenge goal with reference field.
-        
-        Args:
-            goal (Goal): Goal object with reference, target, and period
         """
         self.goal = goal
 
@@ -94,15 +73,6 @@ class Challenge:
         """
         Calculate current progress towards goal.
         
-        Args:
-            selected_date (str): Optional date filter in format:
-                - YYYY-MM-DD for daily goals
-                - YYYY-MM for monthly goals
-        
-        Returns goal progress with current value, status, and message.
-        
-        Returns:
-            dict: Progress data if goal exists, None otherwise
         """
         if not self.goal or not self.goal.reference:
             return None
@@ -125,12 +95,7 @@ class Challenge:
     def to_dict(self):
         """
         Convert challenge to dictionary for JSON serialization.
-        
-        Returns:
-            dict: Challenge data with name, activity type, goal, and sessions
-            
-        Raises:
-            Exception: Caught and logged if serialization fails
+    
         """
         try:
             return {

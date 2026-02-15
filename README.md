@@ -91,7 +91,7 @@ cd ..
 
 #### Option 1: Schnellstart (Empfohlen)
 ```powershell
-.\start.ps1
+.\start.ps1 # ---------------------------------------------------------------------------------------------------- Hier starten
 ```
 
 Das macht automatisch:

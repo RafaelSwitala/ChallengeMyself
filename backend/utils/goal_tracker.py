@@ -64,97 +64,97 @@ GOAL_DEFINITIONS = {
         allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
         status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
     ),
-    "Radfahren": GoalDefinition(
-        activity_name="Radfahren",
-        allowed_references=["distanz_km", "dauer_min"],
-        reference_units={"distanz_km": "km", "dauer_min": "min"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Spazieren": GoalDefinition(
-        activity_name="Spazieren",
-        allowed_references=["distanz_km", "dauer_min"],
-        reference_units={"distanz_km": "km", "dauer_min": "min"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Schwimmen": GoalDefinition(
-        activity_name="Schwimmen",
-        allowed_references=["distanz_m", "dauer_min"],
-        reference_units={"distanz_m": "m", "dauer_min": "min"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Workout": GoalDefinition(
-        activity_name="Workout",
-        allowed_references=["dauer_min", "uebungen_anzahl"],
-        reference_units={"dauer_min": "min", "uebungen_anzahl": "reps"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Liegestutze": GoalDefinition(
-        activity_name="Liegestutze",
-        allowed_references=["dauer_min", "uebungen_anzahl"],
-        reference_units={"dauer_min": "min", "uebungen_anzahl": "reps"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Lesen": GoalDefinition(
-        activity_name="Lesen",
-        allowed_references=["dauer_min", "seiten_anzahl"],
-        reference_units={"dauer_min": "min", "seiten_anzahl": "pages"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Lernen": GoalDefinition(
-        activity_name="Lernen",
-        allowed_references=["dauer_min"],
-        reference_units={"dauer_min": "min"},
-        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
-        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
-    ),
-    "Schlaf": GoalDefinition(
-        activity_name="Schlaf",
-        allowed_references=["dauer_stunden"],
-        reference_units={"dauer_stunden": "hours"},
-        allowed_periods=["daily", "weekly"],
-        status_types=["too_short", "too_long", "in_range"]
-    ),
-    "Bildschirmzeit": GoalDefinition(
-        activity_name="Bildschirmzeit",
-        allowed_references=["dauer_min", "dauer_min_average"],
-        reference_units={"dauer_min": "min", "dauer_min_average": "min"},
-        allowed_periods=["daily", "weekly"],
-        status_types=["too_high", "in_range"]
-    ),
-    "Wasser": GoalDefinition(
-        activity_name="Wasser",
-        allowed_references=["menge_ml"],
-        reference_units={"menge_ml": "ml"},
-        allowed_periods=["daily", "weekly"],
-        status_types=["too_low", "sufficient"]
-    ),
-    "Alkohol": GoalDefinition(
-        activity_name="Alkohol",
-        allowed_references=["menge_ml"],
-        reference_units={"menge_ml": "ml"},
-        allowed_periods=["weekly", "monthly", "yearly"],
-        status_types=["too_high", "within_goal"]
-    ),
-    "Rauchen": GoalDefinition(
-        activity_name="Rauchen",
-        allowed_references=["anzahl_pro_tag", "abstand_min"],
-        reference_units={"anzahl_pro_tag": "cigs", "abstand_min": "min"},
-        allowed_periods=["daily", "weekly"],
-        status_types=["too_high", "within_goal"]
-    ),
-    "Events": GoalDefinition(
-        activity_name="Events",
-        allowed_references=["kosten"],
-        reference_units={"kosten": "EUR"},
-        allowed_periods=["monthly", "yearly"],
-        status_types=["too_high", "within_goal"]
-    ),
+    # "Radfahren": GoalDefinition(
+    #     activity_name="Radfahren",
+    #     allowed_references=["distanz_km", "dauer_min"],
+    #     reference_units={"distanz_km": "km", "dauer_min": "min"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Spazieren": GoalDefinition(
+    #     activity_name="Spazieren",
+    #     allowed_references=["distanz_km", "dauer_min"],
+    #     reference_units={"distanz_km": "km", "dauer_min": "min"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Schwimmen": GoalDefinition(
+    #     activity_name="Schwimmen",
+    #     allowed_references=["distanz_m", "dauer_min"],
+    #     reference_units={"distanz_m": "m", "dauer_min": "min"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Workout": GoalDefinition(
+    #     activity_name="Workout",
+    #     allowed_references=["dauer_min", "uebungen_anzahl"],
+    #     reference_units={"dauer_min": "min", "uebungen_anzahl": "reps"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Liegestutze": GoalDefinition(
+    #     activity_name="Liegestutze",
+    #     allowed_references=["dauer_min", "uebungen_anzahl"],
+    #     reference_units={"dauer_min": "min", "uebungen_anzahl": "reps"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Lesen": GoalDefinition(
+    #     activity_name="Lesen",
+    #     allowed_references=["dauer_min", "seiten_anzahl"],
+    #     reference_units={"dauer_min": "min", "seiten_anzahl": "pages"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Lernen": GoalDefinition(
+    #     activity_name="Lernen",
+    #     allowed_references=["dauer_min"],
+    #     reference_units={"dauer_min": "min"},
+    #     allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+    #     status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    # ),
+    # "Schlaf": GoalDefinition(
+    #     activity_name="Schlaf",
+    #     allowed_references=["dauer_stunden"],
+    #     reference_units={"dauer_stunden": "hours"},
+    #     allowed_periods=["daily", "weekly"],
+    #     status_types=["too_short", "too_long", "in_range"]
+    # ),
+    # "Bildschirmzeit": GoalDefinition(
+    #     activity_name="Bildschirmzeit",
+    #     allowed_references=["dauer_min", "dauer_min_average"],
+    #     reference_units={"dauer_min": "min", "dauer_min_average": "min"},
+    #     allowed_periods=["daily", "weekly"],
+    #     status_types=["too_high", "in_range"]
+    # ),
+    # "Wasser": GoalDefinition(
+    #     activity_name="Wasser",
+    #     allowed_references=["menge_ml"],
+    #     reference_units={"menge_ml": "ml"},
+    #     allowed_periods=["daily", "weekly"],
+    #     status_types=["too_low", "sufficient"]
+    # ),
+    # "Alkohol": GoalDefinition(
+    #     activity_name="Alkohol",
+    #     allowed_references=["menge_ml"],
+    #     reference_units={"menge_ml": "ml"},
+    #     allowed_periods=["weekly", "monthly", "yearly"],
+    #     status_types=["too_high", "within_goal"]
+    # ),
+    # "Rauchen": GoalDefinition(
+    #     activity_name="Rauchen",
+    #     allowed_references=["anzahl_pro_tag", "abstand_min"],
+    #     reference_units={"anzahl_pro_tag": "cigs", "abstand_min": "min"},
+    #     allowed_periods=["daily", "weekly"],
+    #     status_types=["too_high", "within_goal"]
+    # ),
+    # "Events": GoalDefinition(
+    #     activity_name="Events",
+    #     allowed_references=["kosten"],
+    #     reference_units={"kosten": "EUR"},
+    #     allowed_periods=["monthly", "yearly"],
+    #     status_types=["too_high", "within_goal"]
+    # ),
 }
 
 # Activities with no goals

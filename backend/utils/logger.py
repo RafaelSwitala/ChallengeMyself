@@ -69,12 +69,5 @@ def get_logger(name: str) -> logging.Logger:
     
     Returns a named logger for use in specific modules. Loggers are typically
     named after the module name using __name__.
-    
-    Args:
-        name (str): Logger name, usually __name__
-        
-    Returns:
-        logging.Logger: Logger instance for the module
-    Liefert einen benannten Logger zurück
     """
     return logging.getLogger(name)

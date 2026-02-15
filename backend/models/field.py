@@ -20,11 +20,6 @@ class Field:
     - Unit: Display unit (km, minutes, etc.)
     - Values: For enum fields, list of allowed values
     
-    Attributes:
-        name (str): Unique field identifier within activity
-        type (str): Data type - "number", "text", "enum", or "date"
-        unit (Optional[str]): Unit of measurement (km, min, hours, etc.)
-        values (Optional[List[str]]): Allowed values for enum type fields
     """
     
     name: str

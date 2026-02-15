@@ -9,20 +9,6 @@ class Field:
     """
     Represents a data field in a challenge.
     
-    Attributes:
-        name: Field identifier (e.g., 'distanz_km')
-        type: Data type ('number', 'enum', 'text')
-        unit: Optional unit for display (e.g., 'km', 'min', '%')
-        values: For enum fields, list of allowed values
-        chart_type: Which charts support this field
-                   - 'line': only line charts
-                   - 'bar': only bar charts (single value or count of enum)
-                   - 'both': line and bar
-                   - 'none': category field (not for charts)
-                   - 'enum_bar': enum field, show counts in bar chart
-        required: Whether this field is mandatory for the user
-        hidden: If True, field is calculated automatically (not shown in form)
-        calculator: Optional function to calculate hidden field from other values
     """
     name: str
     type: str
@@ -57,35 +43,35 @@ def calc_geschwindigkeit_kmh(session: dict) -> Optional[float]:
             return round((distanz / dauer) * 60, 2)
     return None
 
-def calc_seiten_pro_stunde(session: dict) -> Optional[float]:
-    """Calculate pages per hour: pages / (duration / 60)"""
-    if "seiten_anzahl" in session and "dauer_min" in session:
-        seiten = session.get("seiten_anzahl")
-        dauer = session.get("dauer_min")
-        if seiten and dauer and dauer > 0:
-            return round((seiten / dauer) * 60, 2)
-    return None
+# def calc_seiten_pro_stunde(session: dict) -> Optional[float]:
+#     """Calculate pages per hour: pages / (duration / 60)"""
+#     if "seiten_anzahl" in session and "dauer_min" in session:
+#         seiten = session.get("seiten_anzahl")
+#         dauer = session.get("dauer_min")
+#         if seiten and dauer and dauer > 0:
+#             return round((seiten / dauer) * 60, 2)
+#     return None
 
-def calc_gesamtanzahl_liegestutze(session: dict) -> Optional[int]:
-    """Calculate total push-ups: sets * avg_per_set"""
-    if "sets_anzahl" in session and "durchschnitt_pro_set" in session:
-        sets = session.get("sets_anzahl")
-        avg = session.get("durchschnitt_pro_set")
-        if sets and avg:
-            return int(sets * avg)
-    return None
+# def calc_gesamtanzahl_liegestutze(session: dict) -> Optional[int]:
+#     """Calculate total push-ups: sets * avg_per_set"""
+#     if "sets_anzahl" in session and "durchschnitt_pro_set" in session:
+#         sets = session.get("sets_anzahl")
+#         avg = session.get("durchschnitt_pro_set")
+#         if sets and avg:
+#             return int(sets * avg)
+#     return None
 
-def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[float]:
-    """Calculate swimming speed: distance (m) / (duration / 60)"""
-    if "distanz_m" in session and "dauer_min" in session:
-        distanz = session.get("distanz_m")
-        dauer = session.get("dauer_min")
-        if distanz and dauer and dauer > 0:
-            return round((distanz / dauer) * 60, 2)
-    return None
+# def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[float]:
+#     """Calculate swimming speed: distance (m) / (duration / 60)"""
+#     if "distanz_m" in session and "dauer_min" in session:
+#         distanz = session.get("distanz_m")
+#         dauer = session.get("dauer_min")
+#         if distanz and dauer and dauer > 0:
+#             return round((distanz / dauer) * 60, 2)
+#     return None
 
 ACTIVITIES: dict[str, list[Field]] = {
-    "Laufen": [
+    "Joggen": [
         Field("distanz_km", "number", "km", chart_type="line", required=True),
         Field("dauer_min", "number", "min", chart_type="line", required=True),
         Field("geschwindigkeit_kmh", "number", "km/h", chart_type="line", 
@@ -101,207 +87,207 @@ ACTIVITIES: dict[str, list[Field]] = {
               chart_type="enum_bar", required=False),
     ],
 
-    "Radfahren": [
-        Field("distanz_km", "number", "km", chart_type="line", required=True),
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
+    # "Radfahren": [
+    #     Field("distanz_km", "number", "km", chart_type="line", required=True),
+    #     Field("dauer_min", "number", "min", chart_type="line", required=True),
         
-        Field("geschwindigkeit_kmh", "number", "km/h", chart_type="line", 
-              hidden=True, calculator=calc_geschwindigkeit_kmh),
+    #     Field("geschwindigkeit_kmh", "number", "km/h", chart_type="line", 
+    #           hidden=True, calculator=calc_geschwindigkeit_kmh),
         
-        Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
-        Field("hoehenmeter", "number", "m", chart_type="line", required=False),
-        Field("pausen_anzahl", "number", chart_type="both", required=False),
-        Field("pausen_dauer_min", "number", "min", chart_type="both", required=False),
+    #     Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
+    #     Field("hoehenmeter", "number", "m", chart_type="line", required=False),
+    #     Field("pausen_anzahl", "number", chart_type="both", required=False),
+    #     Field("pausen_dauer_min", "number", "min", chart_type="both", required=False),
         
-        Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
-              chart_type="enum_bar", required=False),
-        Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "berg"], 
-              chart_type="enum_bar", required=False),
-    ],
+    #     Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
+    #           chart_type="enum_bar", required=False),
+    #     Field("strecke_typ", "enum", values=["mix", "asphalt", "feldweg", "waldweg", "berg"], 
+    #           chart_type="enum_bar", required=False),
+    # ],
 
-    "Spazieren": [
-        Field("distanz_km", "number", "km", chart_type="line", required=True),
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
-        Field("schritte_anzahl", "number", chart_type="both", required=False),
-        Field("intensitaet", "enum", values=["gemütlich", "mittel", "flott"], 
-              chart_type="enum_bar", required=False),
-        Field("strecke_typ", "enum", values=["mix", "stadt", "natur", "park"], 
-              chart_type="enum_bar", required=False),
-    ],
+#     "Spazieren": [
+#         Field("distanz_km", "number", "km", chart_type="line", required=True),
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
+#         Field("schritte_anzahl", "number", chart_type="both", required=False),
+#         Field("intensitaet", "enum", values=["gemütlich", "mittel", "flott"], 
+#               chart_type="enum_bar", required=False),
+#         Field("strecke_typ", "enum", values=["mix", "stadt", "natur", "park"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Schwimmen": [
-        Field("distanz_m", "number", "m", chart_type="line", required=True),
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
+#     "Schwimmen": [
+#         Field("distanz_m", "number", "m", chart_type="line", required=True),
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
         
-        Field("durchschnittliche_geschwindigkeit_pro_min", "number", "m/min", chart_type="line",
-              hidden=True, calculator=calc_durchschnittliche_geschwindigkeit_schwimmen),
+#         Field("durchschnittliche_geschwindigkeit_pro_min", "number", "m/min", chart_type="line",
+#               hidden=True, calculator=calc_durchschnittliche_geschwindigkeit_schwimmen),
         
-        Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
-        Field("pausen_anzahl", "number", chart_type="both", required=False),
-        Field("beckenlaenge_m", "number", "m", chart_type="line", required=False),
+#         Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
+#         Field("pausen_anzahl", "number", chart_type="both", required=False),
+#         Field("beckenlaenge_m", "number", "m", chart_type="line", required=False),
         
-        Field("schwimmstil", "enum", values=["kraul", "brust", "rücken", "delphin", "mix"], 
-              chart_type="enum_bar", required=False),
-        Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("schwimmstil", "enum", values=["kraul", "brust", "rücken", "delphin", "mix"], 
+#               chart_type="enum_bar", required=False),
+#         Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Workout": [
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
-        Field("uebungen_anzahl", "number", chart_type="both", required=True),
-        Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
+#     "Workout": [
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
+#         Field("uebungen_anzahl", "number", chart_type="both", required=True),
+#         Field("kalorienverbrauch", "number", "kcal", chart_type="line", required=False),
         
-        Field("trainingsart", "enum", values=["krafttraining", "ausdauer", "flexibilität", "mix"], 
-              chart_type="enum_bar", required=False),
-        Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("trainingsart", "enum", values=["krafttraining", "ausdauer", "flexibilität", "mix"], 
+#               chart_type="enum_bar", required=False),
+#         Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Liegestütze": [
-        Field("sets_anzahl", "number", chart_type="both", required=True),
-        Field("durchschnitt_pro_set", "number", chart_type="line", required=True),
+#     "Liegestütze": [
+#         Field("sets_anzahl", "number", chart_type="both", required=True),
+#         Field("durchschnitt_pro_set", "number", chart_type="line", required=True),
         
-        Field("gesamtanzahl_liegestutze", "number", chart_type="line",
-              hidden=True, calculator=calc_gesamtanzahl_liegestutze),
+#         Field("gesamtanzahl_liegestutze", "number", chart_type="line",
+#               hidden=True, calculator=calc_gesamtanzahl_liegestutze),
         
-        Field("saubere_wiederholungen_anzahl", "number", chart_type="both", required=False),
-        Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("saubere_wiederholungen_anzahl", "number", chart_type="both", required=False),
+#         Field("intensitaet", "enum", values=["gemütlich", "mittel", "stark"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Lesen": [
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
-        Field("seiten_anzahl", "number", chart_type="both", required=True),
+#     "Lesen": [
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
+#         Field("seiten_anzahl", "number", chart_type="both", required=True),
         
-        Field("seiten_pro_stunde", "number", "Seiten/h", chart_type="line",
-              hidden=True, calculator=calc_seiten_pro_stunde),
+#         Field("seiten_pro_stunde", "number", "Seiten/h", chart_type="line",
+#               hidden=True, calculator=calc_seiten_pro_stunde),
         
-        Field("unterbrechungen_anzahl", "number", chart_type="both", required=False),
-        Field("konzentration_wert", "number", "%", chart_type="line", required=False),
+#         Field("unterbrechungen_anzahl", "number", chart_type="both", required=False),
+#         Field("konzentration_wert", "number", "%", chart_type="line", required=False),
         
-        Field("medium", "enum", values=["buch", "ebook", "artikel", "comic"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("medium", "enum", values=["buch", "ebook", "artikel", "comic"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Lernen": [
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
-        Field("erfolg_wert", "number", "%", chart_type="line", required=True),
+#     "Lernen": [
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
+#         Field("erfolg_wert", "number", "%", chart_type="line", required=True),
         
-        Field("unterbrechungen_anzahl", "number", chart_type="both", required=False),
-        Field("konzentration_wert", "number", "%", chart_type="line", required=False),
+#         Field("unterbrechungen_anzahl", "number", chart_type="both", required=False),
+#         Field("konzentration_wert", "number", "%", chart_type="line", required=False),
         
-        Field("lernform", "enum", values=["video", "buch", "üben", "wiederholung", "gruppe"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("lernform", "enum", values=["video", "buch", "üben", "wiederholung", "gruppe"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Schlaf": [
-        Field("dauer_stunden", "number", "h", chart_type="line", required=True),
-        Field("schlafqualitaet", "number", "%", chart_type="line", required=True),
-        Field("tiefschlaf_prozent", "number", "%", chart_type="line", required=False),
-        Field("einschlafdauer_min", "number", "min", chart_type="both", required=False),
-        Field("aufwach_anzahl", "number", chart_type="both", required=False),
-        Field("ruhequalitaet", "number", "%", chart_type="line", required=False),
-    ],
+#     "Schlaf": [
+#         Field("dauer_stunden", "number", "h", chart_type="line", required=True),
+#         Field("schlafqualitaet", "number", "%", chart_type="line", required=True),
+#         Field("tiefschlaf_prozent", "number", "%", chart_type="line", required=False),
+#         Field("einschlafdauer_min", "number", "min", chart_type="both", required=False),
+#         Field("aufwach_anzahl", "number", chart_type="both", required=False),
+#         Field("ruhequalitaet", "number", "%", chart_type="line", required=False),
+#     ],
 
-    "Bildschirmzeit": [
-        Field("dauer_min", "number", "min", chart_type="line", required=True),
+#     "Bildschirmzeit": [
+#         Field("dauer_min", "number", "min", chart_type="line", required=True),
         
-        Field("geraet_typ", "enum", values=["handy", "laptop", "tablet", "tv", "monitor"], 
-              chart_type="enum_bar", required=False),
-        Field("hauptnutzung", "enum", values=["arbeit", "social-media", "unterhaltung", "gaming", "lesen"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("geraet_typ", "enum", values=["handy", "laptop", "tablet", "tv", "monitor"], 
+#               chart_type="enum_bar", required=False),
+#         Field("hauptnutzung", "enum", values=["arbeit", "social-media", "unterhaltung", "gaming", "lesen"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Wasser": [
-        Field("menge_ml", "number", "ml", chart_type="line", required=True),
+#     "Wasser": [
+#         Field("menge_ml", "number", "ml", chart_type="line", required=True),
         
-        Field("quelle", "enum", values=["leitungswasser", "flasche", "sprudel", "infusedwater"], 
-              chart_type="enum_bar", required=False),
-        Field("temperatur", "enum", values=["kalt", "zimmertemperatur", "warm", "heiß"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("quelle", "enum", values=["leitungswasser", "flasche", "sprudel", "infusedwater"], 
+#               chart_type="enum_bar", required=False),
+#         Field("temperatur", "enum", values=["kalt", "zimmertemperatur", "warm", "heiß"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Alkohol": [
-        Field("menge_ml", "number", "ml", chart_type="line", required=True),
-        Field("alkohol_einheiten", "number", "Einheiten", chart_type="line", required=False),
+#     "Alkohol": [
+#         Field("menge_ml", "number", "ml", chart_type="line", required=True),
+#         Field("alkohol_einheiten", "number", "Einheiten", chart_type="line", required=False),
         
-        Field("getraenk_typ", "enum", values=["bier", "wein", "schnaps", "cocktail", "sonstige"], 
-              chart_type="enum_bar", required=False),
-        Field("anlass", "enum", values=["feier", "stress", "sozial", "freizeit", "besonderes"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("getraenk_typ", "enum", values=["bier", "wein", "schnaps", "cocktail", "sonstige"], 
+#               chart_type="enum_bar", required=False),
+#         Field("anlass", "enum", values=["feier", "stress", "sozial", "freizeit", "besonderes"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Rauchen": [
-        Field("anzahl_pro_tag", "number", chart_type="line", required=True),
-        Field("abstand_min", "number", "min", chart_type="both", required=False),
-        Field("verlangens_intensitaet", "number", "%", chart_type="line", required=False),
+#     "Rauchen": [
+#         Field("anzahl_pro_tag", "number", chart_type="line", required=True),
+#         Field("abstand_min", "number", "min", chart_type="both", required=False),
+#         Field("verlangens_intensitaet", "number", "%", chart_type="line", required=False),
         
-        Field("produkt_typ", "enum", values=["zigarette", "zigarre", "pfeife", "vape"], 
-              chart_type="enum_bar", required=False),
-    ],
+#         Field("produkt_typ", "enum", values=["zigarette", "zigarre", "pfeife", "vape"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Stimmung": [
-        Field("stimmung_wert", "number", "(1-10)", chart_type="line", required=True),        
-        Field("hauptgefuehl", "enum", values=["glücklich", "traurig", "neutral", "gestresst", "vergnügt"], 
-              chart_type="enum_bar", required=False),
-        Field("ausloeser", "enum", values=["erfolg", "freunde", "natur", "hobby", "stress", "unbekannt"], 
-              chart_type="enum_bar", required=False),
-    ],
+#     "Stimmung": [
+#         Field("stimmung_wert", "number", "(1-10)", chart_type="line", required=True),        
+#         Field("hauptgefuehl", "enum", values=["glücklich", "traurig", "neutral", "gestresst", "vergnügt"], 
+#               chart_type="enum_bar", required=False),
+#         Field("ausloeser", "enum", values=["erfolg", "freunde", "natur", "hobby", "stress", "unbekannt"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Stress": [
-        Field("stress_wert", "number", "(1-10)", chart_type="line", required=True),       
-        Field("physisches_unbehagen", "number", "%", chart_type="line", required=False),
-        Field("hauptursache", "enum", values=["arbeit", "privat", "gesundheit", "finanzen", "beziehung"], 
-              chart_type="enum_bar", required=False),
-    ],
+#     "Stress": [
+#         Field("stress_wert", "number", "(1-10)", chart_type="line", required=True),       
+#         Field("physisches_unbehagen", "number", "%", chart_type="line", required=False),
+#         Field("hauptursache", "enum", values=["arbeit", "privat", "gesundheit", "finanzen", "beziehung"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Energielevel": [
-        Field("energie_wert", "number", "(1-10)", chart_type="line", required=True),       
-        Field("koerperliche_energie", "number", "%", chart_type="line", required=False),
-        Field("mentale_energie", "number", "%", chart_type="line", required=False),
-        Field("tageszeit", "enum", values=["morgens", "mittags", "nachmittags", "abends", "nacht"], 
-              chart_type="enum_bar", required=False),
-    ],
+#     "Energielevel": [
+#         Field("energie_wert", "number", "(1-10)", chart_type="line", required=True),       
+#         Field("koerperliche_energie", "number", "%", chart_type="line", required=False),
+#         Field("mentale_energie", "number", "%", chart_type="line", required=False),
+#         Field("tageszeit", "enum", values=["morgens", "mittags", "nachmittags", "abends", "nacht"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Motivation": [
-        Field("motivation_wert", "number", "(1-10)", chart_type="line", required=True),        
-        Field("selbstvertrauen", "number", "%", chart_type="line", required=False),
-        Field("bezogen_auf", "enum", values=["sport", "lernen", "arbeit", "kreativität", "allgemein"], 
-              chart_type="enum_bar", required=False),
-        Field("hindernis", "enum", values=["müdigkeit", "stress", "ablenkung", "zweifel", "keine"], 
-              chart_type="enum_bar", required=False),
-    ],
+#     "Motivation": [
+#         Field("motivation_wert", "number", "(1-10)", chart_type="line", required=True),        
+#         Field("selbstvertrauen", "number", "%", chart_type="line", required=False),
+#         Field("bezogen_auf", "enum", values=["sport", "lernen", "arbeit", "kreativität", "allgemein"], 
+#               chart_type="enum_bar", required=False),
+#         Field("hindernis", "enum", values=["müdigkeit", "stress", "ablenkung", "zweifel", "keine"], 
+#               chart_type="enum_bar", required=False),
+#     ],
 
-    "Events": [
-        Field("ort_typ", "enum", values=["kino", "oper", "restaurant", "kneipenabend", "konzert", 
-                                          "theater", "museum", "park", "strand", "sport_event", 
-                                          "freunde_treffen", "festival", "hochzeit", "geburtstag", "sonstige"],
-              chart_type="enum_bar", required=True),
-        Field("kosten", "number", "€", chart_type="bar", required=False),
-        Field("begleitung_anzahl", "number", chart_type="bar", required=False),
-        Field("begleitung_typ", "enum", values=["alleine", "partner", "familie", "freunde", "freunde+partner", "gruppe"],
-              chart_type="enum_bar", required=False),
-        Field("bewertung", "number", "(1-10)", chart_type="line", required=False),
-        Field("notizen", "text", chart_type="none", required=False),
-    ],
+#     "Events": [
+#         Field("ort_typ", "enum", values=["kino", "oper", "restaurant", "kneipenabend", "konzert", 
+#                                           "theater", "museum", "park", "strand", "sport_event", 
+#                                           "freunde_treffen", "festival", "hochzeit", "geburtstag", "sonstige"],
+#               chart_type="enum_bar", required=True),
+#         Field("kosten", "number", "€", chart_type="bar", required=False),
+#         Field("begleitung_anzahl", "number", chart_type="bar", required=False),
+#         Field("begleitung_typ", "enum", values=["alleine", "partner", "familie", "freunde", "freunde+partner", "gruppe"],
+#               chart_type="enum_bar", required=False),
+#         Field("bewertung", "number", "(1-10)", chart_type="line", required=False),
+#         Field("notizen", "text", chart_type="none", required=False),
+#     ],
 }
 
 COMPARISON_FEATURES: dict[str, List[str]] = {
-    "Laufen": ["strecke_typ", "intensitaet", "wetter"],
-    "Radfahren": ["strecke_typ", "intensitaet"],
-    "Spazieren": ["strecke_typ", "intensitaet"],
-    "Schwimmen": ["schwimmstil", "intensitaet"],
-    "Workout": ["trainingsart", "intensitaet"],
-    "Lesen": ["medium"],
-    "Lernen": ["lernform"],
-    "Wasser": ["quelle", "temperatur"],
-    "Alkohol": ["getraenk_typ", "anlass"],
-    "Rauchen": ["produkt_typ"],
-    "Stimmung": ["hauptgefuehl", "ausloeser"],
-    "Stress": ["hauptursache"],
-    "Energielevel": ["tageszeit"],
-    "Motivation": ["bezogen_auf", "hindernis"],
-    "Events": ["ort_typ", "begleitung_typ"],
+    "Joggen": ["strecke_typ", "intensitaet", "wetter"],
+    # "Radfahren": ["strecke_typ", "intensitaet"],
+    # "Spazieren": ["strecke_typ", "intensitaet"],
+    # "Schwimmen": ["schwimmstil", "intensitaet"],
+    # "Workout": ["trainingsart", "intensitaet"],
+    # "Lesen": ["medium"],
+    # "Lernen": ["lernform"],
+    # "Wasser": ["quelle", "temperatur"],
+    # "Alkohol": ["getraenk_typ", "anlass"],
+    # "Rauchen": ["produkt_typ"],
+    # "Stimmung": ["hauptgefuehl", "ausloeser"],
+    # "Stress": ["hauptursache"],
+    # "Energielevel": ["tageszeit"],
+    # "Motivation": ["bezogen_auf", "hindernis"],
+    # "Events": ["ort_typ", "begleitung_typ"],
 }
 
 def get_activity_names() -> list[str]:
@@ -352,12 +338,6 @@ def calculate_hidden_fields(activity: str, session: dict) -> dict:
     """
     Calculates all hidden fields for a session.
     
-    Args:
-        activity: Activity name
-        session: Session data dict
-    
-    Returns:
-        Dict with calculated field values
     """
     calculated = {}
     try:
@@ -380,12 +360,6 @@ def get_numeric_fields(activity: str, chart_type: Optional[str] = None) -> list[
     """
     Returns numeric field names for an activity.
     
-    Args:
-        activity: Activity name
-        chart_type: Filter by chart_type ('line', 'bar', 'both', 'enum_bar', None=all)
-    
-    Returns:
-        List of numeric field names suitable for charts
     """
     try:
         fields = ACTIVITIES.get(activity, [])
