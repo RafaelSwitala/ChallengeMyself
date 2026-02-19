@@ -1,0 +1,714 @@
+{
+    "name": "Test",
+    "activity_type": "Laufen",
+    "goal": {
+        "description": "Ich möchte jeden Monat insgesamt 100 km joggen.",
+        "target": 100.0,
+        "period": "monthly",
+        "reference": "distanz_km"
+    },
+    "sessions": [
+        {
+            "date": "2025-10-05",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 1.6,
+                "dauer_min": 19.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 5.05
+            }
+        },
+        {
+            "date": "2025-10-07",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 2.0,
+                "dauer_min": 21.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 5.71
+            }
+        },
+        {
+            "date": "2025-10-09",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 2.0,
+                "dauer_min": 20.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "asphalt",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.0
+            }
+        },
+        {
+            "date": "2025-10-12",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 2.4,
+                "dauer_min": 24.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "asphalt",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.0
+            }
+        },
+        {
+            "date": "2025-10-14",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 2.4,
+                "dauer_min": 22.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "park",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.55
+            }
+        },
+        {
+            "date": "2025-10-16",
+            "time": "16:30",
+            "values": {
+                "distanz_km": 2.8,
+                "dauer_min": 26.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "waldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.46
+            }
+        },
+        {
+            "date": "2025-10-19",
+            "time": "17:30",
+            "values": {
+                "distanz_km": 2.8,
+                "dauer_min": 26.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "park",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 6.46
+            }
+        },
+        {
+            "date": "2025-10-21",
+            "time": "13:00",
+            "values": {
+                "distanz_km": 3.1,
+                "dauer_min": 32.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 5.81
+            }
+        },
+        {
+            "date": "2025-10-23",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 3.2,
+                "dauer_min": 31.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "waldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.19
+            }
+        },
+        {
+            "date": "2025-10-26",
+            "time": "17:30",
+            "values": {
+                "distanz_km": 3.5,
+                "dauer_min": 37.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 5.68
+            }
+        },
+        {
+            "date": "2025-10-28",
+            "time": "19:15",
+            "values": {
+                "distanz_km": 3.3,
+                "dauer_min": 37.0,
+                "pausen_anzahl": 4.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "waldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 5.35
+            }
+        },
+        {
+            "date": "2025-10-30",
+            "time": "18:15",
+            "values": {
+                "distanz_km": 4.0,
+                "dauer_min": 45.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "park",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 5.33
+            }
+        },
+        {
+            "date": "2025-11-02",
+            "time": "20:30",
+            "values": {
+                "distanz_km": 4.3,
+                "dauer_min": 45.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 5.73
+            }
+        },
+        {
+            "date": "2025-11-04",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 4.0,
+                "dauer_min": 42.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "asphalt",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 5.71
+            }
+        },
+        {
+            "date": "2025-11-09",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 4.8,
+                "dauer_min": 50.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "park",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 5.76
+            }
+        },
+        {
+            "date": "2025-11-11",
+            "time": "16:00",
+            "values": {
+                "distanz_km": 4.5,
+                "dauer_min": 41.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 6.59
+            }
+        },
+        {
+            "date": "2025-11-13",
+            "time": "16:30",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 76.0,
+                "pausen_anzahl": 5.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 7.89
+            }
+        },
+        {
+            "date": "2025-11-16",
+            "time": "16:00",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 71.0,
+                "pausen_anzahl": 5.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 8.45
+            }
+        },
+        {
+            "date": "2025-11-18",
+            "time": "14:30",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 67.0,
+                "pausen_anzahl": 4.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 8.96
+            }
+        },
+        {
+            "date": "2025-11-20",
+            "time": "17:30",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 64.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 9.38
+            }
+        },
+        {
+            "date": "2025-11-23",
+            "time": "13:45",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 60.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.0
+            }
+        },
+        {
+            "date": "2025-11-25",
+            "time": "15:45",
+            "values": {
+                "distanz_km": 10.0,
+                "dauer_min": 57.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.53
+            }
+        },
+        {
+            "date": "2025-11-27",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 12.0,
+                "dauer_min": 68.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "stark",
+                "strecke_typ": "waldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.59
+            }
+        },
+        {
+            "date": "2025-11-30",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 9.0,
+                "dauer_min": 42.0,
+                "pausen_anzahl": 0.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "asphalt",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 12.86
+            }
+        },
+        {
+            "date": "2025-12-02",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 12.0,
+                "dauer_min": 65.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 11.08
+            }
+        },
+        {
+            "date": "2025-12-04",
+            "time": "12:00",
+            "values": {
+                "distanz_km": 12.0,
+                "dauer_min": 60.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 12.0
+            }
+        },
+        {
+            "date": "2025-12-07",
+            "time": "16:00",
+            "values": {
+                "distanz_km": 12.5,
+                "dauer_min": 69.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.87
+            }
+        },
+        {
+            "date": "2025-12-09",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 12.0,
+                "dauer_min": 65.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 11.08
+            }
+        },
+        {
+            "date": "2025-12-11",
+            "time": "20:00",
+            "values": {
+                "distanz_km": 14.0,
+                "dauer_min": 82.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.24
+            }
+        },
+        {
+            "date": "2025-12-14",
+            "time": "13:00",
+            "values": {
+                "distanz_km": 12.0,
+                "dauer_min": 68.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "waldweg",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 10.59
+            }
+        },
+        {
+            "date": "2025-12-16",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 16.0,
+                "dauer_min": 105.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 9.14
+            }
+        },
+        {
+            "date": "2025-12-18",
+            "time": "18:30",
+            "values": {
+                "distanz_km": 14.0,
+                "dauer_min": 97.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 8.66
+            }
+        },
+        {
+            "date": "2025-12-21",
+            "time": "10:30",
+            "values": {
+                "distanz_km": 16.5,
+                "dauer_min": 112.0,
+                "pausen_anzahl": 4.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 8.84
+            }
+        },
+        {
+            "date": "2025-12-23",
+            "time": "12:00",
+            "values": {
+                "distanz_km": 14.5,
+                "dauer_min": 98.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 8.88
+            }
+        },
+        {
+            "date": "2025-12-25",
+            "time": "19:30",
+            "values": {
+                "distanz_km": 18.0,
+                "dauer_min": 122.0,
+                "pausen_anzahl": 5.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 8.85
+            }
+        },
+        {
+            "date": "2025-12-28",
+            "time": "19:30",
+            "values": {
+                "distanz_km": 17.5,
+                "dauer_min": 128.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "waldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 8.2
+            }
+        },
+        {
+            "date": "2025-12-30",
+            "time": "17:45",
+            "values": {
+                "distanz_km": 18.5,
+                "dauer_min": 120.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt",
+                "wetter": "schnee",
+                "geschwindigkeit_kmh": 9.25
+            }
+        },
+        {
+            "date": "2026-01-01",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 130.0,
+                "pausen_anzahl": 5.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "schnee",
+                "geschwindigkeit_kmh": 9.23
+            }
+        },
+        {
+            "date": "2026-01-03",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 125.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "feldweg",
+                "wetter": "schnee",
+                "geschwindigkeit_kmh": 9.6
+            }
+        },
+        {
+            "date": "2026-01-06",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 117.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "waldweg",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.26
+            }
+        },
+        {
+            "date": "2026-01-08",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 115.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "asphalt",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 10.43
+            }
+        },
+        {
+            "date": "2026-01-11",
+            "time": "17:30",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 118.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.17
+            }
+        },
+        {
+            "date": "2026-01-13",
+            "time": "17:45",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 113.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.62
+            }
+        },
+        {
+            "date": "2026-01-15",
+            "time": "19:30",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 108.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "schnee",
+                "geschwindigkeit_kmh": 11.11
+            }
+        },
+        {
+            "date": "2026-01-18",
+            "time": "14:30",
+            "values": {
+                "distanz_km": 20.5,
+                "dauer_min": 114.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.79
+            }
+        },
+        {
+            "date": "2026-01-20",
+            "time": "18:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 110.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.91
+            }
+        },
+        {
+            "date": "2026-01-22",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 111.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "waldweg",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 10.81
+            }
+        },
+        {
+            "date": "2026-01-25",
+            "time": "16:00",
+            "values": {
+                "distanz_km": 21.0,
+                "dauer_min": 125.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "stark",
+                "strecke_typ": "asphalt",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 10.08
+            }
+        },
+        {
+            "date": "2026-01-27",
+            "time": "16:45",
+            "values": {
+                "distanz_km": 22.5,
+                "dauer_min": 135.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "waldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.0
+            }
+        },
+        {
+            "date": "2026-01-29",
+            "time": "17:30",
+            "values": {
+                "distanz_km": 22.5,
+                "dauer_min": 128.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "mix",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 10.55
+            }
+        },
+        {
+            "date": "2026-02-01",
+            "time": "17:00",
+            "values": {
+                "distanz_km": 20.0,
+                "dauer_min": 105.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "gemütlich",
+                "strecke_typ": "mix",
+                "wetter": "regnerisch",
+                "geschwindigkeit_kmh": 11.43
+            }
+        },
+        {
+            "date": "2026-02-03",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 21.5,
+                "dauer_min": 119.0,
+                "pausen_anzahl": 1.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "asphalt",
+                "wetter": "sonnig",
+                "geschwindigkeit_kmh": 10.84
+            }
+        },
+        {
+            "date": "2026-02-05",
+            "time": "19:00",
+            "values": {
+                "distanz_km": 25.0,
+                "dauer_min": 150.0,
+                "pausen_anzahl": 3.0,
+                "intensitaet": "stark",
+                "strecke_typ": "feldweg",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.0
+            }
+        },
+        {
+            "date": "2026-02-08",
+            "time": "19:45",
+            "values": {
+                "distanz_km": 21.5,
+                "dauer_min": 124.0,
+                "pausen_anzahl": 2.0,
+                "intensitaet": "mittel",
+                "strecke_typ": "mix",
+                "wetter": "bewölkt",
+                "geschwindigkeit_kmh": 10.4
+            }
+        }
+    ]
+}

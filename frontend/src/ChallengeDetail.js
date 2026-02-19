@@ -473,10 +473,20 @@ function ChallengeDetail() {
             )}
           </section>
 
-          {/* Chart Section */}
+          {/* Chart Section - Only Button, Chart moved to /stats */}
           <section className="challenge-section">
             <h2>Diagramme & Analysen</h2>
-            <ChallengePlot challengeName={challengeName} availableFields={fields} />
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+              <p style={{ color: "#6c757d", marginBottom: "1.5rem" }}>
+                Umfassende Diagrammanalyse mit erweiterten Filtern verfügbar
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate(`/challenge/${encodeURIComponent(challengeName)}/stats`)}
+              >
+                Zur Analyse & Diagrammen →
+              </button>
+            </div>
           </section>
         </div>
       </div>

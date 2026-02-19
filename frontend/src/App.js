@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import ChallengeDetail from "./ChallengeDetail";
+import ChallengeStats from "./ChallengeStats";
 import "./App.css";
 
 function App() {
@@ -10,7 +11,10 @@ function App() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [challenges, setChallenges] = useState([]);
+  const [editingChallenge, setEditingChallenge] = useState(null);
+  const [editingName, setEditingName] = useState("");
   const navigate = useNavigate();
+  
   const loadChallenges = async () => {
     try {
       const res = await fetch("http://localhost:5000/challenges");
@@ -91,6 +95,92 @@ function App() {
     }
   };
 
+  const deleteChallenge = async (name) => {
+    if (!window.confirm(`Challenge "${name}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/challenge/${encodeURIComponent(name)}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setMessage(`Fehler beim Löschen: ${data.error}`);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage(`Challenge "${name}" erfolgreich gelöscht`);
+      setMessageType("success");
+      loadChallenges();
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Failed to delete challenge", err);
+      setMessage("Fehler beim Löschen der Challenge");
+      setMessageType("error");
+    }
+  };
+
+  const startEditChallenge = (challengeObj) => {
+    setEditingChallenge(challengeObj.name);
+    setEditingName(challengeObj.name);
+  };
+
+  const cancelEditChallenge = () => {
+    setEditingChallenge(null);
+    setEditingName("");
+  };
+
+  const saveChallengeName = async () => {
+    const newName = editingName.trim();
+    if (!newName) {
+      setMessage("Challenge-Name darf nicht leer sein");
+      setMessageType("error");
+      return;
+    }
+
+    if (newName === editingChallenge) {
+      cancelEditChallenge();
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/challenge/${encodeURIComponent(editingChallenge)}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new_name: newName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(`Fehler: ${data.error}`);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage(`Challenge erfolgreich zu "${newName}" umbenannt`);
+      setMessageType("success");
+      setEditingChallenge(null);
+      setEditingName("");
+      loadChallenges();
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Failed to rename challenge", err);
+      setMessage("Fehler beim Umbenennen der Challenge");
+      setMessageType("error");
+    }
+  };
+
   return (
     <div className="App">
       <Routes>
@@ -167,15 +257,67 @@ function App() {
                           <div
                             key={c.name}
                             className="challenge-card"
-                            onClick={() => navigate(`/challenge/${encodeURIComponent(c.name)}`)}
                           >
-                            <h3>{c.name}</h3>
-                            <div className="challenge-card-meta">
-                              <span>{c.activity_type}</span>
+                            <div className="challenge-card-header">
+                              {editingChallenge === c.name ? (
+                                <div className="challenge-edit-form">
+                                  <input
+                                    type="text"
+                                    value={editingName}
+                                    onChange={(e) => setEditingName(e.target.value)}
+                                    placeholder="Neuer Name"
+                                    autoFocus
+                                    className="challenge-edit-input"
+                                  />
+                                  <div className="challenge-edit-actions">
+                                    <button
+                                      className="btn btn-small btn-success"
+                                      onClick={saveChallengeName}
+                                    >
+                                      ✓
+                                    </button>
+                                    <button
+                                      className="btn btn-small btn-outline"
+                                      onClick={cancelEditChallenge}
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <h3>{c.name}</h3>
+                                  <div className="challenge-card-buttons">
+                                    <button
+                                      className="btn btn-small btn-secondary"
+                                      onClick={() => startEditChallenge(c)}
+                                      title="Challenge umbenennen"
+                                    >
+                                      Bearbeiten
+                                    </button>
+                                    <button
+                                      className="btn btn-small btn-danger"
+                                      onClick={() => deleteChallenge(c.name)}
+                                      title="Challenge löschen"
+                                    >
+                                      Löschen
+                                    </button>
+                                  </div>
+                                </>
+                              )}
                             </div>
-                            <p style={{ margin: 0, color: "#6c757d", fontSize: "0.95rem" }}>
-                              Klicken Sie um zu starten →
-                            </p>
+                            <div 
+                              className="challenge-card-content"
+                              onClick={() => navigate(`/challenge/${encodeURIComponent(c.name)}`)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="challenge-card-meta">
+                                <span>{c.activity_type}</span>
+                              </div>
+                              <p style={{ margin: 0, color: "#6c757d", fontSize: "0.95rem" }}>
+                                Klicken Sie um zu starten →
+                              </p>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -188,6 +330,7 @@ function App() {
         />
 
         <Route path="/challenge/:name" element={<ChallengeDetail />} />
+        <Route path="/challenge/:name/stats" element={<ChallengeStats />} />
       </Routes>
     </div>
   );

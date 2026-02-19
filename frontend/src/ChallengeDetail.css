@@ -124,6 +124,11 @@
 
 .sessions-table-wrapper {
   overflow-x: auto;
+  /* Fixed height with vertical scrollbar for table */
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
 }
 
 .sessions-table {
@@ -135,6 +140,10 @@
 .sessions-table thead {
   background: #f8f9fa;
   border-bottom: 2px solid #dee2e6;
+  /* Sticky header for scrollable table */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .sessions-table th {
@@ -142,6 +151,7 @@
   text-align: left;
   font-weight: 600;
   color: #212529;
+  background: #f8f9fa;
 }
 
 .sessions-table td {

@@ -54,7 +54,7 @@ def add_cors_headers(response):
     """
     response.headers.setdefault("Access-Control-Allow-Origin", "*")
     response.headers.setdefault("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.setdefault("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    response.headers.setdefault("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
     return response
 
 
@@ -73,7 +73,7 @@ def handle_options():
         from flask import make_response
         resp = make_response(('', 204))
         resp.headers['Access-Control-Allow-Origin'] = '*'
-        resp.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+        resp.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
         resp.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
         return resp
 
@@ -360,19 +360,131 @@ def handle_challenge_detail(name):
         return redirect(url_for("handle_challenges", message=f"Fehler: {str(e)}"))
 
 
+
+@app.delete("/challenge/<name>")
+def delete_challenge(name):
+    """
+    DELETE /challenge/<name>
+    
+    Deletes a challenge completely, including removing the associated JSON file.
+    
+    Args:
+        name (str): Challenge name to delete
+        
+    Returns:
+        Tuple[Dict, int]: JSON response with success message or error
+    """
+    try:
+        from storage.json_storage import _path
+        
+        logger.debug(f"DELETE /challenge/{name}")
+        
+        # Load challenge first to verify it exists
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        # Remove the JSON file
+        file_path = _path(name)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            logger.info(f"Challenge deleted: {name} (file removed)")
+        
+        return {"message": f"Challenge '{name}' successfully deleted"}, 200
+        
+    except Exception as e:
+        logger.exception(f"Error deleting challenge {name}")
+        return {"error": str(e)}, 500
+
+
+@app.put("/challenge/<old_name>")
+def rename_challenge(old_name):
+    """
+    PUT /challenge/<old_name>
+    
+    Renames a challenge. Accepts JSON payload with new_name field.
+    Updates the JSON filename and the name field within the file.
+    
+    Payload:
+        {
+            "new_name": "New Challenge Name"
+        }
+    
+    Args:
+        old_name (str): Current challenge name
+        
+    Returns:
+        Tuple[Dict, int]: JSON response with updated challenge or error
+    """
+    try:
+        from storage.json_storage import _path
+        
+        logger.debug(f"PUT /challenge/{old_name}")
+        
+        # Get payload
+        if not request.is_json:
+            return {"error": "Request body must be JSON"}, 400
+        
+        payload = request.get_json()
+        new_name = payload.get("new_name", "").strip()
+        
+        if not new_name:
+            return {"error": "new_name is required"}, 400
+        
+        # Load old challenge
+        old_challenge = load_challenge(old_name)
+        if not old_challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        # Check if new name already exists
+        if new_name != old_name and load_challenge(new_name):
+            return {"error": f"Challenge with name '{new_name}' already exists"}, 409
+        
+        # Delete old file first if names differ
+        if old_name != new_name:
+            old_path = _path(old_name)
+            if os.path.exists(old_path):
+                os.remove(old_path)
+                logger.debug(f"Old file removed: {old_path}")
+        
+        # Update challenge name in the object
+        old_challenge.name = new_name
+        
+        # Save with new name (will create file with new name)
+        save_challenge(old_challenge)
+        logger.info(f"Challenge renamed: {old_name} → {new_name}")
+        
+        return jsonify(old_challenge.to_dict()), 200
+        
+    except Exception as e:
+        logger.exception(f"Error renaming challenge {old_name}")
+        return {"error": str(e)}, 500
+
+
+
 @app.route("/challenges/<name>/plot", methods=["GET"])
 def handle_challenge_plot(name):
     """
-    Modern Plot Handler mit neuen Features für ChallengePlot.js:
-    - Enum-Feld Aggregation (Häufigkeitszählung)
-    - Datum-Range Filterung
-    - Dual-Y-Achse für verschiedene Skalen
-    - Line + Bar Diagramme pro Feld
+    Enhanced plot handler with comprehensive filtering and chart options.
+    
+    Query parameters:
+    - fields: Comma-separated field names to plot
+    - field_type_<field>: "line" or "bar" for each field
+    - secondary_y_fields: Comma-separated fields for right Y-axis
+    - date_from, date_to: Date range filtering
+    - show_every_nth: Show every nth entry on X-axis
+    - grid_mode: "none", "daily", "weekly", or "monthly"
+    - <field>_min, <field>_max: Value range filters
+    - filter_<category>: Category filter (e.g., filter_weather=sunny)
+    
+    Returns:
+        JSON with plotly chart data and layout
     """
     try:
         from utils.plotly_utils import (
             sessions_to_dataframe, filter_by_date_range,
-            create_line_chart_json, create_bar_chart_json, create_enum_bar_chart_json
+            filter_by_value_range, filter_by_category,
+            create_line_bar_chart_json, create_enum_bar_chart_json
         )
         
         challenge = load_challenge(name)
@@ -382,44 +494,79 @@ def handle_challenge_plot(name):
         if not challenge.sessions:
             return {"error": "No sessions available"}, 400
         
-        fields_param = request.args.get("fields", "")
-        enum_field = request.args.get("enum_field", "")
-        date_from = request.args.get("date_from", "")
-        date_to = request.args.get("date_to", "")
-        secondary_y_fields_param = request.args.get("secondary_y_fields", "")
-        selected_fields = [f.strip() for f in fields_param.split(",") if f.strip()] if fields_param else []
-        secondary_y_fields = [f.strip() for f in secondary_y_fields_param.split(",") if f.strip()] if secondary_y_fields_param else []
+        try:
+            # Get basic parameters
+            fields_param = request.args.get("fields", "")
+            enum_field = request.args.get("enum_field", "")
+            date_from = request.args.get("date_from", "")
+            date_to = request.args.get("date_to", "")
+            secondary_y_fields_param = request.args.get("secondary_y_fields", "")
+            show_every_nth = int(request.args.get("show_every_nth", 1))
+            grid_mode = request.args.get("grid_mode", "none")
+            
+            selected_fields = [f.strip() for f in fields_param.split(",") if f.strip()] if fields_param else []
+            secondary_y_fields = [f.strip() for f in secondary_y_fields_param.split(",") if f.strip()] if secondary_y_fields_param else []
+            
+            # Get field types
+            field_types = {}
+            for field in selected_fields:
+                chart_type_param = request.args.get(f"field_type_{field}", "line")
+                field_types[field] = chart_type_param
+            
+            # Convert sessions to DataFrame
+            df = sessions_to_dataframe([s.to_dict() for s in challenge.sessions])
+            if df.empty:
+                return {"error": "No valid session data"}, 400
+            
+            # Apply date range filter
+            df = filter_by_date_range(df, date_from, date_to)
+            if df.empty:
+                return {"error": "No sessions in date range"}, 400
+            
+            # Apply value range filters for each field
+            for field in selected_fields:
+                min_val_param = request.args.get(f"{field}_min")
+                max_val_param = request.args.get(f"{field}_max")
+                min_val = float(min_val_param) if min_val_param else None
+                max_val = float(max_val_param) if max_val_param else None
+                df = filter_by_value_range(df, field, min_val, max_val)
+            
+            # Apply category filters
+            for key, value in request.args.items():
+                if key.startswith("filter_"):
+                    category_field = key[7:]  # Remove "filter_" prefix
+                    df = filter_by_category(df, category_field, value)
+            
+            if df.empty:
+                return {"error": "No data matching the filters"}, 400
+            
+            # Create chart
+            if enum_field and enum_field in df.columns:
+                result = create_enum_bar_chart_json(df, enum_field, title=f"{challenge.name} – {enum_field}")
+            else:
+                result = create_line_bar_chart_json(
+                    df, 
+                    selected_fields, 
+                    field_types=field_types,
+                    title=f"{challenge.name} – Analysis",
+                    secondary_y_fields=secondary_y_fields if secondary_y_fields else None,
+                    show_every_nth=show_every_nth,
+                    grid_mode=grid_mode
+                )
+            
+            return jsonify(result), 200
         
-        field_types = {}
-        for field in selected_fields:
-            chart_type_param = request.args.get(f"field_type_{field}", "line")
-            field_types[field] = chart_type_param
-        
-        df = sessions_to_dataframe([s.to_dict() for s in challenge.sessions])
-        if df.empty:
-            return {"error": "No valid session data"}, 400
-        
-        df = filter_by_date_range(df, date_from, date_to)
-        if df.empty:
-            return {"error": "No sessions in date range"}, 400
-        
-        if enum_field and enum_field in df.columns:
-            result = create_enum_bar_chart_json(df, enum_field, title=f"{challenge.name} – {enum_field}")
-        
-        else:
-            result = create_line_chart_json(
-                df, 
-                selected_fields, 
-                field_types=field_types,
-                title=f"{challenge.name} – Analyse",
-                secondary_y_fields=secondary_y_fields if secondary_y_fields else None
-            )
-        
-        return jsonify(result), 200
+        except ValueError as e:
+            logger.error(f"Invalid parameter value: {e}")
+            return {"error": f"Invalid parameter: {str(e)}"}, 400
+        except Exception as e:
+            logger.exception(f"Error processing chart request")
+            return {"error": str(e)}, 500
     
     except Exception as e:
         logger.exception(f"Error in handle_challenge_plot for {name}")
         return {"error": str(e)}, 500
+
 
 @app.post("/challenges/<name>/sessions")
 def handle_add_session(name):

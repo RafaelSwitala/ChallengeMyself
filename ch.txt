@@ -285,3 +285,12 @@ alle neuen Funktionen
 ggf. neue Hilfsfunktionen/Utils
 
 Anpassung aller Diagramm-Renderings
+
+
+
+
+
+
+
+
+
