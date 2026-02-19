@@ -91,7 +91,7 @@ Neue einheitliche Fields:
     48) average_mood_value              Durchschnittlicher Stimmungswert        Number (0-10)           0-10                Value           False       True
     49) stress_value                    Stresswert                              Integer (0-10)          0-10                Line, Bar       True        False
     50) average_stress_value            Durchschnittlicher Stresswert           Number (0-10)           0-10                Value           False       True
-    51) energy_level                    Energie-Level                           Integer (0-10)          0-10                Line, Bar       True        False
+// gehe zu physicalEnergy 51) energy_level                    Energie-Level                           Integer (0-10)          0-10                Line, Bar       True        False
     52) average_energy_level            Durchschnittlicher Energie-Level        Number (0-10)           0-10                Value           False       True
     53) motivation_value                Motivationswert                         Integer (0-10)          0-10                Line, Bar       True        False
     54) average_motivation_value        Durchschnittlicher Motivationswert      Number (0-10)           0-10                Value           False       True
