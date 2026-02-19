@@ -108,15 +108,24 @@ def wants_json():
     Checks multiple indicators:
     - Accept header explicitly requests JSON
     - Content-Type indicates JSON
+    - Origin header indicates CORS request (from frontend)
     
     Returns:
         bool: True if JSON is preferred, False if HTML is preferred
     """
+    # Check if JSON is explicitly requested in Accept header
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         return True
+    # Check if Content-Type is JSON
     if request.content_type and "application/json" in request.content_type:
         return True
+    # Check if this is a CORS request from a different origin (frontend)
+    # CORS requests should always return JSON
     if request.headers.get('Origin'):
+        return True
+    # If Accept header is not set, check if application/json is in the accept_mimetypes
+    # This handles cases where the client sends application/json with lower priority
+    if 'application/json' in request.accept_mimetypes:
         return True
     return False
 
@@ -172,10 +181,11 @@ def debug_challenges():
 def handle_challenges():
     """
     Smart Router für Challenges:
-    - GET /: HTML für Browser
-    - POST /challenges (JSON): JSON Response
+    - GET /challenges: Always returns JSON (for API/Frontend)
+    - GET /: Returns HTML (for browser viewing)
+    - POST /challenges: Creates challenge, returns JSON or redirects
     """
-    logger.debug(f"handle_challenges: {request.method} | wants_json={wants_json()}")
+    logger.debug(f"handle_challenges: {request.method} path={request.path}")
     
     if request.method == "GET":
         try:
@@ -187,10 +197,12 @@ def handle_challenges():
                 if challenge:
                     challenges.append(challenge.to_dict())
             
-            if wants_json():
+            # GET /challenges always returns JSON (it's the API endpoint)
+            if request.path == "/challenges":
                 logger.debug(f"GET /challenges -> JSON ({len(challenges)} challenges)")
                 return jsonify(challenges), 200
             
+            # GET / returns HTML (for browser)
             logger.debug(f"GET / -> HTML ({len(challenges)} challenges)")
             activities = get_activity_names()
             message = request.args.get("message", "")
@@ -198,7 +210,7 @@ def handle_challenges():
             
         except Exception as e:
             logger.exception("Error in GET /challenges")
-            if wants_json():
+            if request.path == "/challenges":
                 return {"error": str(e)}, 500
             return render_template("index.html", challenges=[], activities=[], message=f"Fehler: {str(e)}")
     

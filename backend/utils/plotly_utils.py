@@ -85,7 +85,7 @@ def create_line_chart_json(
                 "y": df[f].tolist(),
                 "name": f,
                 "hovertemplate": (
-                    f"<b>{f}</b>: %{y:,.2f}<extra></extra>"
+                    "<b>" + f + "</b>: %{y:,.2f}<extra></extra>"
                 ),
                 "hoverinfo": "y+name",
             }
@@ -150,7 +150,7 @@ def create_bar_chart_json(df: pd.DataFrame, fields: List[str], field_types: dict
                 "type": "bar",
                 "name": f,
                 "hovertemplate": (
-                    f"<b>{f}</b>: %{y:,.2f}<extra></extra>"
+                    "<b>" + f + "</b>: %{y:,.2f}<extra></extra>"
                 ),
                 "hoverinfo": "y+name",
             })
