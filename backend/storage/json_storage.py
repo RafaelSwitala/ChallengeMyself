@@ -86,7 +86,7 @@ def load_challenge(name: str) -> Challenge | None:
                 description=g["description"],
                 target=g.get("target"),
                 period=g.get("period", ""),
-                reference=g.get("reference")  # New field
+                reference=g.get("reference")
             ))
 
         # Restore all sessions

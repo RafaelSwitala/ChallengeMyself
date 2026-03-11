@@ -1,6 +1,3 @@
-# ChallengeMyself - Einzeiliger Start für Frontend und Backend
-# Führe dieses Skript aus: .\start.ps1
-
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host "ChallengeMyself - Start Script" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
@@ -25,7 +22,7 @@ if (-not (Test-Path $venvPath)) {
     Set-Location $PSScriptRoot
 }
 
-# Backend im Hintergrund starten (versteckt)
+# Backend im Hintergrund starten
 $backendProcess = Start-Process -FilePath "powershell" `
     -ArgumentList "-NoExit", "-Command", "Set-Location '$backendPath'; & '$venvPath'; python run_server.py" `
     -PassThru `
@@ -42,21 +39,21 @@ $frontendProcess = Start-Process -FilePath "powershell" `
 
 Write-Host "Frontend-PID: $($frontendProcess.Id)" -ForegroundColor Green
 
-# 3. Warte, damit beide starten
+# 3. Warten, damit beide starten
 Write-Host ""
 Write-Host "Warte 5 Sekunden, damit beide Services initialisiert..." -ForegroundColor Yellow
 Start-Sleep -Seconds 5
 
-# 4. Öffne App im Browser (React auf Port 3000)
+# 4. Öffne App im Browser
 Write-Host ""
 Write-Host "3. Opening app in browser at http://localhost:3000/..." -ForegroundColor Green
 Start-Process "http://localhost:3000/"
 
 Write-Host ""
-Write-Host "✅ App lädt! Backend auf http://localhost:5000, Frontend auf http://localhost:3000" -ForegroundColor Cyan
+Write-Host "App lädt! Backend auf http://localhost:5000, Frontend auf http://localhost:3000" -ForegroundColor Cyan
 Write-Host "   Drücke STRG+C zum Beenden." -ForegroundColor Cyan
 
-# Warte auf Benutzer-Exit (STRG+C)
+# Warte auf Benutzer-Exit
 while ($true) {
     Start-Sleep -Seconds 60
 }

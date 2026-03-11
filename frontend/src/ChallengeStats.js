@@ -3,55 +3,27 @@ import { useParams, useNavigate } from "react-router-dom";
 import Plot from "react-plotly.js";
 import "./ChallengeStats.css";
 
-/**
- * ChallengeStats Component
- * 
- * Full-screen stats and chart analysis page with advanced filtering options:
- * - Value range filtering (min/max per variable)
- * - Category filtering (filter by field values)
- * - X-axis entry filtering (show every nth entry)
- * - Date range filtering
- * - Grid line control (daily, weekly, monthly)
- * - Multiple chart types (line + bar, dual bar charts)
- * - Secondary Y-axis for different scales
- */
 function ChallengeStats() {
   const { name } = useParams();
   const challengeName = decodeURIComponent(name);
   const navigate = useNavigate();
-
   const [challenge, setChallenge] = useState(null);
   const [fields, setFields] = useState([]);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-
-  // Chart configuration
   const [selectedFields, setSelectedFields] = useState([]);
   const [fieldTypes, setFieldTypes] = useState({});
   const [chartData, setChartData] = useState(null);
   const [chartLayout, setChartLayout] = useState(null);
-
-  // Date range filtering
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
-
-  // Y-axis value range filters
   const [valueRangeFilters, setValueRangeFilters] = useState({});
-
-  // X-axis entry filtering
   const [showEveryNthEntry, setShowEveryNthEntry] = useState(1);
-
-  // Grid lines control
   const [gridLineMode, setGridLineMode] = useState("none"); // none, daily, weekly, monthly
-
-  // Secondary Y-axis selection
   const [secondaryYFields, setSecondaryYFields] = useState([]);
-
-  // Category filters
   const [categoryFilters, setCategoryFilters] = useState({});
   const [availableCategories, setAvailableCategories] = useState({});
 
-  // Load challenge data
   useEffect(() => {
     const loadChallengeData = async () => {
       try {
@@ -62,7 +34,6 @@ function ChallengeStats() {
         const data = await res.json();
         setChallenge(data);
 
-        // Load fields
         const fieldsRes = await fetch(
           `http://localhost:5000/activities/${encodeURIComponent(data.activity_type)}`
         );
@@ -108,14 +79,12 @@ function ChallengeStats() {
         if (gridLineMode !== "none") queryParams.append("grid_mode", gridLineMode);
         if (secondaryYFields.length > 0) queryParams.append("secondary_y_fields", secondaryYFields.join(","));
 
-        // Add field types
         selectedFields.forEach(field => {
           if (fieldTypes[field]) {
             queryParams.append(`field_type_${field}`, fieldTypes[field]);
           }
         });
 
-        // Add value range filters
         Object.entries(valueRangeFilters).forEach(([field, range]) => {
           if (range.min !== "" && range.min !== null) {
             queryParams.append(`${field}_min`, range.min);
@@ -125,7 +94,6 @@ function ChallengeStats() {
           }
         });
 
-        // Add category filters
         Object.entries(categoryFilters).forEach(([category, value]) => {
           if (value) {
             queryParams.append(`filter_${category}`, value);
@@ -221,7 +189,7 @@ function ChallengeStats() {
             ← Back
           </button>
           <div>
-            <h1>{challenge.name} – Analytics & Charts</h1>
+            <h1>{challenge.name} - Analytics & Charts</h1>
             <p className="stats-subtitle">{challenge.activity_type}</p>
           </div>
         </div>
@@ -235,11 +203,9 @@ function ChallengeStats() {
             </div>
           )}
 
-          {/* Filter Panel */}
           <div className="filter-panel">
             <h2>Filters & Chart Configuration</h2>
 
-            {/* Field Selection */}
             <section className="filter-section">
               <h3>Variables to Display</h3>
               <div className="field-selection">
@@ -277,7 +243,6 @@ function ChallengeStats() {
                             <span>Right Y-Axis</span>
                           </label>
 
-                          {/* Value Range Filter */}
                           <div className="range-filter">
                             <label>Value Range</label>
                             <input
@@ -304,7 +269,6 @@ function ChallengeStats() {
               </div>
             </section>
 
-            {/* Date Range Filter */}
             <section className="filter-section">
               <h3>Date Range</h3>
               <div className="date-filter">
@@ -326,7 +290,6 @@ function ChallengeStats() {
               </div>
             </section>
 
-            {/* Category Filters */}
             {Object.keys(availableCategories).length > 0 && (
               <section className="filter-section">
                 <h3>Filter by Categories</h3>
@@ -352,7 +315,6 @@ function ChallengeStats() {
               </section>
             )}
 
-            {/* X-Axis Entry Filtering */}
             <section className="filter-section">
               <h3>X-Axis Display</h3>
               <label className="label-with-input">
@@ -368,7 +330,6 @@ function ChallengeStats() {
               </label>
             </section>
 
-            {/* Grid Lines Control */}
             <section className="filter-section">
               <h3>Grid Lines</h3>
               <div className="grid-options">
@@ -412,7 +373,6 @@ function ChallengeStats() {
             </section>
           </div>
 
-          {/* Chart Display */}
           <div className="chart-section">
             {selectedFields.length === 0 ? (
               <div className="empty-state">

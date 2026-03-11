@@ -402,6 +402,16 @@
                 "medium": "buch",
                 "seiten_pro_stunde": 103.2
             }
+        },
+        {
+            "date": "2026-03-01",
+            "time": "13:20",
+            "values": {
+                "dauer_min": 55.0,
+                "seiten_anzahl": 72.0,
+                "unterbrechungen_anzahl": 0.0,
+                "seiten_pro_stunde": 78.55
+            }
         }
     ]
 }

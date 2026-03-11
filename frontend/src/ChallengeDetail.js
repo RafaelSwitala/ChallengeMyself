@@ -8,7 +8,6 @@ function ChallengeDetail() {
   const { name } = useParams();
   const challengeName = decodeURIComponent(name);
   const navigate = useNavigate();
-
   const [challenge, setChallenge] = useState(null);
   const [fields, setFields] = useState([]);
   const [goalDescription, setGoalDescription] = useState("");
@@ -92,7 +91,6 @@ function ChallengeDetail() {
         const data = await res.json();
         setGoalProgress(data.progress);
         
-        // Generate available periods for dropdown if monthly or daily
         if (data.progress && (data.progress.period_label.includes("Monat") || data.progress.period_label.includes("Tag"))) {
           generateAvailablePeriods(data.goal.period);
         }
@@ -107,7 +105,6 @@ function ChallengeDetail() {
     const today = new Date();
     
     if (period === "monthly") {
-      // Generate last 12 months
       for (let i = 0; i < 12; i++) {
         const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
         const year = date.getFullYear();
@@ -119,7 +116,6 @@ function ChallengeDetail() {
         });
       }
     } else if (period === "daily") {
-      // Generate last 30 days
       for (let i = 0; i < 30; i++) {
         const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
         const year = date.getFullYear();
@@ -290,7 +286,6 @@ function ChallengeDetail() {
                     <div className="goal-progress">
                       <h4>Fortschritt</h4>
                       
-                      {/* Period selector for daily and monthly goals */}
                       {availablePeriods.length > 0 && (
                         <div className="period-selector">
                           <label htmlFor="periodSelect">Zeitraum:</label>
@@ -323,7 +318,6 @@ function ChallengeDetail() {
                         <strong>Status:</strong> {goalProgress.status}
                       </p>
                       
-                      {/* Show consecutive days for daily goals */}
                       {challenge.goal.period === "daily" && goalProgress.consecutive_days > 0 && (
                         <p className="consecutive-days">
                           <strong>Tage in Folge:</strong> {goalProgress.consecutive_days} 
@@ -473,7 +467,6 @@ function ChallengeDetail() {
             )}
           </section>
 
-          {/* Chart Section - Only Button, Chart moved to /stats */}
           <section className="challenge-section">
             <h2>Diagramme & Analysen</h2>
             <div style={{ textAlign: "center", padding: "2rem" }}>

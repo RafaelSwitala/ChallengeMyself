@@ -280,7 +280,7 @@ function App() {
                                       className="btn btn-small btn-outline"
                                       onClick={cancelEditChallenge}
                                     >
-                                      ✕
+                                      X
                                     </button>
                                   </div>
                                 </div>

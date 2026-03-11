@@ -1,0 +1,11 @@
+{
+    "name": "Fahrrad-Tour",
+    "activity_type": "Radfahren",
+    "goal": {
+        "description": "Mindestens 300 km pro Monat Fahrrad fahren.",
+        "target": 300.0,
+        "period": "monthly",
+        "reference": "distanz_km"
+    },
+    "sessions": []
+}

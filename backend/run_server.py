@@ -11,9 +11,9 @@ try:
     print("Loading Flask app...")
     from app import app
     
-    print("✅ App loaded successfully")
-    print("⏳ Starting server on http://127.0.0.1:5000/")
-    print("   Press CTRL+C to stop\n")
+    print("App loaded successfully")
+    print("Starting server on http://127.0.0.1:5000/")
+    print("Press CTRL+C to stop\n")
     
     app.run(
         debug=False, 
