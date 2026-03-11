@@ -1,0 +1,339 @@
+import { useState, useEffect } from "react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import ChallengeDetail from "./ChallengeDetail";
+import ChallengeStats from "./ChallengeStats";
+import "./App.css";
+
+function App() {
+  const [activities, setActivities] = useState([]);
+  const [selectedActivity, setSelectedActivity] = useState("");
+  const [challengeName, setChallengeName] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [challenges, setChallenges] = useState([]);
+  const [editingChallenge, setEditingChallenge] = useState(null);
+  const [editingName, setEditingName] = useState("");
+  const navigate = useNavigate();
+  
+  const loadChallenges = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/challenges");
+      const data = await res.json();
+      setChallenges(data);
+    } catch (err) {
+      console.error("Failed to load challenges", err);
+      setMessage("Fehler beim Laden der Challenges");
+      setMessageType("error");
+    }
+  };
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/activities");
+        const data = await res.json();
+        setActivities(data.activities || []);
+        if (data.activities && data.activities.length > 0) {
+          setSelectedActivity(data.activities[0]);
+        }
+      } catch (err) {
+        console.error("Failed to load activities", err);
+        setMessage("Fehler beim Laden der Activities");
+        setMessageType("error");
+      }
+    };
+
+    fetchActivities();
+    loadChallenges();
+  }, []);
+
+  const createChallenge = async (e) => {
+    e.preventDefault();
+    
+    if (!challengeName.trim()) {
+      setMessage("Bitte einen Challenge-Namen eingeben");
+      setMessageType("error");
+      return;
+    }
+
+    if (!selectedActivity) {
+      setMessage("Bitte eine Activity auswählen");
+      setMessageType("error");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/challenges", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: challengeName.trim(),
+          activity: selectedActivity,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(`Fehler: ${data.error}`);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage(`Challenge "${challengeName}" successfully created`);
+      setMessageType("success");
+      setChallengeName("");
+      loadChallenges();
+      
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Failed to create challenge", err);
+      setMessage("Serverfehler beim Erstellen der Challenge");
+      setMessageType("error");
+    }
+  };
+
+  const deleteChallenge = async (name) => {
+    if (!window.confirm(`Challenge "${name}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/challenge/${encodeURIComponent(name)}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setMessage(`Fehler beim Löschen: ${data.error}`);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage(`Challenge "${name}" erfolgreich gelöscht`);
+      setMessageType("success");
+      loadChallenges();
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Failed to delete challenge", err);
+      setMessage("Fehler beim Löschen der Challenge");
+      setMessageType("error");
+    }
+  };
+
+  const startEditChallenge = (challengeObj) => {
+    setEditingChallenge(challengeObj.name);
+    setEditingName(challengeObj.name);
+  };
+
+  const cancelEditChallenge = () => {
+    setEditingChallenge(null);
+    setEditingName("");
+  };
+
+  const saveChallengeName = async () => {
+    const newName = editingName.trim();
+    if (!newName) {
+      setMessage("Challenge-Name darf nicht leer sein");
+      setMessageType("error");
+      return;
+    }
+
+    if (newName === editingChallenge) {
+      cancelEditChallenge();
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/challenge/${encodeURIComponent(editingChallenge)}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new_name: newName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(`Fehler: ${data.error}`);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage(`Challenge erfolgreich zu "${newName}" umbenannt`);
+      setMessageType("success");
+      setEditingChallenge(null);
+      setEditingName("");
+      loadChallenges();
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Failed to rename challenge", err);
+      setMessage("Fehler beim Umbenennen der Challenge");
+      setMessageType("error");
+    }
+  };
+
+  return (
+    <div className="App">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <header className="App-header">
+                <div className="container">
+                  <h1>ChallengeMyself</h1>
+                  <p>Verfolge deine persönlichen Ziele und Herausforderungen</p>
+                </div>
+              </header>
+
+              <div className="container">
+                <div className="App-content">
+                  <div className="form-card">
+                    <h2>Neue Challenge erstellen</h2>
+                    <form onSubmit={createChallenge}>
+                      <div className="form-group">
+                        <label htmlFor="challengeName" className="required">Challenge-Name</label>
+                        <input
+                          id="challengeName"
+                          type="text"
+                          placeholder="z.B. Sommerfit 2026, Marathon-Training"
+                          value={challengeName}
+                          onChange={(e) => setChallengeName(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="activity" className="required">Activity-Typ</label>
+                        <select
+                          id="activity"
+                          value={selectedActivity}
+                          onChange={(e) => setSelectedActivity(e.target.value)}
+                          disabled={activities.length === 0}
+                        >
+                          <option value="">-- Bitte wählen --</option>
+                          {activities.map((activity) => (
+                            <option key={activity} value={activity}>
+                              {activity}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="form-actions">
+                        <button className="btn btn-primary" type="submit">
+                          Challenge erstellen
+                        </button>
+                      </div>
+                    </form>
+
+                    {message && (
+                      <div className={`alert alert-${messageType === "success" ? "success" : "error"}`}>
+                        {message}
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ marginTop: "3rem" }}>
+                    <h2>Deine Challenges</h2>
+                    
+                    {challenges.length === 0 ? (
+                      <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
+                        <p style={{ color: "#6c757d", fontSize: "1.1rem" }}>
+                          Noch keine Challenges erstellt. Starten Sie eine neue Challenge oben!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="challenges-grid">
+                        {challenges.map((c) => (
+                          <div
+                            key={c.name}
+                            className="challenge-card"
+                          >
+                            <div className="challenge-card-header">
+                              {editingChallenge === c.name ? (
+                                <div className="challenge-edit-form">
+                                  <input
+                                    type="text"
+                                    value={editingName}
+                                    onChange={(e) => setEditingName(e.target.value)}
+                                    placeholder="Neuer Name"
+                                    autoFocus
+                                    className="challenge-edit-input"
+                                  />
+                                  <div className="challenge-edit-actions">
+                                    <button
+                                      className="btn btn-small btn-success"
+                                      onClick={saveChallengeName}
+                                    >
+                                      ✓
+                                    </button>
+                                    <button
+                                      className="btn btn-small btn-outline"
+                                      onClick={cancelEditChallenge}
+                                    >
+                                      X
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <h3>{c.name}</h3>
+                                  <div className="challenge-card-buttons">
+                                    <button
+                                      className="btn btn-small btn-secondary"
+                                      onClick={() => startEditChallenge(c)}
+                                      title="Challenge umbenennen"
+                                    >
+                                      Bearbeiten
+                                    </button>
+                                    <button
+                                      className="btn btn-small btn-danger"
+                                      onClick={() => deleteChallenge(c.name)}
+                                      title="Challenge löschen"
+                                    >
+                                      Löschen
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                            <div 
+                              className="challenge-card-content"
+                              onClick={() => navigate(`/challenge/${encodeURIComponent(c.name)}`)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div className="challenge-card-meta">
+                                <span>{c.activity_type}</span>
+                              </div>
+                              <p style={{ margin: 0, color: "#6c757d", fontSize: "0.95rem" }}>
+                                Klicken Sie um zu starten →
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          }
+        />
+
+        <Route path="/challenge/:name" element={<ChallengeDetail />} />
+        <Route path="/challenge/:name/stats" element={<ChallengeStats />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App;

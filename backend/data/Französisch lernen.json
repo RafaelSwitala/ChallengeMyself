@@ -1,0 +1,436 @@
+{
+    "name": "Französisch lernen",
+    "activity_type": "Lernen",
+    "goal": {
+        "description": "Neue Fremdsprache",
+        "target": 300.0,
+        "period": "weekly",
+        "reference": "dauer_min"
+    },
+    "sessions": [
+        {
+            "date": "2025-01-03",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-01-09",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-01-17",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-01-23",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "schreiben"
+            }
+        },
+        {
+            "date": "2025-01-31",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen,schreiben"
+            }
+        },
+        {
+            "date": "2025-02-07",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-02-14",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-02-21",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln,schreiben"
+            }
+        },
+        {
+            "date": "2025-02-28",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-03-07",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-03-14",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "schreiben"
+            }
+        },
+        {
+            "date": "2025-03-21",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "lesen,Grammatik"
+            }
+        },
+        {
+            "date": "2025-03-28",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-04-11",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "lesen,schreiben"
+            }
+        },
+        {
+            "date": "2025-04-25",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Grammatik,Übungen"
+            }
+        },
+        {
+            "date": "2025-05-02",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-05-09",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-05-16",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-05-23",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-06-05",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen,schreiben,lesen"
+            }
+        },
+        {
+            "date": "2025-06-06",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln,schreiben"
+            }
+        },
+        {
+            "date": "2025-06-13",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Grammatik"
+            }
+        },
+        {
+            "date": "2025-06-27",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-07-05",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-07-11",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-07-18",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-07-25",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "schreiben"
+            }
+        },
+        {
+            "date": "2025-08-01",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Grammatik"
+            }
+        },
+        {
+            "date": "2025-08-09",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-08-22",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-08-29",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Grammatik"
+            }
+        },
+        {
+            "date": "2025-09-05",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Grammatik"
+            }
+        },
+        {
+            "date": "2025-10-10",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "lesen,verstehen"
+            }
+        },
+        {
+            "date": "2025-10-17",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "2",
+                "lernform": "sprechen,schreiben"
+            }
+        },
+        {
+            "date": "2025-10-24",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2025-11-07",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2025-11-14",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "1",
+                "lernform": "Grammatik,schreiben"
+            }
+        },
+        {
+            "date": "2025-11-25",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2025-12-05",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Formulare ausfüllen"
+            }
+        },
+        {
+            "date": "2025-12-12",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Formulare ausfüllen"
+            }
+        },
+        {
+            "date": "2025-12-19",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "180",
+                "unterbrechungen_anzahl": "2",
+                "lernform": "sprechen"
+            }
+        },
+        {
+            "date": "2026-01-09",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Vokabeln"
+            }
+        },
+        {
+            "date": "2026-01-16",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "lesen"
+            }
+        },
+        {
+            "date": "2026-01-23",
+            "time": "16:00",
+            "values": {
+                "dauer_min": "120",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Grammatik,schreiben"
+            }
+        },
+        {
+            "date": "2026-01-30",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Übungen"
+            }
+        },
+        {
+            "date": "2026-02-06",
+            "time": "15:00",
+            "values": {
+                "dauer_min": "60",
+                "unterbrechungen_anzahl": "0",
+                "lernform": "Lesen,schreiben,Grammatik,Übung"
+            }
+        },
+        {
+            "date": "2026-02-10",
+            "time": "12:00",
+            "values": {
+                "dauer_min": 130.0,
+                "erfolg_wert": 80.0,
+                "unterbrechungen_anzahl": 1.0,
+                "lernform": "wiederholung"
+            }
+        }
+    ]
+}
