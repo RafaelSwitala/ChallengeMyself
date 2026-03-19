@@ -1,0 +1,25 @@
+ich habe folgende anforderungen:
+1) In C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\enums\FieldKeyEnum.ts befinden sich Fields. es handelt sich hierbei um eingabefelder durch den user. einige dieser fields sollen eine range haben von 1 bis 10, jedoch ohne kommazahl, sondern ganze zahl. anstatt einen eintrag per tastatur vorzunehmen, soll eine skala von 1 bis 10 zur verfügung gestellt werden, um dort den entsprechenden wert abzubilden.
+das soll mit einer range skala in der komponente realisiert werden, wo die sessioneinträge gemacht werden sollen.
+die entsprechende logik soll hier definiert werden: C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\validations\rangeValidation.ts
+
+2) in der datei C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\models\ActivityData.ts werde ich zukünftig die aktivitäten definieren. das möchte ich jedoch selbst machen. 
+ich plane es, dort fields einzugeben. aber es gibt fields, die in manchen aktivitäten verpflichtend sein sollen, aber in anderen nicht. so soll die dauer bei der aktivität joggen eine pflichangabe sein, jedoch bei der aktivität wandern nicht. bitte bereite das für mich vor, setze die dauer in joggen als pflichteingabe, und bei wandern auf optional. ich plane es später bei anderen aktivitäten zu implementieren, da dieses feld öfter vorkommen wird.
+
+3) die komponente C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\calculations\averageCalculator.ts soll aus einigen funktionen bestehen. ich möchte für verschiedene fieldKeys den durchschnitt definieren können. 
+wenn der user mehrere sessions erstellt. dann hat er verschiedene FielsKeys mit unterschiedlichen werten. 
+ich möchte dass der user die möglichkeit hat, sich von einem FieldKey den durchschnitt anzeigen zu lassen.
+dieser Durchschnitt soll folgende optionen beinhalten: Gesamter Durchschnitt (Alle werte), wöchentlicher durchschnitt, monatlicher durchschnitt, durchschnitt eines selbst gewählten zeitraums. 
+sollte sich der user für den wöchentlichen oder monatlichen durchschnitt entscheiden, sollen die verschiedene werte (pro woche oder pro monat) angezeigt werden können. beispielsweise war der durchschnitt in Januar 5.23, im februar 5.38, märz 6.18 usw. das selbe für wochen (beschriftet mit KW (kalenderwochen))
+
+4) die komponente C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\calculations\velocityCalculator.ts soll die geschwindigkeit berechnen können. 
+es wird activities geben, die sowohl die FieldKeys Dauer als auch distanz beinhalten. und an der stelle soll es möglich sein, die geschwindigkeit berechnen zu können. 
+Die geschwindigkeit soll folgende einheit haben als default: km/h. 
+die geschwindigkeit soll der user nicht selbst eintragen müssen, weswegen es sich hierbei um kein FieldKey handelt. der user soll jedoch nach dem erstellen einer session, sich die geschwindigkeit berechnen zu lassen.
+der user soll außerdem die möglichkeit haben, sich mehrere geschwindigkeiten anzeigen zu lassen, zum beispiel die letzten x sessions.
+
+5) Die Komponente C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\goals\goalDefinitions.ts soll verschiedene arten von goals, also zielen definieren. ich möchte jeder aktivity eins oder mehrere mögliche goal-definitionen zuordnen. 
+Ein Goal soll eine Beschreibung haben (Als eine freie Texteingabe), eine Variablenrefferenz, ein Zielwert, eine Zieldauer (GoalperiodTypeEnum)
+die goals die ich haben möchte habe ich hier rein geschrieben: C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\enums\GoalTypeEnum.ts. bitte erstelle mir für jede art eine funktion in C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\goals
+zusätzlich dazu, muss evaluiert werden ob man ein goal erreicht hat oder nicht. beispielsweise wenn man das ziel hat, 100km im januar zu wandern, sollen alle sessions durchgegangen werden um die distance soll addiert werden. es soll dann eine beispielhafte übersicht angezeigt werden, bei der sowas steht wie: 88km von 100km erreicht, 12km fehlen noch. oder 16 Tage in folge wurde das ziel erreicht. noch 4 tage um dein Ziel zu erreichen. hierzu könnte C:\Users\rafaelswitala\Desktop\PProjekte\Private\Ascendia\src\domains\calculations\streakCalculator.ts herangezogen werden.
+füge der activity Joggen dann die Goal Arten MoreThan und FrequencyExact hinzu.

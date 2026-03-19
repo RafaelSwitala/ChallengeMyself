@@ -1,0 +1,15 @@
+Mit Interfaces arbeiten? 
+	Thema: Fields
+	Nicht alle Fields sollen die selbe Logik haben
+	Ein bestimmter Bereich aber schon. Hier eine Basisklasse einfügen?
+	Mögliche Fields-Interfaces:
+		Durchschnitt berechnen
+		Skalen hinzufügen (1-10)
+ch:
+Ich arbeite an einer Anwendung, die folgende Architektur haben soll:
+Eine Challenge wird von einem Benutzer erstellt. Der Benutzer kann den Namen dieser Challenge frei wählen. Beispielsweise "Ausdauertraining". Dieser Challenge ordnet der Benutzer anschließend einen Aktivitytype zu, in dem Fall wäre es Joggen. Neben Joggen gibt es auch weitere Aktivitätstypen wie Spazieren, Wandern, Lesen, Bildschirmzeit, Rauchverhalten, Stresslevel, Motivationslevel usw. 
+Es gibt zudem eine größere Menge an messbaren Elementen. Ich nenne diese aktuell Fields, bin mit dem Namen aber noch nicht ganz zufrieden. Hierbei handelt es sich um Werte, die der User eingeben kann in der Oberfläche der Anwendung um die Challenge messbar zu machen. Beispiele für solche Fields sind Distanz, Dauer, Streckentyp, Lesemedium, Wetter, Uhrzeit, eine Skala von 1-10 um stress oder Motivation zu messen usw. 
+Je nachdem um welchen Aktivitätstyp es sich bei einer Challenge handelt, hat diese unterschiedliche Fields. Die Distanz eignet sich beispielsweise beim Aktivitättyp Joggen oder Wandern, nicht aber beim Stresslevel. Das Lesemedium, welches als Enum definiert werden kann, und werte wie Buch, Zeitung usw. haben kann, eignet sich zum Aktivitätstyp Lesen, aber nicht Rauchen. Ich denke du weißt worauf ich hinaus will. Es gibt dann aber einige Fields, die sich überall eignen könnten. Dazu gehört das Datum, die Uhrzeit und Notiz. 
+An der Stelle kommen wir zum nächsten Element, nämlich der Session. Innerhalb einer Challenge, egal welchen Aktivitätstyp man hat, kann man sogenannte Sessions definieren. Eine Session besteht immer aus einem Datum und optional einer Uhrzeit. Dort trägt man die tatsächlichen Werte der Challenge ein. Beispielsweise Joggen: 15.03.2026 um 18:00, Distanz = 10 km, Dauer = 60 min, Streckentyp = Wald, Wetter = Sonnig, Kalorienverbrauch = 300 kcal, usw.
+Eine Challenge besteht dann aus mehreren solchen Sessions. Diese dienen später zu verschiedenen weiteren Funktionalitäten der Anwendung, wie das Darstellen eines Diagramms um seinen Fortschritt sehen zu können, aber auch für ein weiteres Element, nämlich das Goal.
+Ein User kann innerhalb einer Challenge Ziele definieren. Beispielsweise im der Challenge Ausdauertraining. Es gibt eine Möglichkeit für eine Beschreibung, 

@@ -1,0 +1,16 @@
+export enum DeviceMainUseTypeEnum {
+  Mix = "mix",
+  Arbeit = "arbeit",
+  Freizeit = "freizeit",
+  Lernen = "lernen",
+  Kreativ = "kreativ",
+  SozialeMedien = "soziale_medien",
+  Unterhaltung = "unterhaltung",
+  Chats = "chats",
+  Ebooks = "ebooks",
+  Videos = "videos",
+  Anrufe = "anrufe",
+  Spiele = "spiele",
+  Lesen = "lesen",
+  Schreiben = "schreiben",
+}
