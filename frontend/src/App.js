@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import ChallengeDetail from "./src/ChallengeDetail";
-import ChallengeStats from "./src/ChallengeStats";
+import ChallengeDetail from "./ChallengeDetail";
+import ChallengeStats from "./ChallengeStats";
 import "./App.css";
 
 function App() {
