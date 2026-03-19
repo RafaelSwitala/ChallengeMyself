@@ -1,6 +1,3 @@
-"""
-Flask Server Runner - Einfach und zuverlässig
-"""
 import sys
 import time
 import os

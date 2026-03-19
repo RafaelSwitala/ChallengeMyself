@@ -6,24 +6,6 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Field:
-    """
-    Represents a data field in a challenge.
-    
-    Attributes:
-        name: Field identifier (e.g., 'distanz_km')
-        type: Data type ('number', 'enum', 'text')
-        unit: Optional unit for display (e.g., 'km', 'min', '%')
-        values: For enum fields, list of allowed values
-        chart_type: Which charts support this field
-                   - 'line': only line charts
-                   - 'bar': only bar charts (single value or count of enum)
-                   - 'both': line and bar
-                   - 'none': category field (not for charts)
-                   - 'enum_bar': enum field, show counts in bar chart
-        required: Whether this field is mandatory for the user
-        hidden: If True, field is calculated automatically (not shown in form)
-        calculator: Optional function to calculate hidden field from other values
-    """
     name: str
     type: str
     unit: Optional[str] = None
@@ -34,7 +16,6 @@ class Field:
     calculator: Optional[Callable] = None
 
     def to_dict(self) -> dict:
-        """Converts Field to JSON-compatible dict."""
         data = {
             "name": self.name,
             "type": self.type,
@@ -49,7 +30,6 @@ class Field:
         return data
 
 def calc_geschwindigkeit_kmh(session: dict) -> Optional[float]:
-    """Calculate speed: distance / duration * 60"""
     if "distanz_km" in session and "dauer_min" in session:
         distanz = session.get("distanz_km")
         dauer = session.get("dauer_min")
@@ -58,7 +38,6 @@ def calc_geschwindigkeit_kmh(session: dict) -> Optional[float]:
     return None
 
 def calc_seiten_pro_stunde(session: dict) -> Optional[float]:
-    """Calculate pages per hour: pages / (duration / 60)"""
     if "seiten_anzahl" in session and "dauer_min" in session:
         seiten = session.get("seiten_anzahl")
         dauer = session.get("dauer_min")
@@ -67,7 +46,6 @@ def calc_seiten_pro_stunde(session: dict) -> Optional[float]:
     return None
 
 def calc_gesamtanzahl_liegestutze(session: dict) -> Optional[int]:
-    """Calculate total push-ups: sets * avg_per_set"""
     if "sets_anzahl" in session and "durchschnitt_pro_set" in session:
         sets = session.get("sets_anzahl")
         avg = session.get("durchschnitt_pro_set")
@@ -76,7 +54,6 @@ def calc_gesamtanzahl_liegestutze(session: dict) -> Optional[int]:
     return None
 
 def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[float]:
-    """Calculate swimming speed: distance (m) / (duration / 60)"""
     if "distanz_m" in session and "dauer_min" in session:
         distanz = session.get("distanz_m")
         dauer = session.get("dauer_min")
@@ -377,16 +354,6 @@ def calculate_hidden_fields(activity: str, session: dict) -> dict:
 
 
 def get_numeric_fields(activity: str, chart_type: Optional[str] = None) -> list[str]:
-    """
-    Returns numeric field names for an activity.
-    
-    Args:
-        activity: Activity name
-        chart_type: Filter by chart_type ('line', 'bar', 'both', 'enum_bar', None=all)
-    
-    Returns:
-        List of numeric field names suitable for charts
-    """
     try:
         fields = ACTIVITIES.get(activity, [])
         numeric = [
@@ -410,7 +377,6 @@ def get_numeric_fields(activity: str, chart_type: Optional[str] = None) -> list[
 
 
 def get_enum_fields(activity: str) -> list[str]:
-    """Returns enum field names (for filtering/grouping/enum bar charts)."""
     try:
         fields = ACTIVITIES.get(activity, [])
         return [f.name for f in fields if f.type == "enum" and f.chart_type in ["enum_bar", "both"]]
@@ -420,7 +386,6 @@ def get_enum_fields(activity: str) -> list[str]:
 
 
 def get_category_fields(activity: str) -> list[str]:
-    """Returns enum/text field names (for filtering/grouping)."""
     try:
         fields = ACTIVITIES.get(activity, [])
         return [f.name for f in fields if f.type == "enum" and f.chart_type == "none"]
@@ -430,7 +395,6 @@ def get_category_fields(activity: str) -> list[str]:
 
 
 def get_field_unit(activity: str, field_name: str) -> Optional[str]:
-    """Returns the unit for a specific field."""
     try:
         fields = ACTIVITIES.get(activity, [])
         for f in fields:
@@ -443,5 +407,4 @@ def get_field_unit(activity: str, field_name: str) -> Optional[str]:
 
 
 def get_comparison_features(activity: str) -> List[str]:
-    """Returns enum fields suitable for comparisons."""
     return COMPARISON_FEATURES.get(activity, [])
