@@ -68,6 +68,8 @@ ACTIVITIES: dict[str, list[str]] = {
         "distance",
         "duration",
         "weather",
+        "route_type",
+        "notes"
     ],
 
     # "Radfahren": [
