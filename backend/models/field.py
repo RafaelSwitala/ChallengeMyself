@@ -97,6 +97,28 @@ def create_enum_field(enum_cls: Type[Enum], custom_label: Optional[str] = None, 
     )
 
 
+def create_range_field(key: str, label: str) -> Field:
+    """
+    Generiert automatisch ein Range Field (0-10 Skalierung).
+
+    Args:
+        key: Eindeutige Field-ID (z.B. "mood_value")
+        label: Benutzer-freundliches Label (z.B. "Stimmung")
+    """
+    return Field(
+        key=key,
+        label=label,
+        field_type=FieldType.INTEGER,
+        chart_type=ChartType.VALUE,
+        unit=None,
+        required=True,
+        hidden=False,
+        min_value=0,
+        max_value=10,
+        average_possible=True,
+    )
+
+
 # ============================================================================
 # ENUM-TYPEN FÜR AUTOMATISCHE FIELD-GENERIERUNG
 # ============================================================================
@@ -165,6 +187,37 @@ ENUM_TYPES_WITH_LABELS = {
 ENUM_FIELDS = {
     create_enum_field(enum_cls, label).key: create_enum_field(enum_cls, label)
     for enum_cls, label in ENUM_TYPES_WITH_LABELS.items()
+}
+
+
+# ============================================================================
+# RANGE-FIELDS FÜR AUTOMATISCHE GENERIERUNG (0-10 SKALIERUNG)
+# ============================================================================
+
+RANGE_FIELDS_WITH_LABELS = {
+    # Key: field key, Value: Benutzer-freundliches Label
+    "mood_value": "Stimmung",
+    "stress_value": "Stress",
+    "energy_level": "Energie",
+    "motivation_value": "Motivation",
+    "physical_discomfort": "Körperliches Unbehagen",
+    "physical_energy": "Körperliche Energie",
+    "mental_energy": "Mentale Energie",
+    "self_confidence": "Selbstvertrauen",
+    "anxiety_level": "Angstzustand",
+    "hunger_level": "Hungerlevel",
+    "satiety_level": "Sättigungsgefühl",
+    "concentration_value": "Konzentration",
+    "success_value": "Erfolgswert",
+    "focus_level": "Fokus",
+    "sleep_quality": "Schlafqualität",
+    "craving_intensity": "Verlangen Intensität",
+}
+
+# Generiere automatisch alle Range Fields
+RANGE_FIELDS = {
+    create_range_field(key, label).key: create_range_field(key, label)
+    for key, label in RANGE_FIELDS_WITH_LABELS.items()
 }
 
 
@@ -309,57 +362,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         average_possible=True,
     ),
 
-    # ========== KONZENTRATION & FOKUS (0-10 RANGE) ==========
-    "concentration_value": Field(
-        key="concentration_value",
-        label="Konzentration",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "success_value": Field(
-        key="success_value",
-        label="Erfolgswert",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "focus_level": Field(
-        key="focus_level",
-        label="Fokus",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-
-    # ========== SCHLAF ==========
-    "sleep_quality": Field(
-        key="sleep_quality",
-        label="Schlafqualität",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
+    # ========== SCHLAF - NICHT-RANGE FELDER ==========
     "number_of_wakeups": Field(
         key="number_of_wakeups",
         label="Aufwachanzahl",
@@ -370,6 +373,12 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         min_value=0,
         average_possible=True,
     ),
+
+    # ========== KONZENTRATION & FOKUS (0-10 RANGE) ==========
+    # Diese werden automatisch von RANGE_FIELDS generiert
+
+    # ========== SCHLAF ==========
+    # Diese werden automatisch von RANGE_FIELDS generiert
 
     # ========== GETRÄNKE & WASSER ==========
     "amount": Field(
@@ -395,156 +404,15 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         min_value=0,
         average_possible=True,
     ),
-    "craving_intensity": Field(
-        key="craving_intensity",
-        label="Verlangen Intensität",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
 
     # ========== STIMMUNG & EMOTIONEN (0-10 RANGE) ==========
-    "mood_value": Field(
-        key="mood_value",
-        label="Stimmung",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "stress_value": Field(
-        key="stress_value",
-        label="Stress",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "energy_level": Field(
-        key="energy_level",
-        label="Energie",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "motivation_value": Field(
-        key="motivation_value",
-        label="Motivation",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "physical_discomfort": Field(
-        key="physical_discomfort",
-        label="Körperliches Unbehagen",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
+    # Diese werden automatisch von RANGE_FIELDS generiert
 
     # ========== KÖRPER & MENTAL (0-10 RANGE) ==========
-    "physical_energy": Field(
-        key="physical_energy",
-        label="Körperliche Energie",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "mental_energy": Field(
-        key="mental_energy",
-        label="Mentale Energie",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "self_confidence": Field(
-        key="self_confidence",
-        label="Selbstvertrauen",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "anxiety_level": Field(
-        key="anxiety_level",
-        label="Angstzustand",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
+    # Diese werden automatisch von RANGE_FIELDS generiert
 
     # ========== ERNÄHRUNG ==========
-    "hunger_level": Field(
-        key="hunger_level",
-        label="Hungerlevel",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
-    "satiety_level": Field(
-        key="satiety_level",
-        label="Sättigungsgefühl",
-        field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
-        unit="0-10",
-        required=False,
-        hidden=False,
-        min_value=0,
-        max_value=10,
-        average_possible=True,
-    ),
+    # Diese werden automatisch von RANGE_FIELDS generiert
 
     # ========== AUSGABEN & FINANZEN ==========
     "costs_amount": Field(
@@ -560,7 +428,10 @@ FIELD_DEFINITIONS: dict[str, Field] = {
     ),
 
     # ========== ENUM-TYPES (AUTOMATISCH GENERIERT) ==========
-    **ENUM_FIELDS
+    **ENUM_FIELDS,
+
+    # ========== RANGE-TYPES (AUTOMATISCH GENERIERT) ==========
+    **RANGE_FIELDS
 }
 
 
