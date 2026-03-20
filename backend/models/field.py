@@ -4,8 +4,8 @@ Definiert die Field-Klasse und zentrale Field-Registry mit FieldManager
 """
 
 from dataclasses import dataclass
-from typing import Optional, List, Any
-from .enums import FieldType, ChartType, WeatherType
+from typing import Optional, List, Any, Type
+from .enums import *
 
 
 @dataclass
@@ -18,7 +18,7 @@ class Field:
     label: str                          # Benutzer-freundlich: z.B. "Distanz"
     field_type: FieldType              # number, integer, enum, text, boolean
     chart_type: ChartType              # Wie wird es visualisiert
-    unit: Optional[str] = None         # z.B. "km", "min", "%", "0-10"
+    unit: Optional[str] = None         # z.B. "km", "min", "%"
     required: bool = False              # Pflichtfeld?
     hidden: bool = False                # Berechnetes Feld (nicht von User eingegeben)
     options: Optional[List[str]] = None # Enum-Optionen
@@ -26,6 +26,7 @@ class Field:
     min_value: Optional[float] = None   # Validierung: Minimum
     max_value: Optional[float] = None   # Validierung: Maximum
     calculator: Optional[str] = None    # Funktionsreferenz für Hidden Fields
+    average_possible: bool = False      # Kann ein Durchschnitt berechnet werden?
 
     def validate(self, value: Any) -> tuple[bool, Optional[str]]:
         """
@@ -70,6 +71,104 @@ class Field:
 
 
 # ============================================================================
+# HELPER-FUNKTIONEN FÜR ENUM-FIELD GENERIERUNG
+# ============================================================================
+
+def create_enum_field(enum_cls: Type[Enum], custom_label: Optional[str] = None, custom_key: Optional[str] = None) -> Field:
+    """
+    Generiert automatisch ein Field aus einem Enum-Klasse.
+
+    Args:
+        enum_cls: Die Enum-Klasse (z.B. WeatherType, RouteType)
+        custom_label: Optionales benutzerdefiniertes Label (z.B. "Wetter" statt "WeatherType")
+        custom_key: Optionaler benutzerdefinierter Key
+    """
+    key = custom_key or enum_cls.__name__
+    label = custom_label or enum_cls.__name__
+
+    return Field(
+        key=key,
+        label=label,
+        field_type=FieldType.ENUM,
+        chart_type=ChartType.ENUM_BAR,
+        required=False,
+        hidden=False,
+        options=[x.value for x in enum_cls],
+    )
+
+
+# ============================================================================
+# ENUM-TYPEN FÜR AUTOMATISCHE FIELD-GENERIERUNG
+# ============================================================================
+
+ENUM_TYPES_WITH_LABELS = {
+    # Key: Enum-Klasse, Value: Benutzer-freundliches Label
+    WeatherType: "Wetter",
+    RouteType: "Streckentyp",
+    MovementIntensityType: "Intensität",
+    AlcoholType: "Alkoholtyp",
+    AnxietyReasonType: "Angst-Grund",
+    CunsumptionMethodType: "Konsummethode",
+    BudgetCategoryType: "Budget-Kategorie",
+    CommunityActivityType: "Gemeinschaftsaktivität",
+    ConsumptionProductType: "Verbrauchsprodukt",
+    CulturalEventType: "Kulturelle Veranstaltung",
+    DeviceMainUseType: "Hauptnutzung Gerät",
+    DeviceType: "Gerätetyp",
+    DrinkTemperatureType: "Getränk-Temperatur",
+    DrinkType: "Getränketyp",
+    EatingContextType: "Ess-Kontext",
+    ExpensesType: "Ausgabentyp",
+    FoodQualityType: "Lebensmittelqualität",
+    HabitType: "Gewohnheitstyp",
+    HealthCheckType: "Gesundheitscheck",
+    HouseAreaType: "Wohnbereich",
+    HouseholdTaskType: "Haushaltsaufgabe",
+    ImmuneBoostType: "Immunstärkung",
+    IncomeType: "Einkommenstype",
+    InitiatorType: "Initiator",
+    InvestmentTypes: "Investitionstyp",
+    LanguageTrainingType: "Sprachtraining",
+    LearningFormatType: "Lernformat",
+    LocationType: "Ort",
+    MainMoodType: "Hauptstimmung",
+    MealType: "Mahlzeittyp",
+    MentalExerciseType: "Mentale Übung",
+    MindfulnessExerciseType: "Achtsamkeitsübung",
+    MotivationReferenceType: "Motivations-Bezug",
+    ObstacleType: "Hindernis",
+    OcassionType: "Anlass",
+    PortionSizeType: "Portionsgröße",
+    ReadingMediumType: "Lesemedium",
+    ReflectionType: "Reflexionstyp",
+    SavingGoalType: "Sparziel",
+    SideEffectType: "Nebenwirkung",
+    SkillTrainingType: "Skill-Training",
+    SnackType: "Snack-Typ",
+    SocialContextType: "Sozialer Kontext",
+    SportType: "Sporttyp",
+    StatusType: "Status",
+    SubstanceType: "Substanztyp",
+    SwimmingStyleType: "Schwimmstil",
+    TimeOfDayType: "Tageszeit",
+    TravelType: "Reiseart",
+    TriggerType: "Auslöser",
+    VolunteeringType: "Freiwilligenarbeit",
+    WaterSourceType: "Wasserquelle",
+    WaterTemperatureType: "Wassertemperatur",
+    WeatherExposureType: "Wetter-Exposition",
+    WorkoutType: "Trainingstyp",
+    WritingMediumType: "Schreibmedium",
+}
+
+# Generiere automatisch alle Enum Fields
+ENUM_FIELDS = {
+    create_enum_field(enum_cls, label).key: create_enum_field(enum_cls, label)
+    for enum_cls, label in ENUM_TYPES_WITH_LABELS.items()
+}
+
+
+# ============================================================================
 # ZENTRALE FIELD-REGISTRY - ALLE 85+ FELDER DEFINIERT
 # ============================================================================
 
@@ -95,17 +194,8 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=True,
         hidden=False,
         min_value=0,
+        average_possible=True,
         description="Zurückgelegte Distanz"
-    ),
-    "average_distance": Field(
-        key="average_distance",
-        label="⌀ Distanz",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="km",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
     ),
     "number_of_steps": Field(
         key="number_of_steps",
@@ -116,16 +206,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
-    ),
-    "average_number_of_steps": Field(
-        key="average_number_of_steps",
-        label="⌀ Schritte",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="Schritte",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
 
     # ========== ZEIT & DAUER ==========
@@ -138,17 +219,8 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=True,
         hidden=False,
         min_value=0,
+        average_possible=True,
         description="Dauer in Minuten"
-    ),
-    "average_duration": Field(
-        key="average_duration",
-        label="⌀ Dauer",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="min",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
     ),
 
     # ========== GESCHWINDIGKEIT (BERECHNET) ==========
@@ -161,16 +233,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=True,
         calculator="calculate_velocity",
-    ),
-    "average_velocity": Field(
-        key="average_velocity",
-        label="⌀ Geschwindigkeit",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="km/h",
-        required=False,
-        hidden=True,
-        calculator="calculate_average_velocity",
+        average_possible=True,
     ),
 
     # ========== PAUSEN ==========
@@ -182,6 +245,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
+        average_possible=True,
     ),
     "break_duration": Field(
         key="break_duration",
@@ -192,35 +256,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
-    ),
-
-    # ========== INTENSITÄT & QUALITÄT ==========
-    "movement_intensity": Field(
-        key="movement_intensity",
-        label="Intensität",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["sehr leicht", "leicht", "mittel", "intensiv", "sehr intensiv"],
-    ),
-    "route_type": Field(
-        key="route_type",
-        label="Streckentyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["asphalt", "schotter", "pfad", "wald", "mix"],
-    ),
-    "weather": Field(
-        key="weather",
-        label="Wetter",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=[w.value for w in WeatherType],
+        average_possible=True,
     ),
 
     # ========== KALORIENVERBRAUCH & ENERGIE ==========
@@ -233,6 +269,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
+        average_possible=True,
     ),
     "altitude": Field(
         key="altitude",
@@ -243,29 +280,10 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
+        average_possible=True,
     ),
 
-    # ========== SCHWIMMEN ==========
-    "swimming_style": Field(
-        key="swimming_style",
-        label="Schwimmstil",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["freistil", "rückenschwimmen", "brustschwimmen", "schmetterling", "gemischt"],
-    ),
-
-    # ========== WORKOUT & TRAINING ==========
-    "workout_type": Field(
-        key="workout_type",
-        label="Trainingsart",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["kraft", "ausdauer", "flexibilität", "gemischt", "yoga", "pilates"],
-    ),
+    # ========== TRAININGSPARAMETER ==========
     "number_of_exercises": Field(
         key="number_of_exercises",
         label="Anzahl Übungen",
@@ -275,9 +293,10 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
+        average_possible=True,
     ),
 
-    # ========== LESEN & SCHREIBEN ==========
+    # ========== SEITENANZAHL & LESEN ==========
     "number_of_pages": Field(
         key="number_of_pages",
         label="Seiten",
@@ -287,88 +306,33 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
-    ),
-    "pages_per_hour": Field(
-        key="pages_per_hour",
-        label="Seiten/Stunde",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="Seiten/h",
-        required=False,
-        hidden=True,
-        calculator="calculate_pages_per_hour",
-    ),
-    "pages_per_minute": Field(
-        key="pages_per_minute",
-        label="Seiten/Minute",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="Seiten/min",
-        required=False,
-        hidden=True,
-        calculator="calculate_pages_per_minute",
-    ),
-    "reading_medium": Field(
-        key="reading_medium",
-        label="Lesemedium",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["papierbuch", "ebook", "hörbuch", "artikel"],
-    ),
-    "writing_medium": Field(
-        key="writing_medium",
-        label="Schreibmedium",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["papier", "digital", "handschrift"],
+        average_possible=True,
     ),
 
-    # ========== KONZENTRATION & FOKUS ==========
+    # ========== KONZENTRATION & FOKUS (0-10 RANGE) ==========
     "concentration_value": Field(
         key="concentration_value",
         label="Konzentration",
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
-        unit="%",
+        unit="0-10",
         required=False,
         hidden=False,
         min_value=0,
-        max_value=100,
-    ),
-    "average_concentration_value": Field(
-        key="average_concentration_value",
-        label="⌀ Konzentration",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="%",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        max_value=10,
+        average_possible=True,
     ),
     "success_value": Field(
         key="success_value",
         label="Erfolgswert",
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
-        unit="%",
+        unit="0-10",
         required=False,
         hidden=False,
         min_value=0,
-        max_value=100,
-    ),
-    "average_success_value": Field(
-        key="average_success_value",
-        label="⌀ Erfolgswert",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="%",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        max_value=10,
+        average_possible=True,
     ),
     "focus_level": Field(
         key="focus_level",
@@ -380,16 +344,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_focus_level": Field(
-        key="average_focus_level",
-        label="⌀ Fokus",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
 
     # ========== SCHLAF ==========
@@ -398,21 +353,12 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         label="Schlafqualität",
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
-        unit="%",
+        unit="0-10",
         required=False,
         hidden=False,
         min_value=0,
-        max_value=100,
-    ),
-    "average_sleep_quality": Field(
-        key="average_sleep_quality",
-        label="⌀ Schlafqualität",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="%",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        max_value=10,
+        average_possible=True,
     ),
     "number_of_wakeups": Field(
         key="number_of_wakeups",
@@ -422,6 +368,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
+        average_possible=True,
     ),
 
     # ========== GETRÄNKE & WASSER ==========
@@ -434,70 +381,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=True,
         hidden=False,
         min_value=0,
-    ),
-    "average_amount": Field(
-        key="average_amount",
-        label="⌀ Menge",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="ml",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
-    ),
-    "water_source": Field(
-        key="water_source",
-        label="Wasserquelle",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["leitung", "flasche", "brunnen", "fluss", "sonstig"],
-    ),
-    "water_temperature": Field(
-        key="water_temperature",
-        label="Wassertemperatur",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["eiskalt", "kalt", "kühl", "zimmertemperatur", "warm", "heiß"],
-    ),
-    "drink_type": Field(
-        key="drink_type",
-        label="Getränketyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["wasser", "kaffee", "tee", "limonade", "saft", "milch", "alkohol", "sonstig"],
-    ),
-    "drink_temperature": Field(
-        key="drink_temperature",
-        label="Getränketemperatur",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["eiskalt", "kalt", "zimmertemperatur", "warm", "heiß"],
-    ),
-    "alcohol_type": Field(
-        key="alcohol_type",
-        label="Alkoholtyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["bier", "wein", "spirituosen", "cocktail", "apfelwein"],
-    ),
-    "occasion": Field(
-        key="occasion",
-        label="Anlass",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["feier", "gesellig", "entspannung", "stressabbau", "sonstig"],
+        average_possible=True,
     ),
 
     # ========== RAUCHEN ==========
@@ -509,49 +393,33 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         required=False,
         hidden=False,
         min_value=0,
-    ),
-    "average_smoke_amount": Field(
-        key="average_smoke_amount",
-        label="⌀ Rauchmenge",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "craving_intensity": Field(
         key="craving_intensity",
         label="Verlangen Intensität",
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
-        unit="%",
+        unit="0-10",
         required=False,
         hidden=False,
         min_value=0,
-        max_value=100,
+        max_value=10,
+        average_possible=True,
     ),
 
-    # ========== STIMMUNG & EMOTIONEN ==========
+    # ========== STIMMUNG & EMOTIONEN (0-10 RANGE) ==========
     "mood_value": Field(
         key="mood_value",
         label="Stimmung",
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
         unit="0-10",
-        required=True,
+        required=False,
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_mood_value": Field(
-        key="average_mood_value",
-        label="⌀ Stimmung",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "stress_value": Field(
         key="stress_value",
@@ -559,20 +427,11 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
         unit="0-10",
-        required=True,
+        required=False,
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_stress_value": Field(
-        key="average_stress_value",
-        label="⌀ Stress",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "energy_level": Field(
         key="energy_level",
@@ -580,20 +439,11 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
         unit="0-10",
-        required=True,
+        required=False,
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_energy_level": Field(
-        key="average_energy_level",
-        label="⌀ Energie",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "motivation_value": Field(
         key="motivation_value",
@@ -601,56 +451,11 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         field_type=FieldType.INTEGER,
         chart_type=ChartType.BOTH,
         unit="0-10",
-        required=True,
+        required=False,
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_motivation_value": Field(
-        key="average_motivation_value",
-        label="⌀ Motivation",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
-    ),
-    "main_mood": Field(
-        key="main_mood",
-        label="Hauptgefühl",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["freude", "traurigkeit", "wut", "angst", "überraschung", "ekel", "neutral"],
-    ),
-    "trigger": Field(
-        key="trigger",
-        label="Auslöser",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["arbeit", "beziehung", "gesundheit", "geld", "familie", "soziales", "sonstig"],
-    ),
-    "time_of_day": Field(
-        key="time_of_day",
-        label="Tageszeit",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["morgen", "mittag", "abend", "nacht"],
-    ),
-    "obstacle": Field(
-        key="obstacle",
-        label="Hindernis",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["zeit", "motivation", "energie", "geld", "gesundheit", "wetter", "sonstig"],
+        average_possible=True,
     ),
     "physical_discomfort": Field(
         key="physical_discomfort",
@@ -662,19 +467,10 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_physical_discomfort": Field(
-        key="average_physical_discomfort",
-        label="⌀ Körperliches Unbehagen",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
 
-    # ========== KÖRPER & MENTAL ==========
+    # ========== KÖRPER & MENTAL (0-10 RANGE) ==========
     "physical_energy": Field(
         key="physical_energy",
         label="Körperliche Energie",
@@ -685,16 +481,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_physical_energy": Field(
-        key="average_physical_energy",
-        label="⌀ Körperliche Energie",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "mental_energy": Field(
         key="mental_energy",
@@ -706,16 +493,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_mental_energy": Field(
-        key="average_mental_energy",
-        label="⌀ Mentale Energie",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "self_confidence": Field(
         key="self_confidence",
@@ -727,16 +505,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_self_confidence": Field(
-        key="average_self_confidence",
-        label="⌀ Selbstvertrauen",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
     "anxiety_level": Field(
         key="anxiety_level",
@@ -748,46 +517,10 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-    "average_anxiety_level": Field(
-        key="average_anxiety_level",
-        label="⌀ Angstzustand",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="0-10",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
 
     # ========== ERNÄHRUNG ==========
-    "meal_type": Field(
-        key="meal_type",
-        label="Mahlzeittyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["frühstück", "mittagessen", "abendessen", "snack", "dessert"],
-    ),
-    "food_quality": Field(
-        key="food_quality",
-        label="Lebensmittelqualität",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["sehr ungesund", "ungesund", "neutral", "gesund", "sehr gesund"],
-    ),
-    "portion_size": Field(
-        key="portion_size",
-        label="Portionsgröße",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["sehr klein", "klein", "mittel", "groß", "sehr groß"],
-    ),
     "hunger_level": Field(
         key="hunger_level",
         label="Hungerlevel",
@@ -798,6 +531,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
+        average_possible=True,
     ),
     "satiety_level": Field(
         key="satiety_level",
@@ -809,55 +543,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         max_value=10,
-    ),
-
-    # ========== BILDSCHIRMZEIT & GERÄTE ==========
-    "device_type": Field(
-        key="device_type",
-        label="Gerätetyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["telefon", "tablet", "laptop", "desktop", "smartwatch"],
-    ),
-    "device_main_use": Field(
-        key="device_main_use",
-        label="Hauptnutzung",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["arbeit", "kommunikation", "unterhaltung", "bildung", "sonstig"],
-    ),
-
-    # ========== LERNFORMAT & SPRACHE ==========
-    "learn_format": Field(
-        key="learn_format",
-        label="Lernformat",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["video", "buch", "interaktiv", "praktisch", "gruppe"],
-    ),
-    "language": Field(
-        key="language",
-        label="Sprache",
-        field_type=FieldType.TEXT,
-        chart_type=ChartType.NONE,
-        required=True,
-        hidden=False,
-        description="Lernsprache (z.B. Spanisch, Französisch)"
-    ),
-    "language_training_type": Field(
-        key="language_training_type",
-        label="Trainingstyp",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["sprechen", "hören", "lesen", "schreiben", "grammatik", "vokabeln"],
+        average_possible=True,
     ),
 
     # ========== AUSGABEN & FINANZEN ==========
@@ -867,71 +553,14 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         field_type=FieldType.NUMBER,
         chart_type=ChartType.BOTH,
         unit="€",
-        required=True,
+        required=False,
         hidden=False,
         min_value=0,
-    ),
-    "average_costs_amount": Field(
-        key="average_costs_amount",
-        label="⌀ Ausgabenbetrag",
-        field_type=FieldType.NUMBER,
-        chart_type=ChartType.VALUE,
-        unit="€",
-        required=False,
-        hidden=True,
-        calculator="calculate_average",
+        average_possible=True,
     ),
 
-    # ========== ORT & SOZIALES ==========
-    "location_type": Field(
-        key="location_type",
-        label="Ort",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["zuhause", "arbeit", "draußen", "fitnessstudio", "park", "öffentlich"],
-    ),
-    "social_context": Field(
-        key="social_context",
-        label="Sozialer Kontext",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["allein", "mit freund", "mit familie", "mit gruppe", "mit partner"],
-    ),
-
-    # ========== HAUSHALT ==========
-    "household_task": Field(
-        key="household_task",
-        label="Haushaltsaufgabe",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["küche", "wohnzimmer", "schlafzimmer", "badezimmer", "wäsche", "putzen"],
-    ),
-    "house_area": Field(
-        key="house_area",
-        label="Wohnungsbereich",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["küche", "wohnzimmer", "schlafzimmer", "badezimmer", "wäsche", "putzen"],
-    ),
-
-    # ========== STATUS ==========
-    "status": Field(
-        key="status",
-        label="Status",
-        field_type=FieldType.ENUM,
-        chart_type=ChartType.ENUM_BAR,
-        required=False,
-        hidden=False,
-        options=["geplant", "in_progress", "completed", "pausiert", "abgebrochen"],
-    ),
+    # ========== ENUM-TYPES (AUTOMATISCH GENERIERT) ==========
+    **ENUM_FIELDS
 }
 
 
@@ -969,7 +598,12 @@ class FieldManager:
     @staticmethod
     def get_chart_fields() -> List[Field]:
         """Gibt Felder zurück, die in Diagrammen angezeigt werden können"""
-        return [f for f in FIELD_DEFINITIONS.values() if f.chart_type.value != "none"]
+        return [f for f in FIELD_DEFINITIONS.values() if f.chart_type != ChartType.NONE]
+
+    @staticmethod
+    def get_average_fields() -> List[Field]:
+        """Gibt Felder zurück, für die Durchschnitte berechnet werden können"""
+        return [f for f in FIELD_DEFINITIONS.values() if f.average_possible and f.field_type in [FieldType.NUMBER, FieldType.INTEGER]]
 
     @staticmethod
     def validate_value(field_key: str, value: Any) -> tuple[bool, Optional[str]]:

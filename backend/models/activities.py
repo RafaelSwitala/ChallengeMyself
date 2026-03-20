@@ -67,9 +67,8 @@ ACTIVITIES: dict[str, list[str]] = {
     ActivityType.JOGGING.value: [
         "distance",
         "duration",
-        "weather",
-        "route_type",
-        "notes"
+        "WeatherType",        # Enum-Feld (automatisch generiert)
+        "RouteType",          # Enum-Feld (automatisch generiert)
     ],
 
     # "Radfahren": [

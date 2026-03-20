@@ -64,14 +64,6 @@ class ActivityType(Enum):
     # WRITING = "Schreiben"
     # YOGA = "Yoga"
 
-
-    
-    
-    
-    
-    
-
-
 class GoalType(Enum):
     """12 Zieltypen A-L"""
     MORE_THAN = "a"           # Mehr als X
@@ -105,12 +97,14 @@ class FieldType(Enum):
     TEXT = "text"
     BOOLEAN = "boolean"
     DATE = "Date"
+    RANGE = "Range 0 bis 10"
 
 
 class ChartType(Enum):
     """Diagrammtypen"""
     LINE = "line"
     BAR = "bar"
+    BOTH = "both"
     ENUM_BAR = "enum_bar"
     NONE = "none"
     VALUE = "value"
