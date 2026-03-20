@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field as dataclass_field
 from typing import Optional, List, Callable
 import logging
-from .enums import ActivityType, WeatherType
+from .enums import *
+from .field import FIELD_DEFINITIONS
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +63,11 @@ def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[
             return round((distanz / dauer) * 60, 2)
     return None
 
-ACTIVITIES: dict[str, list[Field]] = {
+ACTIVITIES: dict[str, list[str]] = {
     ActivityType.JOGGING.value: [
-        Field("distance", "number", "km", chart_type="line", required=True),
-        Field("duration", "number", "min", chart_type="line", required=True),
-        Field("weather_type", "enum", values=[w.value for w in WeatherType], chart_type="enum_bar", required=False),
+        "distance",
+        "duration",
+        "weather",
     ],
 
     # "Radfahren": [
@@ -284,23 +285,40 @@ def get_activity_names() -> list[str]:
 def get_fields(activity: str) -> list[dict]:
     """Returns all fields for a specific activity as dicts."""
     try:
-        fields = ACTIVITIES.get(activity, [])
-        return [f.to_dict() for f in fields]
+        field_keys = ACTIVITIES.get(activity, [])
+        return [FIELD_DEFINITIONS[key].to_dict() if hasattr(FIELD_DEFINITIONS[key], 'to_dict')
+                else {
+                    "key": FIELD_DEFINITIONS[key].key,
+                    "label": FIELD_DEFINITIONS[key].label,
+                    "field_type": FIELD_DEFINITIONS[key].field_type.value,
+                    "chart_type": FIELD_DEFINITIONS[key].chart_type.value,
+                    "required": FIELD_DEFINITIONS[key].required,
+                    "hidden": FIELD_DEFINITIONS[key].hidden,
+                    "unit": FIELD_DEFINITIONS[key].unit,
+                    "options": FIELD_DEFINITIONS[key].options,
+                }
+                for key in field_keys if key in FIELD_DEFINITIONS]
     except Exception:
         logger.exception("Failed to get fields for activity %s", activity)
         return []
 
 
-def get_field_objects(activity: str) -> list[Field]:
-    """Returns all field objects for a specific activity (with calculator functions)."""
-    return ACTIVITIES.get(activity, [])
+def get_field_objects(activity: str) -> list:
+    """Returns all field objects for a specific activity."""
+    try:
+        field_keys = ACTIVITIES.get(activity, [])
+        return [FIELD_DEFINITIONS[key] for key in field_keys if key in FIELD_DEFINITIONS]
+    except Exception:
+        logger.exception("Failed to get field objects for %s", activity)
+        return []
 
 
 def get_required_fields(activity: str) -> list[str]:
     """Returns required field names for an activity."""
     try:
-        fields = ACTIVITIES.get(activity, [])
-        return [f.name for f in fields if f.required and not f.hidden]
+        field_keys = ACTIVITIES.get(activity, [])
+        return [key for key in field_keys
+                if key in FIELD_DEFINITIONS and FIELD_DEFINITIONS[key].required and not FIELD_DEFINITIONS[key].hidden]
     except Exception:
         logger.exception(f"Failed to get required fields for {activity}")
         return []
@@ -309,8 +327,8 @@ def get_required_fields(activity: str) -> list[str]:
 def get_hidden_fields(activity: str) -> list[str]:
     """Returns hidden (calculated) field names for an activity."""
     try:
-        fields = ACTIVITIES.get(activity, [])
-        return [f.name for f in fields if f.hidden]
+        field_keys = ACTIVITIES.get(activity, [])
+        return [key for key in field_keys if key in FIELD_DEFINITIONS and FIELD_DEFINITIONS[key].hidden]
     except Exception:
         logger.exception(f"Failed to get hidden fields for {activity}")
         return []
@@ -346,21 +364,25 @@ def calculate_hidden_fields(activity: str, session: dict) -> dict:
 
 def get_numeric_fields(activity: str, chart_type: Optional[str] = None) -> list[str]:
     try:
-        fields = ACTIVITIES.get(activity, [])
+        field_keys = ACTIVITIES.get(activity, [])
         numeric = [
-            f.name for f in fields
-            if f.type == "number" and f.chart_type != "none" and not f.hidden
+            key for key in field_keys
+            if key in FIELD_DEFINITIONS
+            and FIELD_DEFINITIONS[key].field_type.value in ["number", "integer"]
+            and FIELD_DEFINITIONS[key].chart_type.value != "none"
+            and not FIELD_DEFINITIONS[key].hidden
         ]
-        
+
         if chart_type:
             numeric = [
-                f.name for f in fields
-                if f.type == "number"
-                and (f.chart_type == chart_type or f.chart_type == "both")
-                and f.chart_type != "none"
-                and not f.hidden
+                key for key in field_keys
+                if key in FIELD_DEFINITIONS
+                and FIELD_DEFINITIONS[key].field_type.value in ["number", "integer"]
+                and (FIELD_DEFINITIONS[key].chart_type.value == chart_type or FIELD_DEFINITIONS[key].chart_type.value == "both")
+                and FIELD_DEFINITIONS[key].chart_type.value != "none"
+                and not FIELD_DEFINITIONS[key].hidden
             ]
-        
+
         return numeric
     except Exception:
         logger.exception(f"Failed to get numeric fields for {activity}")
@@ -369,8 +391,11 @@ def get_numeric_fields(activity: str, chart_type: Optional[str] = None) -> list[
 
 def get_enum_fields(activity: str) -> list[str]:
     try:
-        fields = ACTIVITIES.get(activity, [])
-        return [f.name for f in fields if f.type == "enum" and f.chart_type in ["enum_bar", "both"]]
+        field_keys = ACTIVITIES.get(activity, [])
+        return [key for key in field_keys
+                if key in FIELD_DEFINITIONS
+                and FIELD_DEFINITIONS[key].field_type.value == "enum"
+                and FIELD_DEFINITIONS[key].chart_type.value in ["enum_bar", "both"]]
     except Exception:
         logger.exception(f"Failed to get enum fields for {activity}")
         return []
@@ -378,8 +403,11 @@ def get_enum_fields(activity: str) -> list[str]:
 
 def get_category_fields(activity: str) -> list[str]:
     try:
-        fields = ACTIVITIES.get(activity, [])
-        return [f.name for f in fields if f.type == "enum" and f.chart_type == "none"]
+        field_keys = ACTIVITIES.get(activity, [])
+        return [key for key in field_keys
+                if key in FIELD_DEFINITIONS
+                and FIELD_DEFINITIONS[key].field_type.value == "enum"
+                and FIELD_DEFINITIONS[key].chart_type.value == "none"]
     except Exception:
         logger.exception(f"Failed to get category fields for {activity}")
         return []
@@ -387,10 +415,10 @@ def get_category_fields(activity: str) -> list[str]:
 
 def get_field_unit(activity: str, field_name: str) -> Optional[str]:
     try:
-        fields = ACTIVITIES.get(activity, [])
-        for f in fields:
-            if f.name == field_name:
-                return f.unit
+        field_keys = ACTIVITIES.get(activity, [])
+        for key in field_keys:
+            if key == field_name and key in FIELD_DEFINITIONS:
+                return FIELD_DEFINITIONS[key].unit
         return None
     except Exception:
         logger.exception(f"Failed to get unit for {activity}.{field_name}")

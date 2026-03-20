@@ -5,7 +5,7 @@ Definiert die Field-Klasse und zentrale Field-Registry mit FieldManager
 
 from dataclasses import dataclass
 from typing import Optional, List, Any
-from .enums import FieldType, ChartType
+from .enums import FieldType, ChartType, WeatherType
 
 
 @dataclass
@@ -220,7 +220,7 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         chart_type=ChartType.ENUM_BAR,
         required=False,
         hidden=False,
-        options=["sonnig", "bewölkt", "regnerisch", "schneereich", "windig", "neblig"],
+        options=[w.value for w in WeatherType],
     ),
 
     # ========== KALORIENVERBRAUCH & ENERGIE ==========
