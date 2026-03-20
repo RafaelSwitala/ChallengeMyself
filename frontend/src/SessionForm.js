@@ -10,7 +10,7 @@ function SessionForm({ fields, onSubmit }) {
   useEffect(() => {
     const initial = {};
     fields.forEach((f) => {
-      initial[f.name] = "";
+      initial[f.key] = "";
     });
     setValues(initial);
   }, [fields]);
@@ -24,13 +24,13 @@ function SessionForm({ fields, onSubmit }) {
 
   const validate = () => {
     const newErrors = {};
-    
+
     if (!date) newErrors.date = true;
     if (!time) newErrors.time = true;
 
     fields.forEach((f) => {
-      if (f.required && !f.hidden && !values[f.name]) {
-        newErrors[f.name] = true;
+      if (f.required && !f.hidden && !values[f.key]) {
+        newErrors[f.key] = true;
       }
     });
 
@@ -55,7 +55,7 @@ function SessionForm({ fields, onSubmit }) {
     setTime("");
     const cleared = {};
     fields.forEach((f) => {
-      cleared[f.name] = "";
+      cleared[f.key] = "";
     });
     setValues(cleared);
     setErrors({});
@@ -99,42 +99,42 @@ function SessionForm({ fields, onSubmit }) {
         {userFields.map((f) => (
           <div
             className="form-group"
-            key={f.name}
+            key={f.key}
             style={{ gridColumn: f.required ? "span 1" : "span 1" }}
           >
-            <label htmlFor={f.name} className={f.required ? "required" : ""}>
-              {f.name} {f.unit ? `(${f.unit})` : ""}
+            <label htmlFor={f.key} className={f.required ? "required" : ""}>
+              {f.label} {f.unit ? `(${f.unit})` : ""}
             </label>
 
-            {f.type === "enum" ? (
+            {f.field_type === "enum" ? (
               <>
                 <select
-                  id={f.name}
-                  value={values[f.name] || ""}
-                  onChange={(e) => handleChange(f.name, e.target.value)}
-                  className={errors[f.name] ? "error" : ""}
+                  id={f.key}
+                  value={values[f.key] || ""}
+                  onChange={(e) => handleChange(f.key, e.target.value)}
+                  className={errors[f.key] ? "error" : ""}
                 >
                   <option value="">-- Bitte wählen --</option>
-                  {f.values?.map((v) => (
+                  {f.options?.map((v) => (
                     <option key={v} value={v}>
                       {v}
                     </option>
                   ))}
                 </select>
-                {errors[f.name] && <span className="error-text">Erforderlich</span>}
+                {errors[f.key] && <span className="error-text">Erforderlich</span>}
               </>
             ) : (
               <>
                 <input
-                  id={f.name}
-                  type={f.type === "number" ? "number" : "text"}
-                  step={f.type === "number" ? "0.01" : undefined}
-                  value={values[f.name] || ""}
-                  onChange={(e) => handleChange(f.name, e.target.value)}
-                  className={errors[f.name] ? "error" : ""}
+                  id={f.key}
+                  type={f.field_type === "number" ? "number" : "text"}
+                  step={f.field_type === "number" ? "0.01" : undefined}
+                  value={values[f.key] || ""}
+                  onChange={(e) => handleChange(f.key, e.target.value)}
+                  className={errors[f.key] ? "error" : ""}
                   placeholder={f.required ? "Erforderlich" : "Optional"}
                 />
-                {errors[f.name] && <span className="error-text">Erforderlich</span>}
+                {errors[f.key] && <span className="error-text">Erforderlich</span>}
               </>
             )}
           </div>

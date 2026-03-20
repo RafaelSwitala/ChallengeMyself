@@ -1,10 +1,3 @@
-"""
-Goal Tracking Module
-
-Provides goal definition schemas and progress calculation logic for each activity.
-Handles goal validation, progress calculation, and status determination.
-"""
-
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 import logging
@@ -12,18 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class GoalDefinition:
-    """
-    Defines allowed goal configurations for a specific activity.
-    
-    Attributes:
-        activity_name (str): Name of the activity
-        allowed_references (List[str]): Field references that can be tracked
-        reference_units (Dict[str, str]): Units for each reference
-        allowed_periods (List[str]): Valid period types
-        status_types (List[str]): Possible status values
-    """
-    
+class GoalDefinition:   
     def __init__(
         self,
         activity_name: str,
@@ -39,23 +21,12 @@ class GoalDefinition:
         self.status_types = status_types
 
     def validate_goal(self, reference: str, period: str) -> bool:
-        """
-        Validate if goal configuration is allowed for this activity.
-        
-        Args:
-            reference (str): Field reference to track
-            period (str): Time period
-            
-        Returns:
-            bool: True if valid, False otherwise
-        """
         return (
             reference in self.allowed_references and
             period in self.allowed_periods
         )
 
 
-# Goal definitions for each activity
 GOAL_DEFINITIONS = {
     "Laufen": GoalDefinition(
         activity_name="Laufen",
@@ -120,8 +91,8 @@ GOAL_DEFINITIONS = {
         allowed_periods=["daily", "weekly"],
         status_types=["too_short", "too_long", "in_range"]
     ),
-    "Bildschirmzeit": GoalDefinition(
-        activity_name="Bildschirmzeit",
+    "Bildschirmzeit22": GoalDefinition(
+        activity_name="Bildschirmzeit33",
         allowed_references=["dauer_min", "dauer_min_average"],
         reference_units={"dauer_min": "min", "dauer_min_average": "min"},
         allowed_periods=["daily", "weekly"],
@@ -162,28 +133,10 @@ NO_GOAL_ACTIVITIES = ["Stimmung", "Stress", "Energielevel", "Motivation"]
 
 
 def get_goal_definition(activity_name: str) -> Optional[GoalDefinition]:
-    """
-    Get goal definition for an activity.
-    
-    Args:
-        activity_name (str): Name of activity
-        
-    Returns:
-        Optional[GoalDefinition]: Goal definition or None if activity has no goals
-    """
     return GOAL_DEFINITIONS.get(activity_name)
 
 
 def supports_goals(activity_name: str) -> bool:
-    """
-    Check if activity supports goals.
-    
-    Args:
-        activity_name (str): Name of activity
-        
-    Returns:
-        bool: True if activity supports goals
-    """
     if activity_name in NO_GOAL_ACTIVITIES:
         return False
     return activity_name in GOAL_DEFINITIONS
@@ -197,20 +150,6 @@ def calculate_progress(
     activity_name: str,
     selected_date: str = None
 ) -> Dict[str, Any]:
-    """
-    Calculate progress towards a goal based on sessions with period filtering.
-    
-    Args:
-        sessions (List[Dict]): List of session dictionaries with 'date' and 'values'
-        goal_reference (str): Field reference to track (e.g., 'distance_km')
-        goal_target (float): Target value
-        goal_period (str): Period type (daily, weekly, monthly, yearly, date_range)
-        activity_name (str): Activity name
-        selected_date (str): Optional date for filtering (YYYY-MM-DD for daily, YYYY-MM for monthly)
-        
-    Returns:
-        Dict: Progress data including current value, status, message, consecutive_days
-    """
     try:
         from datetime import datetime, timedelta
         
@@ -227,11 +166,9 @@ def calculate_progress(
                 "period_label": goal_period
             }
         
-        # Get goal definition for units
         goal_def = GOAL_DEFINITIONS.get(activity_name, {})
         unit = goal_def.reference_units.get(goal_reference, "") if goal_def else ""
         
-        # Filter sessions by period
         filtered_sessions = _filter_sessions_by_period(sessions, goal_period, selected_date)
         
         if not filtered_sessions:
@@ -246,7 +183,6 @@ def calculate_progress(
                 "selected_period": selected_date or _get_current_period_label(goal_period)
             }
         
-        # Sum up values for the reference field
         total = 0
         for session in filtered_sessions:
             values = session.get("values", {})
@@ -257,12 +193,10 @@ def calculate_progress(
                 except (ValueError, TypeError):
                     continue
         
-        # Calculate consecutive days if period is daily
         consecutive_days = 0
         if goal_period == "daily":
             consecutive_days = _count_consecutive_goal_days(sessions, goal_reference, goal_target)
         
-        # Determine status
         remaining = goal_target - total
         
         if total >= goal_target:
@@ -310,17 +244,6 @@ def _filter_sessions_by_period(
     period: str,
     selected_date: str = None
 ) -> List[Dict[str, Any]]:
-    """
-    Filter sessions based on period type.
-    
-    Args:
-        sessions: List of sessions with 'date' field
-        period: Period type (daily, weekly, monthly, yearly, date_range)
-        selected_date: For daily/monthly - the selected date (YYYY-MM-DD or YYYY-MM)
-        
-    Returns:
-        List of filtered sessions
-    """
     from datetime import datetime, timedelta
     
     if not sessions:
@@ -329,14 +252,12 @@ def _filter_sessions_by_period(
     today = datetime.now().date()
     
     if period == "daily":
-        # Filter for today or selected date
         target_date = selected_date
         if not target_date:
             target_date = today.strftime("%Y-%m-%d")
         return [s for s in sessions if s.get("date") == target_date]
     
     elif period == "weekly":
-        # Filter for current week (Monday to Sunday)
         start_of_week = today - timedelta(days=today.weekday())
         end_of_week = start_of_week + timedelta(days=6)
         filtered = []
@@ -350,10 +271,8 @@ def _filter_sessions_by_period(
         return filtered
     
     elif period == "monthly":
-        # Filter for selected month or current month
         if not selected_date:
             selected_date = today.strftime("%Y-%m")
-        # selected_date should be YYYY-MM
         filtered = []
         for s in sessions:
             session_month = s.get("date", "")[:7]  # Extract YYYY-MM
@@ -372,7 +291,6 @@ def _filter_sessions_by_period(
         return filtered
     
     else:
-        # date_range or unknown - return all sessions
         return sessions
 
 
@@ -381,23 +299,11 @@ def _count_consecutive_goal_days(
     goal_reference: str,
     goal_target: float
 ) -> int:
-    """
-    Count consecutive days where goal was achieved.
-    
-    Args:
-        sessions: List of sessions
-        goal_reference: Field to track
-        goal_target: Target value for goal
-        
-    Returns:
-        Number of consecutive days ending today where goal was met
-    """
     from datetime import datetime, timedelta
     
     if not sessions:
         return 0
     
-    # Group sessions by date
     sessions_by_date = {}
     for session in sessions:
         date_str = session.get("date", "")
@@ -406,7 +312,6 @@ def _count_consecutive_goal_days(
                 sessions_by_date[date_str] = []
             sessions_by_date[date_str].append(session)
     
-    # Check which dates met the goal
     goal_dates = set()
     for date_str, day_sessions in sessions_by_date.items():
         daily_total = 0
@@ -424,14 +329,12 @@ def _count_consecutive_goal_days(
     if not goal_dates:
         return 0
     
-    # Sort dates and count consecutive days from today backwards
     sorted_dates = sorted(goal_dates)
     today = datetime.now().date()
     
     consecutive_count = 0
     current_date = today
     
-    # Check backwards from today
     while True:
         date_str = current_date.strftime("%Y-%m-%d")
         if date_str in goal_dates:

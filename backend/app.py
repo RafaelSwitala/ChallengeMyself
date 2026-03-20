@@ -1,18 +1,3 @@
-"""
-ChallengeMyself Flask REST API Server
-
-This module implements the backend REST API for the ChallengeMyself application.
-It provides endpoints for:
-- Challenge management (create, list, retrieve)
-- Session management (add, list)
-- Goal management (set, delete)
-- Activity definitions (list fields)
-- Charting and data visualization
-
-The API supports both HTML (for browser views) and JSON (for React frontend).
-All endpoints include comprehensive error handling and logging.
-"""
-
 from utils.logger import setup_logging, get_logger
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_cors import CORS
@@ -31,11 +16,9 @@ import plotly.io as pio
 import os
 import numpy as np
 
-# Initialize logging configuration
 setup_logging()
 logger = get_logger(__name__)
 
-# Initialize Flask app with CORS support for frontend communication
 app = Flask(__name__, template_folder="templates")
 CORS(app, resources={r"/*": {"origins": "*"}}, send_wildcard=True)
 
@@ -43,15 +26,6 @@ CORS(app, resources={r"/*": {"origins": "*"}}, send_wildcard=True)
 
 @app.after_request
 def add_cors_headers(response):
-    """
-    Add CORS headers to all responses (even errors).
-    
-    This ensures that the React frontend can communicate with the Flask backend
-    from different origins (localhost:3000 to localhost:5000).
-    
-    Returns:
-        Flask Response: Response object with CORS headers attached
-    """
     response.headers.setdefault("Access-Control-Allow-Origin", "*")
     response.headers.setdefault("Access-Control-Allow-Headers", "Content-Type,Authorization")
     response.headers.setdefault("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
@@ -60,15 +34,6 @@ def add_cors_headers(response):
 
 @app.before_request
 def handle_options():
-    """
-    Handle preflight OPTIONS requests from browsers.
-    
-    Browsers send an OPTIONS request before making actual requests to check CORS permissions.
-    This function returns early with proper CORS headers for these requests.
-    
-    Returns:
-        Tuple[str, int]: Empty response with status 204 No Content
-    """
     if request.method == 'OPTIONS':
         from flask import make_response
         resp = make_response(('', 204))
@@ -80,18 +45,6 @@ def handle_options():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    """
-    Global error handler for unhandled exceptions.
-    
-    Catches any exception not caught by specific handlers, logs it with full traceback,
-    and returns a JSON error response with CORS headers.
-    
-    Args:
-        e (Exception): The exception that was raised
-        
-    Returns:
-        Tuple[Dict, int]: JSON error response with status 500
-    """
     from flask import make_response
     logger.exception("Unhandled exception: %s", e)
     body = {"error": "internal server error", "message": str(e)}
@@ -102,36 +55,18 @@ def handle_exception(e):
     return resp
 
 def wants_json():
-    """
-    Determine if the client wants JSON response instead of HTML.
-    
-    Checks multiple indicators:
-    - Accept header explicitly requests JSON
-    - Content-Type indicates JSON
-    - Origin header indicates CORS request (from frontend)
-    
-    Returns:
-        bool: True if JSON is preferred, False if HTML is preferred
-    """
-    # Check if JSON is explicitly requested in Accept header
     if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
         return True
-    # Check if Content-Type is JSON
     if request.content_type and "application/json" in request.content_type:
         return True
-    # Check if this is a CORS request from a different origin (frontend)
-    # CORS requests should always return JSON
     if request.headers.get('Origin'):
         return True
-    # If Accept header is not set, check if application/json is in the accept_mimetypes
-    # This handles cases where the client sends application/json with lower priority
     if 'application/json' in request.accept_mimetypes:
         return True
     return False
 
 @app.get("/debug/list-files")
 def debug_list_files():
-    """Debug: Zeige alle Dateien im data-Verzeichnis"""
     from config import DATA_DIR
     try:
         files = os.listdir(DATA_DIR) if os.path.exists(DATA_DIR) else []
@@ -147,7 +82,6 @@ def debug_list_files():
 
 @app.get("/debug/challenges")
 def debug_challenges():
-    """Debug: Zeige alle Challenges"""
     try:
         challenges_list = list_challenges()
         logger.info(f"list_challenges() returned: {challenges_list}")
@@ -179,12 +113,6 @@ def debug_challenges():
 @app.route("/", methods=["GET"])
 @app.route("/challenges", methods=["GET", "POST"])
 def handle_challenges():
-    """
-    Smart Router für Challenges:
-    - GET /challenges: Always returns JSON (for API/Frontend)
-    - GET /: Returns HTML (for browser viewing)
-    - POST /challenges: Creates challenge, returns JSON or redirects
-    """
     logger.debug(f"handle_challenges: {request.method} path={request.path}")
     
     if request.method == "GET":
@@ -197,12 +125,10 @@ def handle_challenges():
                 if challenge:
                     challenges.append(challenge.to_dict())
             
-            # GET /challenges always returns JSON (it's the API endpoint)
             if request.path == "/challenges":
                 logger.debug(f"GET /challenges -> JSON ({len(challenges)} challenges)")
                 return jsonify(challenges), 200
             
-            # GET / returns HTML (for browser)
             logger.debug(f"GET / -> HTML ({len(challenges)} challenges)")
             activities = get_activity_names()
             message = request.args.get("message", "")
@@ -258,11 +184,6 @@ def handle_challenges():
 
 @app.route("/challenges/<name>", methods=["GET", "POST"])
 def handle_challenge_detail(name):
-    """
-    Smart Router für Challenge-Details:
-    - GET /challenges/<name> (Browser): HTML
-    - POST /challenges/<name> (Form/JSON): Beide
-    """
     logger.debug(f"handle_challenge_detail: {request.method} {name} | wants_json={wants_json()}")
     
     try:
@@ -348,7 +269,6 @@ def handle_challenge_detail(name):
                     return jsonify(challenge.to_dict()), 200
                 return redirect(url_for("handle_challenge_detail", name=name))
             
-            # Fallback
             if wants_json():
                 return jsonify(challenge.to_dict()), 200
             return redirect(url_for("handle_challenge_detail", name=name))
@@ -363,28 +283,15 @@ def handle_challenge_detail(name):
 
 @app.delete("/challenge/<name>")
 def delete_challenge(name):
-    """
-    DELETE /challenge/<name>
-    
-    Deletes a challenge completely, including removing the associated JSON file.
-    
-    Args:
-        name (str): Challenge name to delete
-        
-    Returns:
-        Tuple[Dict, int]: JSON response with success message or error
-    """
     try:
         from storage.json_storage import _path
         
         logger.debug(f"DELETE /challenge/{name}")
         
-        # Load challenge first to verify it exists
         challenge = load_challenge(name)
         if not challenge:
             return {"error": "Challenge not found"}, 404
         
-        # Remove the JSON file
         file_path = _path(name)
         if os.path.exists(file_path):
             os.remove(file_path)
@@ -399,29 +306,11 @@ def delete_challenge(name):
 
 @app.put("/challenge/<old_name>")
 def rename_challenge(old_name):
-    """
-    PUT /challenge/<old_name>
-    
-    Renames a challenge. Accepts JSON payload with new_name field.
-    Updates the JSON filename and the name field within the file.
-    
-    Payload:
-        {
-            "new_name": "New Challenge Name"
-        }
-    
-    Args:
-        old_name (str): Current challenge name
-        
-    Returns:
-        Tuple[Dict, int]: JSON response with updated challenge or error
-    """
     try:
         from storage.json_storage import _path
         
         logger.debug(f"PUT /challenge/{old_name}")
         
-        # Get payload
         if not request.is_json:
             return {"error": "Request body must be JSON"}, 400
         
@@ -431,26 +320,21 @@ def rename_challenge(old_name):
         if not new_name:
             return {"error": "new_name is required"}, 400
         
-        # Load old challenge
         old_challenge = load_challenge(old_name)
         if not old_challenge:
             return {"error": "Challenge not found"}, 404
         
-        # Check if new name already exists
         if new_name != old_name and load_challenge(new_name):
             return {"error": f"Challenge with name '{new_name}' already exists"}, 409
         
-        # Delete old file first if names differ
         if old_name != new_name:
             old_path = _path(old_name)
             if os.path.exists(old_path):
                 os.remove(old_path)
                 logger.debug(f"Old file removed: {old_path}")
         
-        # Update challenge name in the object
         old_challenge.name = new_name
         
-        # Save with new name (will create file with new name)
         save_challenge(old_challenge)
         logger.info(f"Challenge renamed: {old_name} → {new_name}")
         
@@ -464,22 +348,6 @@ def rename_challenge(old_name):
 
 @app.route("/challenges/<name>/plot", methods=["GET"])
 def handle_challenge_plot(name):
-    """
-    Enhanced plot handler with comprehensive filtering and chart options.
-    
-    Query parameters:
-    - fields: Comma-separated field names to plot
-    - field_type_<field>: "line" or "bar" for each field
-    - secondary_y_fields: Comma-separated fields for right Y-axis
-    - date_from, date_to: Date range filtering
-    - show_every_nth: Show every nth entry on X-axis
-    - grid_mode: "none", "daily", "weekly", or "monthly"
-    - <field>_min, <field>_max: Value range filters
-    - filter_<category>: Category filter (e.g., filter_weather=sunny)
-    
-    Returns:
-        JSON with plotly chart data and layout
-    """
     try:
         from utils.plotly_utils import (
             sessions_to_dataframe, filter_by_date_range,
@@ -495,7 +363,6 @@ def handle_challenge_plot(name):
             return {"error": "No sessions available"}, 400
         
         try:
-            # Get basic parameters
             fields_param = request.args.get("fields", "")
             enum_field = request.args.get("enum_field", "")
             date_from = request.args.get("date_from", "")
@@ -503,27 +370,22 @@ def handle_challenge_plot(name):
             secondary_y_fields_param = request.args.get("secondary_y_fields", "")
             show_every_nth = int(request.args.get("show_every_nth", 1))
             grid_mode = request.args.get("grid_mode", "none")
-            
             selected_fields = [f.strip() for f in fields_param.split(",") if f.strip()] if fields_param else []
             secondary_y_fields = [f.strip() for f in secondary_y_fields_param.split(",") if f.strip()] if secondary_y_fields_param else []
             
-            # Get field types
             field_types = {}
             for field in selected_fields:
                 chart_type_param = request.args.get(f"field_type_{field}", "line")
                 field_types[field] = chart_type_param
             
-            # Convert sessions to DataFrame
             df = sessions_to_dataframe([s.to_dict() for s in challenge.sessions])
             if df.empty:
                 return {"error": "No valid session data"}, 400
             
-            # Apply date range filter
             df = filter_by_date_range(df, date_from, date_to)
             if df.empty:
                 return {"error": "No sessions in date range"}, 400
             
-            # Apply value range filters for each field
             for field in selected_fields:
                 min_val_param = request.args.get(f"{field}_min")
                 max_val_param = request.args.get(f"{field}_max")
@@ -531,16 +393,14 @@ def handle_challenge_plot(name):
                 max_val = float(max_val_param) if max_val_param else None
                 df = filter_by_value_range(df, field, min_val, max_val)
             
-            # Apply category filters
             for key, value in request.args.items():
                 if key.startswith("filter_"):
-                    category_field = key[7:]  # Remove "filter_" prefix
+                    category_field = key[7:]
                     df = filter_by_category(df, category_field, value)
             
             if df.empty:
                 return {"error": "No data matching the filters"}, 400
             
-            # Create chart
             if enum_field and enum_field in df.columns:
                 result = create_enum_bar_chart_json(df, enum_field, title=f"{challenge.name} – {enum_field}")
             else:
@@ -570,7 +430,6 @@ def handle_challenge_plot(name):
 
 @app.post("/challenges/<name>/sessions")
 def handle_add_session(name):
-    """POST API: Neue Session hinzufügen (für React Frontend)"""
     try:
         challenge = load_challenge(name)
         if not challenge:
@@ -617,15 +476,6 @@ def handle_add_session(name):
 
 @app.post("/challenges/<name>/goal")
 def handle_set_goal(name):
-    """
-    POST API: Set or delete goal for a challenge (for React Frontend).
-    
-    New goal structure includes:
-    - description: Human-readable goal description
-    - reference: Field to track (e.g., 'distance_km')
-    - target: Target value
-    - period: Time period (daily, weekly, monthly, date range, etc.)
-    """
     try:
         challenge = load_challenge(name)
         if not challenge:
@@ -668,8 +518,8 @@ def handle_set_goal(name):
 
 @app.get("/activities")
 def handle_activities():
-    """Alle Activities auflisten (JSON für React)"""
     try:
+        print("DEBUG ACTIVITIES:", get_activity_names())
         logger.debug("GET /activities")
         activities = get_activity_names()
         return jsonify({"activities": activities}), 200
@@ -680,7 +530,6 @@ def handle_activities():
 
 @app.get("/activities/<activity_name>")
 def handle_activity_fields(activity_name):
-    """Felder für eine Activity auflisten (JSON für React)"""
     try:
         logger.debug(f"GET /activities/{activity_name}")
         if activity_name not in ACTIVITIES:
@@ -700,11 +549,6 @@ def handle_activity_fields(activity_name):
 
 @app.get("/activities/<activity_name>/goals")
 def handle_activity_goals(activity_name):
-    """
-    Get goal configuration for an activity.
-    
-    Returns allowed references, periods, and status types for goal creation.
-    """
     try:
         from utils.goal_tracker import get_goal_definition, supports_goals
         
@@ -731,14 +575,6 @@ def handle_activity_goals(activity_name):
 
 @app.get("/challenges/<name>/goal/progress")
 def handle_goal_progress(name):
-    """
-    Get current progress towards goal.
-    
-    Query parameters:
-    - selected_date: For daily goals, use format YYYY-MM-DD; for monthly, use YYYY-MM
-    
-    Returns current value, target, status, and progress message.
-    """
     try:
         from flask import request
         
@@ -750,7 +586,6 @@ def handle_goal_progress(name):
         if not challenge.goal:
             return {"error": "No goal set for this challenge"}, 400
         
-        # Get optional selected_date query parameter
         selected_date = request.args.get('selected_date', None)
         
         progress = challenge.get_goal_progress(selected_date=selected_date)
@@ -767,4 +602,4 @@ def handle_goal_progress(name):
 
 if __name__ == "__main__":
     logger.info("Starting Flask app on http://127.0.0.1:5000")
-    app.run(debug=False, host="127.0.0.1", port=5000, use_reloader=False, threaded=True)
+    app.run(debug=True, host="127.0.0.1", port=5000, use_reloader=False, threaded=True)

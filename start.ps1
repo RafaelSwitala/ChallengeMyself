@@ -1,17 +1,39 @@
+# UTF-8 Fix für Umlaute
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host "ChallengeMyself - Start Script" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Backend Path
+# Paths
 $backendPath = Join-Path $PSScriptRoot "backend"
-
-# Frontend Path
 $frontendPath = Join-Path $PSScriptRoot "frontend"
-
-# 1. Backend venv aktivieren und starten
-Write-Host "1. Starting Backend (Flask) on Port 5000..." -ForegroundColor Green
 $venvPath = Join-Path $backendPath "venv\Scripts\Activate.ps1"
+
+# 0. ALLE Prozesse auf Ports 3000 & 5000 killen (BESTE LÖSUNG)
+Write-Host "Cleaning up ports 3000 and 5000..." -ForegroundColor Yellow
+
+foreach ($port in 3000,5000) {
+    $pids = netstat -ano | Select-String ":$port" | ForEach-Object {
+        ($_ -split "\s+")[-1]
+    } | Sort-Object -Unique
+
+    foreach ($pid in $pids) {
+        if ($pid -match "^\d+$") {
+            try {
+                taskkill /PID $pid /F | Out-Null
+                Write-Host "Killed PID $pid on port $port" -ForegroundColor DarkYellow
+            } catch {}
+        }
+    }
+}
+
+Start-Sleep -Seconds 1
+
+# 1. Virtual Environment prüfen
+Write-Host ""
+Write-Host "1. Checking backend environment..." -ForegroundColor Green
 
 if (-not (Test-Path $venvPath)) {
     Write-Host "Virtual environment not found. Creating it..." -ForegroundColor Yellow
@@ -22,38 +44,35 @@ if (-not (Test-Path $venvPath)) {
     Set-Location $PSScriptRoot
 }
 
-# Backend im Hintergrund starten
-$backendProcess = Start-Process -FilePath "powershell" `
-    -ArgumentList "-NoExit", "-Command", "Set-Location '$backendPath'; & '$venvPath'; python run_server.py" `
-    -PassThru `
-    -WindowStyle Hidden
-
-Write-Host "Backend-PID: $($backendProcess.Id)" -ForegroundColor Green
-
-# 2. Frontend starten (auch im Hintergrund)
-Write-Host "2. Starting Frontend (React) on Port 3000..." -ForegroundColor Green
-$frontendProcess = Start-Process -FilePath "powershell" `
-    -ArgumentList "-NoExit", "-Command", "Set-Location '$frontendPath'; npm start" `
-    -PassThru `
-    -WindowStyle Hidden
-
-Write-Host "Frontend-PID: $($frontendProcess.Id)" -ForegroundColor Green
-
-# 3. Warten, damit beide starten
+# 2. Backend starten (sichtbar!)
 Write-Host ""
-Write-Host "Warte 5 Sekunden, damit beide Services initialisiert..." -ForegroundColor Yellow
+Write-Host "2. Starting Backend (Flask) on Port 5000..." -ForegroundColor Green
+
+Start-Process powershell `
+    -ArgumentList "-NoExit", "-Command", "Set-Location '$backendPath'; & '$venvPath'; python run_server.py"
+
+# 3. Frontend starten (sichtbar!)
+Write-Host ""
+Write-Host "3. Starting Frontend (React) on Port 3000..." -ForegroundColor Green
+
+Start-Process powershell `
+    -ArgumentList "-NoExit", "-Command", "Set-Location '$frontendPath'; npm start"
+
+# 4. Warten
+Write-Host ""
+Write-Host "Warte 5 Sekunden, damit Services starten..." -ForegroundColor Yellow
 Start-Sleep -Seconds 5
 
-# 4. Öffne App im Browser
+# 5. Browser öffnen
 Write-Host ""
-Write-Host "3. Opening app in browser at http://localhost:3000/..." -ForegroundColor Green
+Write-Host "4. Opening app in browser at http://localhost:3000/..." -ForegroundColor Green
 Start-Process "http://localhost:3000/"
 
 Write-Host ""
-Write-Host "App lädt! Backend auf http://localhost:5000, Frontend auf http://localhost:3000" -ForegroundColor Cyan
-Write-Host "   Drücke STRG+C zum Beenden." -ForegroundColor Cyan
-
-# Warte auf Benutzer-Exit
-while ($true) {
-    Start-Sleep -Seconds 60
-}
+Write-Host "================================" -ForegroundColor Cyan
+Write-Host "App läuft:" -ForegroundColor Cyan
+Write-Host "Frontend: http://localhost:3000" -ForegroundColor Cyan
+Write-Host "Backend:  http://localhost:5000" -ForegroundColor Cyan
+Write-Host "================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Schließe die geöffneten Terminal-Fenster zum Beenden" -ForegroundColor Yellow
