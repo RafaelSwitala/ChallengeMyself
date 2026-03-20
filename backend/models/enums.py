@@ -8,13 +8,13 @@ from enum import Enum
 class ActivityType(Enum):
     """40+ Aktivitätstypen"""
     # ALCOHOL_CONSUMPTION = "Alkoholkonsum"
-    # ---------- ANXIETY = "Angstlevel"
+    # ANXIETY = "Angstlevel"
     # ART = "Kunst"
-    # ---------- BUDGETING = "Budgetplanung"
+    # BUDGETING = "Budgetplanung"
     # CAFFEINE_CONSUMPTION = "Koffeinkonsum"
-    # ---------- COMMUNITY_ENGAGEMENT = "Gemeinschaftsaktivität"
+    # COMMUNITY_ENGAGEMENT = "Gemeinschaftsaktivität"
     # CREATIVITY = "Kreativitaet"
-    # ---------- CULTURAL_EVENTS = "Kulturelle Veranstaltungen"
+    # CULTURAL_EVENTS = "Kulturelle Veranstaltungen"
     # CYCLING = "Radfahren"
     # DRINK_CONSUMPTION = "Getränkekonsum"
     # DRUG_USE = "Drogenkonsum"
@@ -23,44 +23,43 @@ class ActivityType(Enum):
     # EXPENSES = "Ausgaben"
     # FAMILY_TIME = "Familienzeit"
     # GAMBLING = "Glücksspiel"
-    # ---------- GRATITUDE = "Dankbarkeit"
+    # GRATITUDE = "Dankbarkeit"
     # HABIT_BREAKING = "Gewohnheitsbruch (Rückfälle)"
-    # ----------- HABIT_TRACKING = "Gewohnheiten (aufbauen)"
-    # ---------- HAPPINESS = "Glücksgefühl"
-    # ---------- HEALTH_CHECK = "Gesundheitscheck"
+    # HABIT_TRACKING = "Gewohnheiten (aufbauen)"
+    # HAPPINESS = "Glücksgefühl"
+    # HEALTH_CHECK = "Gesundheitscheck"
     # HOUSEHOLD = "Haushalt"
-    # ---------- IMMUNITY = "Immunsystem stärken"
-    # ---------- INVESTING = "Investieren"
+    # IMMUNITY = "Immunsystem stärken"
+    # INVESTING = "Investieren"
     JOGGING = "Joggen"
     # LANGUAGE_TRAINING = "Sprachtraining"
     # LEARNING = "Lernen"
     # MEDITATION = "Meditation"
-    # ---------- MENTAL_EXERCISE = "Mentale Übungen"
-    # ---------- MINDFULNESS = "Achtsamkeit"
+    # MENTAL_EXERCISE = "Mentale Übungen"
+    # MINDFULNESS = "Achtsamkeit"
     # MOOD = "Stimmung"
     # MOTIVATION = "Motivation"
     # MUSIC = "Musikpraxis"
     # NATURE = "Natur"
     # PRODUCTIVITY = "Produktivitaet"
     # READING = "Lesen"
-    # ---------- REFLECTION = "Reflexion, Tagebuch"
+    # REFLECTION = "Reflexion, Tagebuch"
     # RELATIONSHIP = "Beziehungszeit (Quality Time)"
     # SAVINGS = "Sparen"
     # SCREEN_TIME = "Bildschirmzeit"
-    # ---------- SKILL_TRAINING = "Fertigkeitstraining"
+    # SKILL_TRAINING = "Fertigkeitstraining"
     # SLEEPING = "Schlaf"
     # SMOKING = "Rauchverhalten"
-    # ---------- SNACKING = "Snacks"
+    # SNACKING = "Snacks"
     # SOCIAL_INTERACTION = "Soziale Interaktion"
-    # ---------- SPORTS = "Sportarten"
+    #  SPORTS = "Sportarten"
     # STRESS = "Stress"
     # SWIMMING = "Schwimmen"
-    # ----------- TRAVELING = "Reisen"
-    # ---------- VOLUNTEERING = "Freiwilligenarbeit"
+    # TRAVELING = "Reisen"
+    # VOLUNTEERING = "Freiwilligenarbeit"
     # WALKING = "Spazieren"
     # WANDERING = "Wandern"
     # WATER_CONSUMPTION = "Wasserkonsum"
-    # ----------- WEATHER_EXPOSURE = "Sonnenlicht, Naturkontakt"
     # WORKOUT = "Workout"
     # WRITING = "Schreiben"
     # YOGA = "Yoga"
@@ -119,7 +118,6 @@ class ChartType(Enum):
 
 # --------------- ActivityTypeEnums
 class AlcoholType(Enum):
-    """Alkoholtypen"""
     BEER = "Bier"
     WINE = "Wein"
     SPARKLING_WINE = "Sekt"
@@ -127,6 +125,12 @@ class AlcoholType(Enum):
     LONGDRINK = "Longdrink"
     COCKTAIL = "Cocktail"
     CIDER = "Apfelwein"
+
+class AnxietyReasonType(Enum):
+    SOCIAL = "Sozial"
+    TRAUMA = "Trauma"
+    SUBSTANCE = "Substanzen, Medikamente"
+    UNKNOWN = "Unbekannt"
 
 class CunsumptionMethodType(Enum):
     SMOKE = "Rauchen"
@@ -141,6 +145,22 @@ class CunsumptionMethodType(Enum):
     TOPICAL = "Auf die Haut"
     PLUGGING = "Rektal"
 
+class BudgetCategoryType(Enum):
+    INCOME = "Einnahmen"
+    EXPENSE = "Ausgaben"
+    SAVINGS = "Ersparnisse"
+    INVESTMENTS = "Investitionen"
+    DEBT = "Schulden"
+
+class CommunityActivityType(Enum):
+    VOLUNTEERING = "Freiwilligenarbeit"
+    SPORTS_TEAM = "Sportverein"
+    CLUBS = "Vereine"
+    MEETUPS = "Treffen"
+    WORKSHOP = "Workshop"
+    ONLINE_COMMUNITY = "Online-Community"
+    SOCIAL_EVENTS = "Soziale Events"
+
 class ConsumptionProductType(Enum):
     CIGARETTE = "Zigarette"
     CIGAR = "Zigarre"
@@ -148,6 +168,16 @@ class ConsumptionProductType(Enum):
     SHISHA = "Shisha"
     E_CIGARETTE = "E-Zigarette"
     VAPE = "Vape"
+
+class CulturalEventType(Enum):
+    CONCERT = "Konzert"
+    THEATER = "Theater"
+    MUSEUM = "Museum / Ausstellung"
+    CINEMA = "Kino"
+    FESTIVAL = "Festival"
+    LECTURE = "Vortrag / Lesung"
+    DANCE = "Tanzveranstaltung"
+    FAIR = "Messe / Jahrmarkt"
 
 class DeviceMainUseType(Enum):
     MIX = "Mix"
@@ -175,7 +205,7 @@ class DeviceType(Enum):
     TELEVISION = "Fermseher"
     GAME_CONSOLE = "Spielkonsole"
 
-class DrinkTemperature(Enum):
+class DrinkTemperatureType(Enum):
     COLD = "kalt"
     LUKEWARM = "lauwarm"
     WARM = "warm"
@@ -195,7 +225,7 @@ class DrinkType(Enum):
     ALCOHOL = "Alkohol"
     ENERGY_DRINK = "Energy-Drink"
 
-class EatingContext(Enum):
+class EatingContextType(Enum):
     ALLONE = "Alleine"
     FRIENDS = "mit Freunden"
     FAMILY = "mit Familie"
@@ -203,7 +233,19 @@ class EatingContext(Enum):
     RESTAURANT = "Restaurant"
     WORK = "Auf der Arbeit"
 
-class FoodQuality(Enum):
+class ExpensesType(Enum):
+    HOUSING = "Wohnen"
+    UTILITIES = "Nebenkosten"
+    FOOD = "Lebensmittel"
+    TRANSPORT = "Transport"
+    HEALTH = "Gesundheit"
+    INSURANCE = "Versicherung"
+    LEISURE = "Freizeit"
+    EDUCATION = "Bildung"
+    SHOPPING = "Einkäufe"
+    CHARITY = "Spenden"
+
+class FoodQualityType(Enum):
     HEALTHY = "gesund"
     VERY_HEALTHY = "sehr gesund"
     UNHEALTHY = "ungesund"
@@ -228,6 +270,25 @@ class HabitType(Enum):
     SUGAR = "Zucker"
     CAFFEINE = "Koffeinkonsum"
     HYGIENE = "Hygiene"
+    EXERCISE = "Bewegung, Sport"
+    HEALTHY_EATING = "Gesunde Ernährung"
+    HYDRATION = "Ausreichend trinken"
+    SLEEP_ROUTINE = "Schlafroutine"
+    READING = "Lesen"
+    JOURNALING = "Tagebuch schreiben"
+    SKILL_PRACTICE = "Fertigkeitstraining"
+    SOCIAL_CONTACTS = "Soziale Kontakte pflegen"
+    MINDFUL_BREAKS = "Bewusste Pausen"
+
+class HealthCheckType(Enum):
+    GENERAL_CHECKUP = "Allgemeine Untersuchung"
+    DENTAL = "Zahnarzt"
+    EYE = "Augenarzt"
+    BLOOD_TEST = "Bluttest"
+    VACCINATION = "Impfung"
+    SCREENING = "Screening / Früherkennung"
+    SPECIALIST = "Facharztbesuch"
+    PHYSICAL_FITNESS = "Sportliche Untersuchung / Fitnesscheck"
 
 class HouseAreaType(Enum):
     LIVINGROOM = "Wohnzimmer"
@@ -243,7 +304,7 @@ class HouseAreaType(Enum):
     GARDEN = "Garten"
     GENERAL = "Allgemein"
 
-class HouseholdTask(Enum):
+class HouseholdTaskType(Enum):
     COOKING = "kochen"
     CLEANING = "putzen"
     WASHING = "waschen"
@@ -256,12 +317,38 @@ class HouseholdTask(Enum):
     OFFICE_WORK = "Büroarbeit"
     ORGANIZATION = "Organisation"
 
-class Initiator(Enum):
+class ImmuneBoostType(Enum):
+    NUTRITION = "Gesunde Ernährung"
+    SLEEP = "Ausreichend Schlaf"
+    EXERCISE = "Regelmäßige Bewegung"
+    STRESS_MANAGEMENT = "Stress reduzieren"
+    SUNLIGHT = "Sonnenlicht / Vitamin D"
+    HYDRATION = "Ausreichend trinken"
+    VACCINATIONS = "Impfungen"
+    HYGIENE = "Hygienemaßnahmen"
+
+class IncomeType(Enum):
+    SALARY = "Gehalt"
+    FREELANCE = "Freiberuflich"
+    INVESTMENTS = "Investitionen"
+    GIFTS = "Geschenke"
+
+class InitiatorType(Enum):
     MYSELF = "Ich"
     PARTNER = "Partner"
     FRIENDS = "Freunde"
     FAMILY = "Familie"
     OTHER = "Andere"
+
+class InvestmentTypes(Enum):
+    STOCKS = "Aktien"
+    BONDS = "Anleihen"
+    REAL_ESTATE = "Immobilien"
+    CRYPTOCURRENCY = "Kryptowährungen"
+    MUTUAL_FUNDS = "Investmentfonds"
+    ETFS = "ETFs"
+    COMMODITIES = "Rohstoffe"
+    OTHER = "Sonstiges"
 
 class LanguageTrainingType(Enum):
     VOCABULARY = "Vokabeln"
@@ -287,7 +374,7 @@ class LearningFormatType(Enum):
     LECTURE = "Vorlesung"
     LESSON = "Unterricht"
 
-class Location(Enum):
+class LocationType(Enum):
     HOME = "zu Hause"
     WORK = "Arbeit"
     AWAY = "unterwegs"
@@ -298,7 +385,7 @@ class Location(Enum):
     FRIENDS = "Freunde"
     FAMILY = "Familie"
 
-class MainMood(Enum):
+class MainMoodType(Enum):
     WORK = "Arbeit"
     FREETIME = "Freizeit"
     HEALTH = "Gesundheit"
@@ -313,7 +400,25 @@ class MealType(Enum):
     DINNER = "Abendessen"
     SNACK = "Snacks"
 
-class MotivationReference(Enum):
+class MentalExerciseType(Enum):
+    MEDITATION = "Meditation"
+    BREATHING = "Atemübungen"
+    MINDFULNESS = "Achtsamkeit"
+    COGNITIVE_TRAINING = "Kognitives Training"
+    VISUALIZATION = "Visualisierung"
+    RELAXATION = "Entspannungsübungen"
+    GRATITUDE = "Dankbarkeitstagebuch"
+
+class MindfulnessExerciseType(Enum):
+    MEDITATION = "Meditation"
+    BREATHING = "Atemübungen"
+    BODY_SCAN = "Body Scan"
+    MINDFUL_WALK = "Achtsames Gehen"
+    GRATITUDE = "Dankbarkeitspraxis"
+    MINDFUL_EATING = "Achtsames Essen"
+    VISUALIZATION = "Visualisierung"
+
+class MotivationReferenceType(Enum):
     GENERAL = "Allgemein"
     SPORT = "Sport"
     LEARNING = "Lernen"
@@ -321,7 +426,7 @@ class MotivationReference(Enum):
     SOCIAL = "Soziales"
     CREATIVITY = "Kreativität"
 
-class MovementIntensity(Enum):
+class MovementIntensityType(Enum):
     LEISURELY = "gemütlich"
     MEDIUM = "mittel"
     STRONG = "stark"
@@ -344,7 +449,7 @@ class ObstacleType(Enum):
     WEATHER = "Wetter"
     NO_REASON = "Kein Grund"
 
-class Ocassion(Enum):
+class OcassionType(Enum):
     EVERYDAY = "Alltag"
     CELEBRATION = "Feier"
     VACATION = "Urlaub"
@@ -353,13 +458,13 @@ class Ocassion(Enum):
     STRESS = "Stress"
     SPECIAL = "Besonderes"
 
-class PortionSize(Enum):
+class PortionSizeType(Enum):
     SMALL = "klein"
     MEDIUM = "mittel"
     LARGE = "groß"
     EXTRA_LARGE = "sehr groß"
 
-class ReadingMedium(Enum):
+class ReadingMediumType(Enum):
     BOOK = "Buch"
     E_BOOK = "E-Book"
     ARTICLE = "Artikel"
@@ -367,6 +472,14 @@ class ReadingMedium(Enum):
     NEWSPAPER = "Zeitung"
     BLOG = "Blog"
     COMIC = "Comic"
+
+class ReflectionType(Enum):
+    JOURNALING = "Tagebuch schreiben"
+    SELF_QUESTIONING = "Selbstbefragung"
+    MEDITATIVE_REFLECTION = "Meditative Reflexion"
+    FEEDBACK = "Feedback einholen"
+    GOAL_REVIEW = "Zielüberprüfung"
+    GRATITUDE = "Dankbarkeitsreflexion"
 
 class RouteType(Enum):
     MIX = "Mix"
@@ -380,7 +493,14 @@ class RouteType(Enum):
     NATURE = "Natur"
     MOUNTAIN = "Berg"
 
-class SideEffect(Enum):
+class SavingGoalType(Enum):
+    EMERGENCY_FUND = "Notfallfonds"
+    VACATION = "Urlaub"
+    BIG_PURCHASE = "Großer Einkauf"
+    RETIREMENT = "Rente"
+    INVESTMENTS = "Investitionen"
+
+class SideEffectType(Enum):
     NO = "Keine"
     NAUSEA = "Übelkeit"
     VOMITING = "Erbrechen"
@@ -407,7 +527,27 @@ class SideEffect(Enum):
     SHIVERING = "Frösteln"
     OTHER = "Andere"
 
-class SocialContext(Enum):
+class SkillTrainingType(Enum):
+    LANGUAGE = "Sprache lernen"
+    MUSICAL = "Musik / Instrument"
+    ARTISTIC = "Kunst / Kreativität"
+    CODING = "Programmieren"
+    SPORTS_SKILLS = "Sportliche Fähigkeiten"
+    COOKING = "Kochen"
+    HANDICRAFT = "Handwerk / DIY"
+    LEADERSHIP = "Führungskompetenzen"
+
+class SnackType(Enum):
+    FRUITS = "Obst"
+    VEGETABLES = "Gemüse"
+    NUTS = "Nüsse"
+    CHOCOLATE = "Schokolade"
+    CHIPS = "Chips / Salzige Snacks"
+    SWEETS = "Süßigkeiten"
+    YOGURT = "Joghurt"
+    OTHER = "Sonstiges"
+
+class SocialContextType(Enum):
     ALLONE = "Alleine"
     PARTNER = "Partner"
     FAMILY = "Familie"
@@ -418,13 +558,25 @@ class SocialContext(Enum):
     GROUP = "Gruppe"
     PUBLIC = "Öffentlichkeit"
 
+class SportType(Enum):
+    RUNNING = "Laufen"
+    SWIMMING = "Schwimmen"
+    CYCLING = "Radfahren"
+    YOGA = "Yoga"
+    WEIGHT_TRAINING = "Krafttraining"
+    TEAM_SPORTS = "Mannschaftssport"
+    MARTIAL_ARTS = "Kampfsport"
+    DANCE = "Tanzen"
+    HIKING = "Wandern"
+    OTHER = "Sonstiges"
+
 class StatusType(Enum):
     STARTED = "Begonnen"
     PARTIALLY = "Teilweise"
     ABORTED = "Abgebrochen"
     COMPLETED = "Abgeschlossen"
 
-class Substance(Enum):
+class SubstanceType(Enum):
     NICOTINE = "Nikotin"
     ALCOHOL = "Alkohol"
     CANNABIS = "Cannabis"
@@ -438,7 +590,7 @@ class Substance(Enum):
     MEDICATION = "Medikation"
     OTHERS = "Andere"
 
-class SwimmingStyle(Enum):
+class SwimmingStyleType(Enum):
     MIX = "Mix"
     FREETIME = "Freizeit"
     FRONT_CRAWL = "Kraulen"
@@ -448,7 +600,7 @@ class SwimmingStyle(Enum):
     DOLPHIN_KICK = "Delfin"
     TECHNIQUE = "Techniktraining"
 
-class TimeOfDay(Enum):
+class TimeOfDayType(Enum):
     MORNING = "Morgen"
     LATE_MORNING = "Vormittag"
     MIDDAY = "Mittag"
@@ -456,7 +608,16 @@ class TimeOfDay(Enum):
     EVENING = "Abend"
     NIGHT = "Nacht"
 
-class Trigger(Enum):
+class TravelType(Enum):
+    LEISURE = "Freizeit / Urlaub"
+    BUSINESS = "Geschäftlich"
+    CULTURAL = "Kulturreisen"
+    NATURE = "Natur- / Outdoorreisen"
+    ADVENTURE = "Abenteuer / Aktivurlaub"
+    STAYCATION = "Urlaub zuhause"
+    FAMILY = "Familie"
+
+class TriggerType(Enum):
     STRESS = "Stress"
     BOREDOM = "Langeweile"
     WAKE_UP = "Aufwachen"
@@ -479,24 +640,40 @@ class Trigger(Enum):
     NATURE = "Natur"
     HOBBY = "Hobby"
 
-class WaterSource(Enum):
+class VolunteeringType(Enum):
+    COMMUNITY_SERVICE = "Gemeinnützige Arbeit"
+    ENVIRONMENTAL = "Umweltschutz"
+    EDUCATION = "Bildung / Nachhilfe"
+    ANIMAL_CARE = "Tierschutz"
+    HEALTHCARE = "Gesundheitswesen"
+    EVENT_SUPPORT = "Veranstaltungsunterstützung"
+
+class WaterSourceType(Enum):
     TAP_WATER = "Leitungswasser"
     MINERAL_WATER = "Mineralwasser"
     SPRING_WATER = "Quellwasser"
     BOTTLED_WATER = "Flaschenwasser"
     SPARKLING_WATER = "Sprudelwasser"
 
-class WaterTemperature(Enum):
+class WaterTemperatureType(Enum):
     COLD = "kalt"
     LUKEWARM = "lauwarm"
     WARM = "warm"
 
-class Weather(Enum):
+class WeatherType(Enum):
     SUNNY = "sonnig"
     CLOUDY = "bewölkt"
     RAINY = "regnerisch"
     SNOWY = "schnee"
     STORMY = "stürmisch"
+
+class WeatherExposureType(Enum):
+    SUNLIGHT = "Sonnenlicht / UV-Exposition"
+    COLD = "Kälte"
+    HEAT = "Hitze"
+    RAIN = "Regen"
+    WIND = "Wind"
+    FRESH_AIR = "Frische Luft"
 
 class WorkoutType(Enum):
     MIX = "Mix"
@@ -514,7 +691,7 @@ class WorkoutType(Enum):
     WEIGHT_LIFTING = "Gewichtheben"
     CALISTHENICS = "Calisthenics"
 
-class WritingMedium(enum):
+class WritingMediumType(Enum):
     MIX = "Mix"
     BOOK = "Buch"
     TERM_PAPER = "Hausarbeit"
