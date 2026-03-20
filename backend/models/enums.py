@@ -420,12 +420,6 @@ class MotivationReferenceType(Enum):
     SOCIAL = "Soziales"
     CREATIVITY = "Kreativität"
 
-class MovementIntensityType(Enum):
-    LEISURELY = "gemütlich"
-    MEDIUM = "mittel"
-    STRONG = "stark"
-    VERY_STRONG = "sehr stark"
-
 class ObstacleType(Enum):
     LACK_OF_TIME = "Mangel an Zeit"
     LACK_OF_MOTIVATION = "Mangel an Motivation"

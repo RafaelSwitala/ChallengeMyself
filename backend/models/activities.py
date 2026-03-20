@@ -65,10 +65,11 @@ def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[
 
 ACTIVITIES: dict[str, list[str]] = {
     ActivityType.JOGGING.value: [
-        "distance",
-        "duration",
-        "WeatherType",        # Enum-Feld (automatisch generiert)
-        "RouteType",          # Enum-Feld (automatisch generiert)
+        "notes", "date", "time",
+        "distance", "number_of_steps", "duration", "velocity", "number_of_breaks", "break_duration", "calorie_consumption", "altitude",
+        "WeatherType", "RouteType", "InitiatorType", "TimeOfDayType",
+        "clarity_range", "discipline_range", "energy_range", "fitness_level_range", "focus_range", "mood_range", "motivation_range", "movement_intensity_range", "physical_discomfort_range", "physical_energy_range", "success_range", "sugar_craving_range", "tension_range", 
+        # hier davor und danach messen?
     ],
 
     # "Radfahren": [

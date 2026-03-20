@@ -1,8 +1,3 @@
-"""
-Zentrale Feldefinitionen für alle 85+ Felder
-Definiert die Field-Klasse und zentrale Field-Registry mit FieldManager
-"""
-
 from dataclasses import dataclass
 from typing import Optional, List, Any, Type
 from .enums import *
@@ -10,10 +5,6 @@ from .enums import *
 
 @dataclass
 class Field:
-    """
-    Definiert ein einzelnes Feld (z.B. distance_km, mood_value)
-    Zentrale Stelle für alle Feldkonfigurationen
-    """
     key: str                            # Eindeutige ID: z.B. "distance"
     label: str                          # Benutzer-freundlich: z.B. "Distanz"
     field_type: FieldType              # number, integer, enum, text, boolean
@@ -29,10 +20,6 @@ class Field:
     average_possible: bool = False      # Kann ein Durchschnitt berechnet werden?
 
     def validate(self, value: Any) -> tuple[bool, Optional[str]]:
-        """
-        Validiert einen Wert gegen dieses Field.
-        Returns: (is_valid, error_message)
-        """
         if value is None and not self.required:
             return True, None
 
@@ -70,19 +57,9 @@ class Field:
             return False, f"Validierungsfehler: {str(e)}"
 
 
-# ============================================================================
-# HELPER-FUNKTIONEN FÜR ENUM-FIELD GENERIERUNG
-# ============================================================================
+# --------- HELPER-FUNKTIONEN FÜR ENUM-FIELD GENERIERUNG
 
 def create_enum_field(enum_cls: Type[Enum], custom_label: Optional[str] = None, custom_key: Optional[str] = None) -> Field:
-    """
-    Generiert automatisch ein Field aus einem Enum-Klasse.
-
-    Args:
-        enum_cls: Die Enum-Klasse (z.B. WeatherType, RouteType)
-        custom_label: Optionales benutzerdefiniertes Label (z.B. "Wetter" statt "WeatherType")
-        custom_key: Optionaler benutzerdefinierter Key
-    """
     key = custom_key or enum_cls.__name__
     label = custom_label or enum_cls.__name__
 
@@ -98,13 +75,6 @@ def create_enum_field(enum_cls: Type[Enum], custom_label: Optional[str] = None, 
 
 
 def create_range_field(key: str, label: str) -> Field:
-    """
-    Generiert automatisch ein Range Field (0-10 Skalierung).
-
-    Args:
-        key: Eindeutige Field-ID (z.B. "mood_value")
-        label: Benutzer-freundliches Label (z.B. "Stimmung")
-    """
     return Field(
         key=key,
         label=label,
@@ -118,16 +88,10 @@ def create_range_field(key: str, label: str) -> Field:
         average_possible=True,
     )
 
-
-# ============================================================================
-# ENUM-TYPEN FÜR AUTOMATISCHE FIELD-GENERIERUNG
-# ============================================================================
-
+# --------- ENUM-TYPEN FÜR AUTOMATISCHE FIELD-GENERIERUNG
 ENUM_TYPES_WITH_LABELS = {
-    # Key: Enum-Klasse, Value: Benutzer-freundliches Label
     WeatherType: "Wetter",
     RouteType: "Streckentyp",
-    MovementIntensityType: "Intensität",
     AlcoholType: "Alkoholtyp",
     AnxietyReasonType: "Angst-Grund",
     CunsumptionMethodType: "Konsummethode",
@@ -183,50 +147,73 @@ ENUM_TYPES_WITH_LABELS = {
     WritingMediumType: "Schreibmedium",
 }
 
-# Generiere automatisch alle Enum Fields
 ENUM_FIELDS = {
     create_enum_field(enum_cls, label).key: create_enum_field(enum_cls, label)
     for enum_cls, label in ENUM_TYPES_WITH_LABELS.items()
 }
 
-
-# ============================================================================
-# RANGE-FIELDS FÜR AUTOMATISCHE GENERIERUNG (0-10 SKALIERUNG)
-# ============================================================================
-
+# --------- RANGE-FIELDS FÜR AUTOMATISCHE GENERIERUNG (0-10 SKALIERUNG)
 RANGE_FIELDS_WITH_LABELS = {
-    # Key: field key, Value: Benutzer-freundliches Label
-    "mood_value": "Stimmung",
-    "stress_value": "Stress",
-    "energy_level": "Energie",
-    "motivation_value": "Motivation",
-    "physical_discomfort": "Körperliches Unbehagen",
-    "physical_energy": "Körperliche Energie",
-    "mental_energy": "Mentale Energie",
-    "self_confidence": "Selbstvertrauen",
-    "anxiety_level": "Angstzustand",
-    "hunger_level": "Hungerlevel",
-    "satiety_level": "Sättigungsgefühl",
-    "concentration_value": "Konzentration",
-    "success_value": "Erfolgswert",
-    "focus_level": "Fokus",
-    "sleep_quality": "Schlafqualität",
-    "craving_intensity": "Verlangen Intensität",
+    "anxiety_range": "Angstzustand",
+    "appetite_range": "Appetit",
+    "calmness_range": "Ruhe / Gelassenheit",
+    "clarity_range": "Gedankliche Klarheit",
+    "concentration_range": "Konzentration",
+    "connection_range": "Verbundenheit",
+    "consistency_range": "Konsistenz",
+    "craving_intensity_range": "Verlangen Intensität",
+    "creativity_range": "Kreativität",
+    "decision_quality_range": "Entscheidungsqualität",
+    "discipline_range": "Disziplin",
+    "efficiency_range": "Effizienz",
+    "emotional_balance_range": "Emotionale Balance",
+    "energy_range": "Energie",
+    "fitness_level_range": "Fitnesslevel",
+    "focus_range": "Fokus",
+    "food_quality_range": "Ernährungsqualität",
+    "fulfillment_range": "Erfüllung",
+    "fullness_comfort_range": "Völlegefühl / Wohlsein",
+    "hunger_range": "Hungerlevel",
+    "hydration_range": "Hydration",
+    "immune_strength_range": "Immunsystem Stärke",
+    "inner_tension_range": "Innere Anspannung",
+    "irritability_range": "Reizbarkeit",
+    "learning_efficiency_range": "Lerneffizienz",
+    "loneliness_range": "Einsamkeit",
+    "mental_energy_range": "Mentale Energie",
+    "mental_load_range": "Mentale Belastung",
+    "mood_range": "Stimmung",
+    "motivation_range": "Motivation",
+    "movement_intensity_range": "Bewegungsintensität",
+    "overwhelm_range": "Überforderung",
+    "pain_level_range": "Schmerzlevel",
+    "patience_range": "Geduld",
+    "physical_discomfort_range": "Körperliches Unbehagen",
+    "physical_energy_range": "Körperliche Energie",
+    "productivity_range": "Produktivität",
+    "purpose_range": "Sinnhaftigkeit",
+    "recovery_range": "Erholung",
+    "resilience_range": "Resilienz",
+    "satiety_range": "Sättigungsgefühl",
+    "self_awareness_range": "Selbstwahrnehmung",
+    "self_confidence_range": "Selbstvertrauen",
+    "sleep_quality_range": "Schlafqualität",
+    "social_energy_range": "Soziale Energie",
+    "social_satisfaction_range": "Soziale Zufriedenheit",
+    "stress_range": "Stress",
+    "success_range": "Erfolgswert",
+    "sugar_craving_range": "Zuckerverlangen",
+    "tension_range": "Muskelspannung",  
 }
 
-# Generiere automatisch alle Range Fields
 RANGE_FIELDS = {
     create_range_field(key, label).key: create_range_field(key, label)
     for key, label in RANGE_FIELDS_WITH_LABELS.items()
 }
 
 
-# ============================================================================
-# ZENTRALE FIELD-REGISTRY - ALLE 85+ FELDER DEFINIERT
-# ============================================================================
-
+# --------- ZENTRALE FIELD-REGISTRY: Diese Fields sind in allen Activities:
 FIELD_DEFINITIONS: dict[str, Field] = {
-    # UNIVERSELLE FELDER
     "notes": Field(
         key="notes",
         label="Notizen",
@@ -236,13 +223,31 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         description="Zusätzliche Notizen zur Session"
     ),
+    "date": Field(
+        key="date",
+        label="Datum",
+        field_type=FieldType.DATE,
+        chart_type=ChartType.NONE,
+        required=True,
+        hidden=False,
+        description="Datum der Session"
+    ),
+    "time": Field(
+        key="time",
+        label="Uhrzeit",
+        field_type=FieldType.DATE,
+        chart_type=ChartType.NONE,
+        required=False,
+        hidden=False,
+        description="Uhrzeit der Session"
+    ),
 
-    # ========== DISTANZ & BEWEGUNG ==========
+# --------- INDIVIDUELLE FIELD-REGISTRY:
     "distance": Field(
         key="distance",
         label="Distanz",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="km",
         required=True,
         hidden=False,
@@ -254,20 +259,18 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         key="number_of_steps",
         label="Schritte",
         field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="Schritte",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== ZEIT & DAUER ==========
     "duration": Field(
         key="duration",
         label="Dauer",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="min",
         required=True,
         hidden=False,
@@ -275,8 +278,6 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         average_possible=True,
         description="Dauer in Minuten"
     ),
-
-    # ========== GESCHWINDIGKEIT (BERECHNET) ==========
     "velocity": Field(
         key="velocity",
         label="Geschwindigkeit",
@@ -288,8 +289,6 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         calculator="calculate_velocity",
         average_possible=True,
     ),
-
-    # ========== PAUSEN ==========
     "number_of_breaks": Field(
         key="number_of_breaks",
         label="Anzahl Pausen",
@@ -304,20 +303,18 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         key="break_duration",
         label="Pausendauer",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="min",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== KALORIENVERBRAUCH & ENERGIE ==========
     "calorie_consumption": Field(
         key="calorie_consumption",
         label="Kalorienverbrauch",
         field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="kcal",
         required=False,
         hidden=False,
@@ -328,41 +325,35 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         key="altitude",
         label="Höhenmeter",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="m",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== TRAININGSPARAMETER ==========
     "number_of_exercises": Field(
         key="number_of_exercises",
         label="Anzahl Übungen",
         field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.BAR,
         unit="Übungen",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== SEITENANZAHL & LESEN ==========
     "number_of_pages": Field(
         key="number_of_pages",
         label="Seiten",
         field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="Seiten",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== SCHLAF - NICHT-RANGE FELDER ==========
     "number_of_wakeups": Field(
         key="number_of_wakeups",
         label="Aufwachanzahl",
@@ -373,64 +364,39 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== KONZENTRATION & FOKUS (0-10 RANGE) ==========
-    # Diese werden automatisch von RANGE_FIELDS generiert
-
-    # ========== SCHLAF ==========
-    # Diese werden automatisch von RANGE_FIELDS generiert
-
-    # ========== GETRÄNKE & WASSER ==========
-    "amount": Field(
+    "hydration_amount": Field(
         key="amount",
         label="Menge",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="ml",
         required=True,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== RAUCHEN ==========
     "smoke_amount": Field(
         key="smoke_amount",
         label="Rauchmenge",
         field_type=FieldType.INTEGER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== STIMMUNG & EMOTIONEN (0-10 RANGE) ==========
-    # Diese werden automatisch von RANGE_FIELDS generiert
-
-    # ========== KÖRPER & MENTAL (0-10 RANGE) ==========
-    # Diese werden automatisch von RANGE_FIELDS generiert
-
-    # ========== ERNÄHRUNG ==========
-    # Diese werden automatisch von RANGE_FIELDS generiert
-
-    # ========== AUSGABEN & FINANZEN ==========
     "costs_amount": Field(
         key="costs_amount",
         label="Ausgabenbetrag",
         field_type=FieldType.NUMBER,
-        chart_type=ChartType.BOTH,
+        chart_type=ChartType.LINE,
         unit="€",
         required=False,
         hidden=False,
         min_value=0,
         average_possible=True,
     ),
-
-    # ========== ENUM-TYPES (AUTOMATISCH GENERIERT) ==========
     **ENUM_FIELDS,
-
-    # ========== RANGE-TYPES (AUTOMATISCH GENERIERT) ==========
     **RANGE_FIELDS
 }
 
