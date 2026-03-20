@@ -30,6 +30,7 @@ class ActivityType(Enum):
     # HEALTH_CHECK = "Gesundheitscheck"
     # HOUSEHOLD = "Haushalt"
     # IMMUNITY = "Immunsystem stärken"
+    # INDIVIDUAL = "Individuelle Challenges erstellen"
     # INVESTING = "Investieren"
     JOGGING = "Joggen"
     # LANGUAGE_TRAINING = "Sprachtraining"
@@ -88,6 +89,10 @@ class GoalPeriod(Enum):
     YEARLY = "yearly"
     DATE_RANGE = "date_range"
 
+class SessionInput(Enum):
+    TABLE = "Tabelle"
+    INPUT_FIELDS = "Eingabefelder"
+    QUESTIONAIRE = "Fragebogen"
 
 class FieldType(Enum):
     """Feldtypen"""
@@ -99,16 +104,17 @@ class FieldType(Enum):
     DATE = "Date"
     RANGE = "Range 0 bis 10"
 
-
 class ChartType(Enum):
     """Diagrammtypen"""
     LINE = "line"
     BAR = "bar"
-    BOTH = "both"
+    REGRESSION = "Regression"
+    SCATTER = "Scatter Plot"
+    PIE = "Kreisdiagramm"
+    DONUT = "DonutChart"
     ENUM_BAR = "enum_bar"
-    NONE = "none"
     VALUE = "value"
-
+    NONE = "None"
 
 # --------------- ActivityTypeEnums
 class AlcoholType(Enum):
@@ -332,7 +338,6 @@ class InitiatorType(Enum):
     PARTNER = "Partner"
     FRIENDS = "Freunde"
     FAMILY = "Familie"
-    OTHER = "Andere"
 
 class InvestmentTypes(Enum):
     STOCKS = "Aktien"
@@ -513,7 +518,6 @@ class SideEffectType(Enum):
     INSOMNIA = "Schlaflosigkeit"
     MUSCLE_TENSION = "Muskelverspannung"
     SHIVERING = "Frösteln"
-    OTHER = "Andere"
 
 class SkillTrainingType(Enum):
     LANGUAGE = "Sprache lernen"
@@ -576,7 +580,6 @@ class SubstanceType(Enum):
     EMPATHOGEN = "MDMA"
     CAFFEINE = "Koffein"
     MEDICATION = "Medikation"
-    OTHERS = "Andere"
 
 class SwimmingStyleType(Enum):
     MIX = "Mix"
