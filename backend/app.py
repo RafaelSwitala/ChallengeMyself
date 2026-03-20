@@ -519,6 +519,7 @@ def handle_set_goal(name):
 @app.get("/activities")
 def handle_activities():
     try:
+        print("DEBUG ACTIVITIES:", get_activity_names())
         logger.debug("GET /activities")
         activities = get_activity_names()
         return jsonify({"activities": activities}), 200
@@ -601,4 +602,4 @@ def handle_goal_progress(name):
 
 if __name__ == "__main__":
     logger.info("Starting Flask app on http://127.0.0.1:5000")
-    app.run(debug=False, host="127.0.0.1", port=5000, use_reloader=False, threaded=True)
+    app.run(debug=True, host="127.0.0.1", port=5000, use_reloader=False, threaded=True)

@@ -91,8 +91,8 @@ GOAL_DEFINITIONS = {
         allowed_periods=["daily", "weekly"],
         status_types=["too_short", "too_long", "in_range"]
     ),
-    "Bildschirmzeit": GoalDefinition(
-        activity_name="Bildschirmzeit",
+    "Bildschirmzeit22": GoalDefinition(
+        activity_name="Bildschirmzeit33",
         allowed_references=["dauer_min", "dauer_min_average"],
         reference_units={"dauer_min": "min", "dauer_min_average": "min"},
         allowed_periods=["daily", "weekly"],
