@@ -15,7 +15,7 @@ class ActivityType(Enum):
     # COMMUNITY_ENGAGEMENT = "Gemeinschaftsaktivität"
     # CREATIVITY = "Kreativitaet"
     # CULTURAL_EVENTS = "Kulturelle Veranstaltungen"
-    # CYCLING = "Radfahren"
+    CYCLING = "Radfahren"
     # DRINK_CONSUMPTION = "Getränkekonsum"
     # DRUG_USE = "Drogenkonsum"
     # EATING = "Ernährung"
@@ -37,6 +37,7 @@ class ActivityType(Enum):
     # LEARNING = "Lernen"
     # MEDITATION = "Meditation"
     # MENTAL_EXERCISE = "Mentale Übungen"
+    # MENTAL_HEALTH = "Psychische Gesundheit"
     # MINDFULNESS = "Achtsamkeit"
     # MOOD = "Stimmung"
     # MOTIVATION = "Motivation"
@@ -53,14 +54,15 @@ class ActivityType(Enum):
     # SMOKING = "Rauchverhalten"
     # SNACKING = "Snacks"
     # SOCIAL_INTERACTION = "Soziale Interaktion"
-    #  SPORTS = "Sportarten"
+    # SPORTS = "Sportarten"
     # STRESS = "Stress"
     # SWIMMING = "Schwimmen"
     # TRAVELING = "Reisen"
     # VOLUNTEERING = "Freiwilligenarbeit"
     # WALKING = "Spazieren"
-    # WANDERING = "Wandern"
+    WANDERING = "Wandern"
     # WATER_CONSUMPTION = "Wasserkonsum"
+    # WEIGHT = "Gewicht"
     # WORKOUT = "Workout"
     # WRITING = "Schreiben"
     # YOGA = "Yoga"
@@ -79,6 +81,8 @@ class GoalType(Enum):
     AVERAGE_ABOVE = "j"       # Durchschnitt über X
     AVERAGE_BELOW = "k"       # Durchschnitt unter X
     CONDITIONAL = "l"         # X erreichen unter Bedingung Y
+    PERSONAL_BEST = "m"       # neuer Rekord?
+    MILESTONES = "n"          # Selbstdefinierte oder vorgegebene Milestones
 
 
 class GoalPeriod(Enum):
@@ -132,18 +136,36 @@ class AnxietyReasonType(Enum):
     SUBSTANCE = "Substanzen, Medikamente"
     UNKNOWN = "Unbekannt"
 
-class CunsumptionMethodType(Enum):
-    SMOKE = "Rauchen"
-    VAPING = "Vapen"
-    DRINKING = "Trinken"
-    EATING = "Essem"
-    ORAL = "Tablette, Tropfen, Kapsel"
-    SUBLINGUAL = "unter Zunge zergehen lassen"
-    NASAL = "Sniffen"
-    INHALATION = "Inhalation"
-    INJEKTION = "Spritzen"
-    TOPICAL = "Auf die Haut"
-    PLUGGING = "Rektal"
+class BreakReasonType(Enum):
+    EXHAUSTION = "Erschöpfung"
+    MUSCLE_FATIGUE = "Muskelermüdung"
+    PAIN = "Schmerzen"
+    INJURY = "Verletzung"
+    BREATHLESSNESS = "Atemnot"
+    HIGH_HEART_RATE = "Hoher Puls"
+    LOW_MOTIVATION = "Motivationsverlust"
+    BOREDOM = "Langeweile"
+    MENTAL_FATIGUE = "Mentale Erschöpfung"
+    DISTRACTION = "Ablenkung"
+    WEATHER_HEAT = "Zu heiß"
+    WEATHER_COLD = "Zu kalt"
+    WEATHER_RAIN = "Regen"
+    WIND = "Starker Wind"
+    TERRAIN = "Schwieriges Gelände"
+    TRAFFIC = "Verkehr / Ampel"
+    WAITING = "Warten"
+    NAVIGATION = "Orientierung / Route prüfen"
+    TECHNICAL_ISSUE = "Technisches Problem (Bike, Schuhe etc.)"
+    DRINK = "Trinken"
+    EAT = "Essen"
+    REST = "Kurz ausruhen"
+    SOCIAL = "Mit anderen sprechen"
+
+class BreakType(Enum):
+    SHORT = "Kurzpause"
+    LONG = "Längere Pause"
+    FORCED = "Erzwungene Pause"
+    VOLUNTARY = "Freiwillige Pause"
 
 class BudgetCategoryType(Enum):
     INCOME = "Einnahmen"
@@ -178,6 +200,19 @@ class CulturalEventType(Enum):
     LECTURE = "Vortrag / Lesung"
     DANCE = "Tanzveranstaltung"
     FAIR = "Messe / Jahrmarkt"
+
+class ConsumptionMethodType(Enum):
+    SMOKE = "Rauchen"
+    VAPING = "Vapen"
+    DRINKING = "Trinken"
+    EATING = "Essem"
+    ORAL = "Tablette, Tropfen, Kapsel"
+    SUBLINGUAL = "unter Zunge zergehen lassen"
+    NASAL = "Sniffen"
+    INHALATION = "Inhalation"
+    INJEKTION = "Spritzen"
+    TOPICAL = "Auf die Haut"
+    PLUGGING = "Rektal"
 
 class DeviceMainUseType(Enum):
     MIX = "Mix"
@@ -338,6 +373,7 @@ class InitiatorType(Enum):
     PARTNER = "Partner"
     FRIENDS = "Freunde"
     FAMILY = "Familie"
+    FOREIGN = "Fremde"
 
 class InvestmentTypes(Enum):
     STOCKS = "Aktien"
@@ -652,19 +688,26 @@ class WaterTemperatureType(Enum):
     WARM = "warm"
 
 class WeatherType(Enum):
-    SUNNY = "sonnig"
-    CLOUDY = "bewölkt"
-    RAINY = "regnerisch"
-    SNOWY = "schnee"
-    STORMY = "stürmisch"
-
-class WeatherExposureType(Enum):
-    SUNLIGHT = "Sonnenlicht / UV-Exposition"
-    COLD = "Kälte"
+    SUNN = "Sonne"
     HEAT = "Hitze"
+    FREEZING = "frostig, Eis"
+    COLD = "kalt"
+    PARTLY_CLOUD = "teils bewölkt"
+    CLOUD = "bewölkt"
+    OVERCAST = "komplett bewölkt, grau"
+    MIST = "dünner Nebel"
+    FOGGY = "Nebel"
+    DRIZZLE = "leichter Nieselregen"
     RAIN = "Regen"
+    SLEET = "Schneeregen"
+    SNOW = "Schnee"
+    HAIL = "Hagel"
     WIND = "Wind"
+    STORM = "Sturm"
+    THUNDERSTORM = "Gewitter"
     FRESH_AIR = "Frische Luft"
+    HUMID = "schwül"
+    DRY = "trockene Luft"
 
 class WorkoutType(Enum):
     MIX = "Mix"

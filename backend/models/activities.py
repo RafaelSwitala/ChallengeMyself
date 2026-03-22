@@ -64,12 +64,29 @@ def calc_durchschnittliche_geschwindigkeit_schwimmen(session: dict) -> Optional[
     return None
 
 ACTIVITIES: dict[str, list[str]] = {
-    ActivityType.JOGGING.value: [
+    ActivityType.CYCLING.value: [
         "notes", "date", "time",
-        "distance", "number_of_steps", "duration", "velocity", "number_of_breaks", "break_duration", "calorie_consumption", "altitude",
-        "WeatherType", "RouteType", "InitiatorType", "TimeOfDayType",
+        "distance", "duration", "velocity", "number_of_breaks", "break_duration", "calorie_consumption", "altitude", "max_speed", "elevation_gain", "elevation_loss", "cadence", "heart_rate", "recovery_time", "humidity", "wind_speed",
+        "WeatherType", "RouteType", "TimeOfDayType", "InitiatorType",
         "clarity_range", "discipline_range", "energy_range", "fitness_level_range", "focus_range", "mood_range", "motivation_range", "movement_intensity_range", "physical_discomfort_range", "physical_energy_range", "success_range", "sugar_craving_range", "tension_range", 
         # hier davor und danach messen?
+    # Vielleicht so?:
+        # "metrics": [...]
+        # "context": [...]
+        # "body": [...]
+        # "mental": [...]
+    ],
+    ActivityType.JOGGING.value: [
+        "notes", "date", "time",
+        "distance", "number_of_steps", "duration", "velocity", "number_of_breaks", "break_duration", "calorie_consumption", "altitude", "max_speed", "elevation_gain", "elevation_loss", "cadence", "heart_rate", "recovery_time", "humidity", "wind_speed",
+        "WeatherType", "RouteType", "TimeOfDayType", "InitiatorType",
+        "clarity_range", "discipline_range", "energy_range", "fitness_level_range", "focus_range", "mood_range", "motivation_range", "movement_intensity_range", "physical_discomfort_range", "physical_energy_range", "success_range", "sugar_craving_range", "tension_range", 
+    ],
+    ActivityType.WANDERING.value: [
+        "notes", "date", "time",
+        "distance", "number_of_steps", "duration", "velocity", "number_of_breaks", "break_duration", "calorie_consumption", "altitude", "elevation_gain", "elevation_loss", "cadence", "heart_rate", "recovery_time", "humidity",
+        "WeatherType", "RouteType", "TimeOfDayType", "InitiatorType",
+        "clarity_range", "discipline_range", "energy_range", "fitness_level_range", "focus_range", "mood_range", "motivation_range", "movement_intensity_range", "physical_discomfort_range", "physical_energy_range", "success_range", "sugar_craving_range", "tension_range", 
     ],
 
 }
