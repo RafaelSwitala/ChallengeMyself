@@ -1,11 +1,3 @@
-"""
-Chart generation module for ChallengeMyself.
-
-This module handles the generation of interactive charts using Plotly Python.
-It provides functionality for creating line charts, bar charts, and mixed chart types
-with support for dual Y-axes, date range filtering, and axis scaling.
-"""
-
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
@@ -23,30 +15,14 @@ def create_mixed_chart(
     title: str = "",
     show_spines: bool = True
 ) -> go.Figure:
-    """
-    Create a mixed line/bar chart with support for dual Y-axes.
-    
-    Args:
-        df: DataFrame with columns 'date' and field columns
-        fields: List of field names to plot
-        field_types: Dict mapping field name to 'line' or 'bar'
-        secondary_y_fields: Fields to plot on secondary Y-axis
-        title: Chart title
-        show_spines: Whether to show axis spines (lines)
-    
-    Returns:
-        Plotly Figure object
-    """
     try:
         secondary_y_fields = secondary_y_fields or []
         
-        # Create figure with secondary y-axis if needed
         if secondary_y_fields:
             fig = make_subplots(specs=[[{"secondary_y": True}]])
         else:
             fig = go.Figure()
         
-        # Iterate through selected fields and add traces
         for field_name in fields:
             if field_name not in df.columns:
                 continue
@@ -54,11 +30,9 @@ def create_mixed_chart(
             chart_type = field_types.get(field_name, "line")
             is_secondary = field_name in secondary_y_fields
             
-            # Prepare data
             x_data = [pd.Timestamp(date).strftime("%Y-%m-%d") for date in df["date"].tolist()]
             y_data = df[field_name].tolist()
             
-            # Create trace based on type
             if chart_type == "bar":
                 trace = go.Bar(
                     x=x_data,
@@ -82,7 +56,6 @@ def create_mixed_chart(
             else:
                 fig.add_trace(trace)
         
-        # Update layout
         layout_update = {
             "title": title or "Chart",
             "height": 700,
@@ -98,7 +71,6 @@ def create_mixed_chart(
             "margin": {"l": 80, "r": 100, "t": 50, "b": 150}
         }
         
-        # Configure axes with spines visible
         if show_spines:
             layout_update["xaxis"] = {
                 "title": "Date",
@@ -143,23 +115,10 @@ def create_enum_chart(
     title: str = "",
     show_spines: bool = True
 ) -> go.Figure:
-    """
-    Create a bar chart for categorical data.
-    
-    Args:
-        df: DataFrame with enum_field column
-        enum_field: Name of categorical field to count
-        title: Chart title
-        show_spines: Whether to show axis spines (lines)
-    
-    Returns:
-        Plotly Figure object
-    """
     try:
         if enum_field not in df.columns:
             raise ValueError(f"Field '{enum_field}' not found in DataFrame")
         
-        # Count occurrences
         counts = df[enum_field].value_counts().sort_index()
         
         fig = go.Figure(data=[
@@ -218,19 +177,6 @@ def apply_axis_scaling(
     y_step: Optional[float] = None,
     x_step: int = 1
 ) -> go.Figure:
-    """
-    Apply axis scaling parameters to a figure.
-    
-    Args:
-        fig: Plotly figure to modify
-        y_min: Minimum Y-axis value
-        y_max: Maximum Y-axis value
-        y_step: Y-axis tick interval
-        x_step: Show every nth X-axis label (1 = all)
-    
-    Returns:
-        Modified figure
-    """
     try:
         # Apply Y-axis scaling
         if y_min is not None or y_max is not None or y_step is not None:
@@ -251,11 +197,9 @@ def apply_axis_scaling(
             if y_update:
                 fig.update_yaxes(y_update)
         
-        # Apply X-axis stepping (show every nth label)
         if x_step > 1:
             for i, trace in enumerate(fig.data):
                 if hasattr(trace, 'x') and trace.x:
-                    # Create new x with empty strings for hidden labels
                     new_x = [x if j % x_step == 0 else "" for j, x in enumerate(trace.x)]
                     fig.data[i].x = new_x
         
