@@ -1,0 +1,2 @@
+# Standardabweichung, Varianz
+# Korrelationen

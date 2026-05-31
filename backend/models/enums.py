@@ -6,22 +6,26 @@ from enum import Enum
 
 
 class ActivityType(Enum):
-    """40+ Aktivitätstypen"""
+    """60+ Aktivitätstypen"""
     # ALCOHOL_CONSUMPTION = "Alkoholkonsum"
     # ANXIETY = "Angstlevel"
     # ART = "Kunst"
     # BUDGETING = "Budgetplanung"
     # CAFFEINE_CONSUMPTION = "Koffeinkonsum"
+    # CLIMBING = "Klettern"
     # COMMUNITY_ENGAGEMENT = "Gemeinschaftsaktivität"
+    # CREATING = "Erstellung"
     # CREATIVITY = "Kreativitaet"
     # CULTURAL_EVENTS = "Kulturelle Veranstaltungen"
-    # CYCLING = "Radfahren"
+    CYCLING = "Radfahren"
+    # DRAWING = "Zeichnen"
     # DRINK_CONSUMPTION = "Getränkekonsum"
     # DRUG_USE = "Drogenkonsum"
     # EATING = "Ernährung"
     # ENERGY = "Energie"
     # EXPENSES = "Ausgaben"
     # FAMILY_TIME = "Familienzeit"
+    # FINANCE = "Finanzen (Finanzplanung?)"
     # GAMBLING = "Glücksspiel"
     # GRATITUDE = "Dankbarkeit"
     # HABIT_BREAKING = "Gewohnheitsbruch (Rückfälle)"
@@ -30,17 +34,22 @@ class ActivityType(Enum):
     # HEALTH_CHECK = "Gesundheitscheck"
     # HOUSEHOLD = "Haushalt"
     # IMMUNITY = "Immunsystem stärken"
+    # INDIVIDUAL = "Individuelle Challenges erstellen"
     # INVESTING = "Investieren"
     JOGGING = "Joggen"
     # LANGUAGE_TRAINING = "Sprachtraining"
     # LEARNING = "Lernen"
     # MEDITATION = "Meditation"
+    # MEMORIZATION = "Auswendig lernen"
+    # MEMORY_TRAINING = "Gedächtnis Training"
     # MENTAL_EXERCISE = "Mentale Übungen"
+    # MENTAL_HEALTH = "Psychische Gesundheit"
     # MINDFULNESS = "Achtsamkeit"
     # MOOD = "Stimmung"
     # MOTIVATION = "Motivation"
     # MUSIC = "Musikpraxis"
     # NATURE = "Natur"
+    # PLANNING = "Planung, Organisation"
     # PRODUCTIVITY = "Produktivitaet"
     # READING = "Lesen"
     # REFLECTION = "Reflexion, Tagebuch"
@@ -52,33 +61,59 @@ class ActivityType(Enum):
     # SMOKING = "Rauchverhalten"
     # SNACKING = "Snacks"
     # SOCIAL_INTERACTION = "Soziale Interaktion"
-    #  SPORTS = "Sportarten"
+    # SPORTS = "Sportarten"
     # STRESS = "Stress"
     # SWIMMING = "Schwimmen"
     # TRAVELING = "Reisen"
     # VOLUNTEERING = "Freiwilligenarbeit"
     # WALKING = "Spazieren"
-    # WANDERING = "Wandern"
+    WANDERING = "Wandern"
     # WATER_CONSUMPTION = "Wasserkonsum"
+    # WEIGHT = "Gewicht"
     # WORKOUT = "Workout"
     # WRITING = "Schreiben"
     # YOGA = "Yoga"
 
 class GoalType(Enum):
     """12 Zieltypen A-L"""
-    MORE_THAN = "a"           # Mehr als X
-    LESS_THAN = "b"           # Weniger als X
-    AVOID = "c"               # Ganz vermeiden
-    FREQUENCY_EXACT = "d"     # Genau X-mal pro Periode
-    FREQUENCY_MIN = "e"       # Mindestens X-mal
-    FREQUENCY_MAX = "f"       # Maximal X-mal
-    STREAK = "g"              # X Tage in Folge
-    INCREASE_DAILY = "h"      # Täglich X mehr bis Y
-    DECREASE_DAILY = "i"      # Täglich X weniger bis Y
-    AVERAGE_ABOVE = "j"       # Durchschnitt über X
-    AVERAGE_BELOW = "k"       # Durchschnitt unter X
-    CONDITIONAL = "l"         # X erreichen unter Bedingung Y
-
+    MORE_THAN = "a"                 # Mehr als X
+    LESS_THAN = "b"                 # Weniger als X
+    AVOID = "c"                     # Ganz vermeiden
+    FREQUENCY_EXACT = "d"           # Genau X-mal pro Periode
+    FREQUENCY_MIN = "e"             # Mindestens X-mal
+    FREQUENCY_MAX = "f"             # Maximal X-mal
+    STREAK = "g"                    # X Tage in Folge
+    INCREASE_DAILY = "h"            # Täglich X mehr bis Tag Y
+    DECREASE_DAILY = "i"            # Täglich X weniger bis Tag Y
+    AVERAGE_ABOVE = "j"             # Durchschnitt über X
+    AVERAGE_BELOW = "k"             # Durchschnitt unter X
+    CONDITIONAL = "l"               # X erreichen unter Bedingung Y
+    PERSONAL_BEST = "m"             # neuer Rekord?
+    MILESTONES = "n"                # Selbstdefinierte oder vorgegebene Milestones
+    DURATION_MIN = "o"              # Mindestens X Zeit pro Session
+    DURATION_MAX = "p"              # Maximal X Zeit
+    DURATION_EXACT = "q"            # Genau X Zeit
+    TOTAL_DURATION = "r"            # Gesamtzeit in Periode erreichen
+    TIME_WINDOW = "s"               # Nur in Zeitfenster (z.B. morgens)
+    DEADLINE = "t"                  # Ziel bis Zeitpunkt X erreichen
+    TARGET_VALUE = "u"              # Zielwert erreichen (z.B. 10km)
+    DELTA_INCREASE = "v"            # Steigerung um X (nicht täglich!)
+    DELTA_DECREASE = "w"            # Reduktion um X
+    PERCENT_CHANGE = "x"            # Veränderung um X %
+    CONSISTENCY = "z"               # geringe Varianz / stabil bleiben
+    STREAK_WITH_TOLERANCE = "aa"    # Streak mit erlaubten Aussetzern
+    NON_CONSECUTIVE_COUNT = "ab"    # X-mal, egal wann
+    RECURRENCE_PATTERN = "ac"       # z.B. Mo/Mi/Fr
+    RANGE_TARGET = "ad"             # Wert in Bereich halten
+    IMPROVEMENT_SCORE = "ae"        # subjektive Verbesserung
+    PEAK_STATE = "af"               # Zustand X erreichen (Flow etc.)
+    LIMIT_STATE = "ag"              # Zustand unter X halten (Stress etc.)
+    TRIGGER_BASED = "am"            # wenn X → dann Y tun
+    WEIGHTED_SCORE = "ar"           # gewichtete Bewertung
+    POINTS = "aw"                   # Punktesystem erreichen
+    ACHIEVEMENT = "ay"              # einmaliges Ziel
+    CHALLENGE = "az"                # zeitlich begrenzte Challenge
+    RECOVERY_GOAL = "bd"            # nach Rückfall zurückkommen
 
 class GoalPeriod(Enum):
     """Zeiträume für Goals"""
@@ -88,6 +123,10 @@ class GoalPeriod(Enum):
     YEARLY = "yearly"
     DATE_RANGE = "date_range"
 
+class SessionInput(Enum):
+    TABLE = "Tabelle"
+    INPUT_FIELDS = "Eingabefelder"
+    QUESTIONAIRE = "Fragebogen"
 
 class FieldType(Enum):
     """Feldtypen"""
@@ -99,16 +138,17 @@ class FieldType(Enum):
     DATE = "Date"
     RANGE = "Range 0 bis 10"
 
-
 class ChartType(Enum):
     """Diagrammtypen"""
     LINE = "line"
     BAR = "bar"
-    BOTH = "both"
+    REGRESSION = "Regression"
+    SCATTER = "Scatter Plot"
+    PIE = "Kreisdiagramm"
+    DONUT = "DonutChart"
     ENUM_BAR = "enum_bar"
-    NONE = "none"
     VALUE = "value"
-
+    NONE = "None"
 
 # --------------- ActivityTypeEnums
 class AlcoholType(Enum):
@@ -126,18 +166,36 @@ class AnxietyReasonType(Enum):
     SUBSTANCE = "Substanzen, Medikamente"
     UNKNOWN = "Unbekannt"
 
-class CunsumptionMethodType(Enum):
-    SMOKE = "Rauchen"
-    VAPING = "Vapen"
-    DRINKING = "Trinken"
-    EATING = "Essem"
-    ORAL = "Tablette, Tropfen, Kapsel"
-    SUBLINGUAL = "unter Zunge zergehen lassen"
-    NASAL = "Sniffen"
-    INHALATION = "Inhalation"
-    INJEKTION = "Spritzen"
-    TOPICAL = "Auf die Haut"
-    PLUGGING = "Rektal"
+class BreakReasonType(Enum):
+    EXHAUSTION = "Erschöpfung"
+    MUSCLE_FATIGUE = "Muskelermüdung"
+    PAIN = "Schmerzen"
+    INJURY = "Verletzung"
+    BREATHLESSNESS = "Atemnot"
+    HIGH_HEART_RATE = "Hoher Puls"
+    LOW_MOTIVATION = "Motivationsverlust"
+    BOREDOM = "Langeweile"
+    MENTAL_FATIGUE = "Mentale Erschöpfung"
+    DISTRACTION = "Ablenkung"
+    WEATHER_HEAT = "Zu heiß"
+    WEATHER_COLD = "Zu kalt"
+    WEATHER_RAIN = "Regen"
+    WIND = "Starker Wind"
+    TERRAIN = "Schwieriges Gelände"
+    TRAFFIC = "Verkehr / Ampel"
+    WAITING = "Warten"
+    NAVIGATION = "Orientierung / Route prüfen"
+    TECHNICAL_ISSUE = "Technisches Problem (Bike, Schuhe etc.)"
+    DRINK = "Trinken"
+    EAT = "Essen"
+    REST = "Kurz ausruhen"
+    SOCIAL = "Mit anderen sprechen"
+
+class BreakType(Enum):
+    SHORT = "Kurzpause"
+    LONG = "Längere Pause"
+    FORCED = "Erzwungene Pause"
+    VOLUNTARY = "Freiwillige Pause"
 
 class BudgetCategoryType(Enum):
     INCOME = "Einnahmen"
@@ -172,6 +230,19 @@ class CulturalEventType(Enum):
     LECTURE = "Vortrag / Lesung"
     DANCE = "Tanzveranstaltung"
     FAIR = "Messe / Jahrmarkt"
+
+class ConsumptionMethodType(Enum):
+    SMOKE = "Rauchen"
+    VAPING = "Vapen"
+    DRINKING = "Trinken"
+    EATING = "Essem"
+    ORAL = "Tablette, Tropfen, Kapsel"
+    SUBLINGUAL = "unter Zunge zergehen lassen"
+    NASAL = "Sniffen"
+    INHALATION = "Inhalation"
+    INJEKTION = "Spritzen"
+    TOPICAL = "Auf die Haut"
+    PLUGGING = "Rektal"
 
 class DeviceMainUseType(Enum):
     MIX = "Mix"
@@ -332,7 +403,7 @@ class InitiatorType(Enum):
     PARTNER = "Partner"
     FRIENDS = "Freunde"
     FAMILY = "Familie"
-    OTHER = "Andere"
+    FOREIGN = "Fremde"
 
 class InvestmentTypes(Enum):
     STOCKS = "Aktien"
@@ -513,7 +584,6 @@ class SideEffectType(Enum):
     INSOMNIA = "Schlaflosigkeit"
     MUSCLE_TENSION = "Muskelverspannung"
     SHIVERING = "Frösteln"
-    OTHER = "Andere"
 
 class SkillTrainingType(Enum):
     LANGUAGE = "Sprache lernen"
@@ -576,7 +646,6 @@ class SubstanceType(Enum):
     EMPATHOGEN = "MDMA"
     CAFFEINE = "Koffein"
     MEDICATION = "Medikation"
-    OTHERS = "Andere"
 
 class SwimmingStyleType(Enum):
     MIX = "Mix"
@@ -649,19 +718,26 @@ class WaterTemperatureType(Enum):
     WARM = "warm"
 
 class WeatherType(Enum):
-    SUNNY = "sonnig"
-    CLOUDY = "bewölkt"
-    RAINY = "regnerisch"
-    SNOWY = "schnee"
-    STORMY = "stürmisch"
-
-class WeatherExposureType(Enum):
-    SUNLIGHT = "Sonnenlicht / UV-Exposition"
-    COLD = "Kälte"
+    SUNN = "Sonne"
     HEAT = "Hitze"
+    FREEZING = "frostig, Eis"
+    COLD = "kalt"
+    PARTLY_CLOUD = "teils bewölkt"
+    CLOUD = "bewölkt"
+    OVERCAST = "komplett bewölkt, grau"
+    MIST = "dünner Nebel"
+    FOGGY = "Nebel"
+    DRIZZLE = "leichter Nieselregen"
     RAIN = "Regen"
+    SLEET = "Schneeregen"
+    SNOW = "Schnee"
+    HAIL = "Hagel"
     WIND = "Wind"
+    STORM = "Sturm"
+    THUNDERSTORM = "Gewitter"
     FRESH_AIR = "Frische Luft"
+    HUMID = "schwül"
+    DRY = "trockene Luft"
 
 class WorkoutType(Enum):
     MIX = "Mix"

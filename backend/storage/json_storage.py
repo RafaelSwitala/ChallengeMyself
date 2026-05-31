@@ -4,6 +4,7 @@ import logging
 from models.challenge import Challenge
 from models.session import Session
 from models.goal import Goal
+from models.goal_types import deserialize_goal_type
 from config import DATA_DIR
 
 logger = logging.getLogger(__name__)
@@ -41,6 +42,12 @@ def load_challenge(name: str) -> Challenge | None:
                 period=g.get("period", ""),
                 reference=g.get("reference")
             ))
+
+        # Lade GoalTypes
+        for goal_type_data in data.get("goal_types", []):
+            goal_type = deserialize_goal_type(goal_type_data)
+            if goal_type:
+                c.goal_types.append(goal_type)
 
         for s in data.get("sessions", []):
             c.add_session(Session(s["date"], s["time"], s["values"]))

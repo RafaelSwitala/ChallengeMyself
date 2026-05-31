@@ -1,0 +1,264 @@
+<style>
+  /* GoalTypes UI Styles */
+  .goal-types-manager {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+  }
+
+  .goal-types-manager h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .goal-types-manager .info {
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 15px;
+  }
+
+  /* Available Goals Cards */
+  .available-goal-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .goal-type-card {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .goal-type-card:hover {
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+  }
+
+  .goal-type-card.active {
+    border-color: #28a745;
+    background: #f0f8f4;
+  }
+
+  .goal-type-card input[type="checkbox"] {
+    margin-right: 10px;
+  }
+
+  .goal-type-card label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .goal-type-card strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  .goal-type-card p {
+    margin: 0;
+    font-size: 0.85em;
+    color: #666;
+  }
+
+  /* Goal Forms */
+  .goal-forms {
+    margin-bottom: 25px;
+  }
+
+  .goal-type-form {
+    display: none;
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f7ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 6px;
+  }
+
+  .goal-type-form h4 {
+    margin: 0 0 10px 0;
+    color: #0056b3;
+  }
+
+  .goal-type-form .description {
+    margin: 0 0 15px 0;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9em;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  }
+
+  /* Days Checkboxes */
+  .days-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  .day-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .day-checkbox input {
+    width: auto;
+    margin-right: 5px;
+  }
+
+  /* Form Buttons */
+  .btn-save-goal,
+  .btn-cancel-goal,
+  .btn-delete-goal {
+    padding: 8px 16px;
+    margin: 5px 5px 5px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-save-goal {
+    background: #28a745;
+    color: white;
+  }
+
+  .btn-save-goal:hover {
+    background: #218838;
+  }
+
+  .btn-cancel-goal {
+    background: #6c757d;
+    color: white;
+  }
+
+  .btn-cancel-goal:hover {
+    background: #5a6268;
+  }
+
+  /* Active Goals List */
+  .active-goals {
+    margin-top: 25px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  .active-goals h4 {
+    margin: 0 0 12px 0;
+    color: #333;
+  }
+
+  .goals-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .goal-item {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-left: 3px solid #28a745;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-delete-goal {
+    background: #dc3545;
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.85em;
+    margin: 0;
+  }
+
+  .btn-delete-goal:hover {
+    background: #c82333;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .available-goal-types {
+      grid-template-columns: 1fr;
+    }
+
+    .days-checkboxes {
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+  }
+</style>
+
+<!-- Example HTML Usage -->
+<div id="challenge-detail">
+  <!-- Your existing challenge content here -->
+
+  <!-- Add this container for GoalTypes -->
+  <div id="goal-types-container">
+    <!-- GoalTypes UI wird hier eingefügt -->
+  </div>
+
+  <!-- Sessions Form -->
+  <div id="sessions-container">
+    <h3>Sessions</h3>
+    <!-- Your existing sessions form here -->
+  </div>
+</div>
+
+<script>
+  // Initialize GoalTypes when the page loads
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Get challenge name and activity from page
+    const challengeName = "Goalssss"; // Oder dynamisch von der Seite abrufen
+    const activity = "Joggen"; // Oder dynamisch von der Seite abrufen
+
+    // Initialize GoalTypes Manager
+    const manager = await initGoalTypesUI(challengeName, activity);
+
+    if (manager) {
+      console.log("✅ GoalTypes UI erfolgreich initialisiert!");
+    } else {
+      console.error("❌ GoalTypes konnten nicht initialisiert werden");
+    }
+  });
+</script>

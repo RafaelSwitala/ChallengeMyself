@@ -1,0 +1,12 @@
+{
+    "name": "Goalssss",
+    "activity_type": "Joggen",
+    "goal": {
+        "description": "Ich möchte monatlich 100 km spazieren.",
+        "target": 4.0,
+        "period": "daily",
+        "reference": "distance"
+    },
+    "goal_types": [],
+    "sessions": []
+}

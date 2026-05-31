@@ -19,6 +19,7 @@ class Field:
     calculator: Optional[str] = None    # Funktionsreferenz für Hidden Fields
     average_possible: bool = False      # Kann ein Durchschnitt berechnet werden?
 
+
     def validate(self, value: Any) -> tuple[bool, Optional[str]]:
         if value is None and not self.required:
             return True, None
@@ -90,15 +91,15 @@ def create_range_field(key: str, label: str) -> Field:
 
 # --------- ENUM-TYPEN FÜR AUTOMATISCHE FIELD-GENERIERUNG
 ENUM_TYPES_WITH_LABELS = {
-    WeatherType: "Wetter",
-    RouteType: "Streckentyp",
     AlcoholType: "Alkoholtyp",
     AnxietyReasonType: "Angst-Grund",
-    CunsumptionMethodType: "Konsummethode",
+    BreakReasonType: "Pausengrund",
+    BreakType: "Art der Pause",
     BudgetCategoryType: "Budget-Kategorie",
     CommunityActivityType: "Gemeinschaftsaktivität",
     ConsumptionProductType: "Verbrauchsprodukt",
     CulturalEventType: "Kulturelle Veranstaltung",
+    ConsumptionMethodType: "Konsummethode",
     DeviceMainUseType: "Hauptnutzung Gerät",
     DeviceType: "Gerätetyp",
     DrinkTemperatureType: "Getränk-Temperatur",
@@ -127,6 +128,7 @@ ENUM_TYPES_WITH_LABELS = {
     PortionSizeType: "Portionsgröße",
     ReadingMediumType: "Lesemedium",
     ReflectionType: "Reflexionstyp",
+    RouteType: "Streckentyp",
     SavingGoalType: "Sparziel",
     SideEffectType: "Nebenwirkung",
     SkillTrainingType: "Skill-Training",
@@ -142,7 +144,7 @@ ENUM_TYPES_WITH_LABELS = {
     VolunteeringType: "Freiwilligenarbeit",
     WaterSourceType: "Wasserquelle",
     WaterTemperatureType: "Wassertemperatur",
-    WeatherExposureType: "Wetter-Exposition",
+    WeatherType: "Wetter",
     WorkoutType: "Trainingstyp",
     WritingMediumType: "Schreibmedium",
 }
@@ -154,6 +156,7 @@ ENUM_FIELDS = {
 
 # --------- RANGE-FIELDS FÜR AUTOMATISCHE GENERIERUNG (0-10 SKALIERUNG)
 RANGE_FIELDS_WITH_LABELS = {
+    "air_quality_range": "Luftqualität",
     "anxiety_range": "Angstzustand",
     "appetite_range": "Appetit",
     "calmness_range": "Ruhe / Gelassenheit",
@@ -188,6 +191,7 @@ RANGE_FIELDS_WITH_LABELS = {
     "overwhelm_range": "Überforderung",
     "pain_level_range": "Schmerzlevel",
     "patience_range": "Geduld",
+    "perceived_exertion_range": "subjektive Anstrengung",
     "physical_discomfort_range": "Körperliches Unbehagen",
     "physical_energy_range": "Körperliche Energie",
     "productivity_range": "Produktivität",
@@ -395,6 +399,95 @@ FIELD_DEFINITIONS: dict[str, Field] = {
         hidden=False,
         min_value=0,
         average_possible=True,
+    ),
+    "max_speed": Field(
+        key="max_speed",
+        label="Maximale Geschwindigkeit",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.VALUE,
+        unit="km/h",
+        required=False,
+        hidden=True,
+        average_possible=False,
+        description="Maximale zurückgelegte Geschwindigkeit"
+    ),
+    "elevation_gain": Field(
+        key="elevation_gain",
+        label="Höhenmeter bergauf",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.VALUE,
+        unit="m",
+        required=False,
+        hidden=True,
+        average_possible=False,
+        description="Höhenmeter bergauf"
+    ),
+    "elevation_loss": Field(
+        key="elevation_loss",
+        label="Höhenmeter bergab",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.VALUE,
+        unit="m",
+        required=False,
+        hidden=True,
+        average_possible=False,
+        description="Höhenmeter bergab"
+    ),
+    "cadence": Field(
+        key="cadence",
+        label="Trittfrquenz",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.VALUE,
+        unit="Schritte",
+        required=False,
+        hidden=True,
+        average_possible=True,
+        description="Schritte pro Minute",
+        calculator="calculate_cadence",
+    ),
+    "heart_rate": Field(
+        key="heart_rate",
+        label="Puls",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.LINE,
+        unit="",
+        required=False,
+        hidden=False,
+        average_possible=True,
+        description="Puls",
+    ),
+    "recovery_time": Field(
+        key="recovery_time",
+        label="Erholungszeit",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.BAR,
+        unit="min",
+        required=False,
+        hidden=False,
+        average_possible=True,
+        description="Erholungszeit",
+    ),
+    "humidity": Field(
+        key="humidity",
+        label="Luftfeuchtigkeit",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.BAR,
+        unit="%",
+        required=False,
+        hidden=False,
+        average_possible=False,
+        description="Luftfeuchtigkeit",
+    ),
+    "wind_speed": Field(
+        key="wind_speed",
+        label="Windgeschwindigkeit",
+        field_type=FieldType.NUMBER,
+        chart_type=ChartType.BAR,
+        unit="m/s",
+        required=False,
+        hidden=False,
+        average_possible=False,
+        description="Windgeschwindigkeit",
     ),
     **ENUM_FIELDS,
     **RANGE_FIELDS

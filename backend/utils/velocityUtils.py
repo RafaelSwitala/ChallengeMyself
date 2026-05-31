@@ -1,0 +1,1 @@
+# Geschwindigkeit berechnen aus distanz und dauer
