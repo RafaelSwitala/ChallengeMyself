@@ -8,7 +8,7 @@ from models.goal import Goal
 from models.activities import (
     ACTIVITIES, get_activity_names, get_fields, get_field_objects,
     get_numeric_fields, get_category_fields, get_field_unit,
-    get_comparison_features, calculate_hidden_fields
+    get_comparison_features, calculate_hidden_fields, get_available_goal_types
 )
 from storage.json_storage import save_challenge, load_challenge, list_challenges
 import plotly.graph_objects as go
@@ -436,6 +436,8 @@ def handle_add_session(name):
             return {"error": "Challenge not found"}, 404
         
         payload = request.get_json() if request.is_json else request.form
+        logger.info(f"DEBUG: Received payload for session: {payload}")
+        
         date = payload.get("date", "")
         time = payload.get("time", "")
         
@@ -446,11 +448,15 @@ def handle_add_session(name):
         
         values = {}
         fields = get_fields(challenge.activity_type)
+        logger.info(f"DEBUG: Available fields for {challenge.activity_type}: {[f['name'] if isinstance(f, dict) else f.key for f in fields]}")
+        
         for field in fields:
-            field_name = field["name"]
+            field_name = field["name"] if isinstance(field, dict) else field.key
+            # Try multiple possible names for the same field
             val = field_values.get(field_name) or payload.get(field_name)
+            
             if val is not None and val != "":
-                field_type = field["type"]
+                field_type = field["type"] if isinstance(field, dict) else field.field_type.value
                 if field_type == "number":
                     try:
                         values[field_name] = float(val)
@@ -458,6 +464,8 @@ def handle_add_session(name):
                         values[field_name] = val
                 else:
                     values[field_name] = val
+        
+        logger.info(f"DEBUG: Collected values: {values}")
         
         hidden_values = calculate_hidden_fields(challenge.activity_type, values)
         values.update(hidden_values)
@@ -597,6 +605,149 @@ def handle_goal_progress(name):
         }), 200
     except Exception as e:
         logger.exception(f"Error in GET /challenges/{name}/goal/progress")
+        return {"error": str(e)}, 500
+
+
+
+@app.get("/activities/<activity>/goal-types")
+def handle_activity_goal_types(activity):
+    """Get alle verfügbaren GoalTypes für eine Aktivität"""
+    try:
+        logger.debug(f"GET /activities/{activity}/goal-types")
+        
+        if activity not in ACTIVITIES:
+            return {"error": f"Unknown activity: {activity}"}, 404
+        
+        available_types = get_available_goal_types(activity)
+        
+        return jsonify({
+            "activity": activity,
+            "available_goal_types": available_types
+        }), 200
+    except Exception as e:
+        logger.exception(f"Error in GET /activities/{activity}/goal-types")
+        return {"error": str(e)}, 500
+
+
+@app.get("/challenges/<name>/goal-types")
+def handle_get_challenge_goal_types(name):
+    """Get alle GoalTypes für eine Challenge"""
+    try:
+        logger.debug(f"GET /challenges/{name}/goal-types")
+        
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        goal_types = [gt.to_dict() for gt in challenge.goal_types]
+        
+        return jsonify({
+            "challenge": name,
+            "goal_types": goal_types
+        }), 200
+    except Exception as e:
+        logger.exception(f"Error in GET /challenges/{name}/goal-types")
+        return {"error": str(e)}, 500
+
+
+@app.post("/challenges/<name>/goal-types")
+def handle_add_goal_type(name):
+    """Add einen GoalType zu einer Challenge"""
+    try:
+        logger.debug(f"POST /challenges/{name}/goal-types")
+        
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        payload = request.get_json()
+        if not payload or "type" not in payload:
+            return {"error": "Goal type data required"}, 400
+        
+        from models.goal_types import (
+            MoreThanGoal, FrequencyMinGoal, AverageAboveGoal, 
+            RecurrencePatternGoal
+        )
+        
+        goal_type_name = payload.get("type")
+        
+        try:
+            if goal_type_name == "MORE_THAN":
+                goal_type = MoreThanGoal(
+                    target_value=float(payload.get("target_value", 0)),
+                    period=payload.get("period", "monthly"),
+                    unit=payload.get("unit", "km"),
+                    metric=payload.get("metric", "distance")
+                )
+            elif goal_type_name == "FREQUENCY_MIN":
+                goal_type = FrequencyMinGoal(
+                    min_sessions=int(payload.get("min_sessions", 0)),
+                    period=payload.get("period", "weekly")
+                )
+            elif goal_type_name == "AVERAGE_ABOVE":
+                goal_type = AverageAboveGoal(
+                    target_average=float(payload.get("target_average", 0)),
+                    metric=payload.get("metric", "duration"),
+                    unit=payload.get("unit", "minutes")
+                )
+            elif goal_type_name == "RECURRENCE_PATTERN":
+                goal_type = RecurrencePatternGoal(
+                    days_of_week=payload.get("days_of_week", [])
+                )
+            else:
+                return {"error": f"Unknown goal type: {goal_type_name}"}, 400
+            
+            if not goal_type.is_valid():
+                return {"error": f"Invalid goal type data for {goal_type_name}"}, 400
+            
+            challenge.add_goal_type(goal_type)
+            save_challenge(challenge)
+            
+            logger.info(f"Goal type {goal_type_name} added to {name}")
+            return jsonify(challenge.to_dict()), 201
+        
+        except Exception as e:
+            logger.exception(f"Error creating goal type")
+            return {"error": str(e)}, 400
+    
+    except Exception as e:
+        logger.exception(f"Error in POST /challenges/{name}/goal-types")
+        return {"error": str(e)}, 500
+
+
+@app.delete("/challenges/<name>/goal-types/<goal_type_name>")
+def handle_delete_goal_type(name, goal_type_name):
+    """Remove einen GoalType aus einer Challenge"""
+    try:
+        logger.debug(f"DELETE /challenges/{name}/goal-types/{goal_type_name}")
+        
+        challenge = load_challenge(name)
+        if not challenge:
+            return {"error": "Challenge not found"}, 404
+        
+        from models.goal_types import (
+            MoreThanGoal, FrequencyMinGoal, AverageAboveGoal, 
+            RecurrencePatternGoal
+        )
+        
+        goal_type_map = {
+            "MORE_THAN": MoreThanGoal,
+            "FREQUENCY_MIN": FrequencyMinGoal,
+            "AVERAGE_ABOVE": AverageAboveGoal,
+            "RECURRENCE_PATTERN": RecurrencePatternGoal
+        }
+        
+        if goal_type_name not in goal_type_map:
+            return {"error": f"Unknown goal type: {goal_type_name}"}, 400
+        
+        challenge.remove_goal_type(goal_type_map[goal_type_name])
+        save_challenge(challenge)
+        
+        logger.info(f"Goal type {goal_type_name} removed from {name}")
+        return jsonify(challenge.to_dict()), 200
+    
+    except Exception as e:
+        logger.exception(f"Error in DELETE /challenges/{name}/goal-types/{goal_type_name}")
         return {"error": str(e)}, 500
 
 

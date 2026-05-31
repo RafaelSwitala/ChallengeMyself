@@ -28,6 +28,13 @@ class GoalDefinition:
 
 
 GOAL_DEFINITIONS = {
+    "Joggen": GoalDefinition(
+        activity_name="Joggen",
+        allowed_references=["distance", "duration"],
+        reference_units={"distance": "km", "duration": "min"},
+        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    ),
     "Laufen": GoalDefinition(
         activity_name="Laufen",
         allowed_references=["distanz_km", "dauer_min"],
@@ -37,15 +44,22 @@ GOAL_DEFINITIONS = {
     ),
     "Radfahren": GoalDefinition(
         activity_name="Radfahren",
-        allowed_references=["distanz_km", "dauer_min"],
-        reference_units={"distanz_km": "km", "dauer_min": "min"},
+        allowed_references=["distance", "duration"],
+        reference_units={"distance": "km", "duration": "min"},
+        allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
+        status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
+    ),
+    "Wandern": GoalDefinition(
+        activity_name="Wandern",
+        allowed_references=["distance", "duration"],
+        reference_units={"distance": "km", "duration": "min"},
         allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
         status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
     ),
     "Spazieren": GoalDefinition(
         activity_name="Spazieren",
-        allowed_references=["distanz_km", "dauer_min"],
-        reference_units={"distanz_km": "km", "dauer_min": "min"},
+        allowed_references=["distance", "duration"],
+        reference_units={"distance": "km", "duration": "min"},
         allowed_periods=["daily", "weekly", "monthly", "date_range", "yearly"],
         status_types=["in_progress", "completed", "not_completed", "consecutive_days"]
     ),

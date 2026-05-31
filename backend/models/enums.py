@@ -6,22 +6,26 @@ from enum import Enum
 
 
 class ActivityType(Enum):
-    """40+ Aktivitätstypen"""
+    """60+ Aktivitätstypen"""
     # ALCOHOL_CONSUMPTION = "Alkoholkonsum"
     # ANXIETY = "Angstlevel"
     # ART = "Kunst"
     # BUDGETING = "Budgetplanung"
     # CAFFEINE_CONSUMPTION = "Koffeinkonsum"
+    # CLIMBING = "Klettern"
     # COMMUNITY_ENGAGEMENT = "Gemeinschaftsaktivität"
+    # CREATING = "Erstellung"
     # CREATIVITY = "Kreativitaet"
     # CULTURAL_EVENTS = "Kulturelle Veranstaltungen"
     CYCLING = "Radfahren"
+    # DRAWING = "Zeichnen"
     # DRINK_CONSUMPTION = "Getränkekonsum"
     # DRUG_USE = "Drogenkonsum"
     # EATING = "Ernährung"
     # ENERGY = "Energie"
     # EXPENSES = "Ausgaben"
     # FAMILY_TIME = "Familienzeit"
+    # FINANCE = "Finanzen (Finanzplanung?)"
     # GAMBLING = "Glücksspiel"
     # GRATITUDE = "Dankbarkeit"
     # HABIT_BREAKING = "Gewohnheitsbruch (Rückfälle)"
@@ -36,6 +40,8 @@ class ActivityType(Enum):
     # LANGUAGE_TRAINING = "Sprachtraining"
     # LEARNING = "Lernen"
     # MEDITATION = "Meditation"
+    # MEMORIZATION = "Auswendig lernen"
+    # MEMORY_TRAINING = "Gedächtnis Training"
     # MENTAL_EXERCISE = "Mentale Übungen"
     # MENTAL_HEALTH = "Psychische Gesundheit"
     # MINDFULNESS = "Achtsamkeit"
@@ -43,6 +49,7 @@ class ActivityType(Enum):
     # MOTIVATION = "Motivation"
     # MUSIC = "Musikpraxis"
     # NATURE = "Natur"
+    # PLANNING = "Planung, Organisation"
     # PRODUCTIVITY = "Produktivitaet"
     # READING = "Lesen"
     # REFLECTION = "Reflexion, Tagebuch"
@@ -69,21 +76,44 @@ class ActivityType(Enum):
 
 class GoalType(Enum):
     """12 Zieltypen A-L"""
-    MORE_THAN = "a"           # Mehr als X
-    LESS_THAN = "b"           # Weniger als X
-    AVOID = "c"               # Ganz vermeiden
-    FREQUENCY_EXACT = "d"     # Genau X-mal pro Periode
-    FREQUENCY_MIN = "e"       # Mindestens X-mal
-    FREQUENCY_MAX = "f"       # Maximal X-mal
-    STREAK = "g"              # X Tage in Folge
-    INCREASE_DAILY = "h"      # Täglich X mehr bis Y
-    DECREASE_DAILY = "i"      # Täglich X weniger bis Y
-    AVERAGE_ABOVE = "j"       # Durchschnitt über X
-    AVERAGE_BELOW = "k"       # Durchschnitt unter X
-    CONDITIONAL = "l"         # X erreichen unter Bedingung Y
-    PERSONAL_BEST = "m"       # neuer Rekord?
-    MILESTONES = "n"          # Selbstdefinierte oder vorgegebene Milestones
-
+    MORE_THAN = "a"                 # Mehr als X
+    LESS_THAN = "b"                 # Weniger als X
+    AVOID = "c"                     # Ganz vermeiden
+    FREQUENCY_EXACT = "d"           # Genau X-mal pro Periode
+    FREQUENCY_MIN = "e"             # Mindestens X-mal
+    FREQUENCY_MAX = "f"             # Maximal X-mal
+    STREAK = "g"                    # X Tage in Folge
+    INCREASE_DAILY = "h"            # Täglich X mehr bis Tag Y
+    DECREASE_DAILY = "i"            # Täglich X weniger bis Tag Y
+    AVERAGE_ABOVE = "j"             # Durchschnitt über X
+    AVERAGE_BELOW = "k"             # Durchschnitt unter X
+    CONDITIONAL = "l"               # X erreichen unter Bedingung Y
+    PERSONAL_BEST = "m"             # neuer Rekord?
+    MILESTONES = "n"                # Selbstdefinierte oder vorgegebene Milestones
+    DURATION_MIN = "o"              # Mindestens X Zeit pro Session
+    DURATION_MAX = "p"              # Maximal X Zeit
+    DURATION_EXACT = "q"            # Genau X Zeit
+    TOTAL_DURATION = "r"            # Gesamtzeit in Periode erreichen
+    TIME_WINDOW = "s"               # Nur in Zeitfenster (z.B. morgens)
+    DEADLINE = "t"                  # Ziel bis Zeitpunkt X erreichen
+    TARGET_VALUE = "u"              # Zielwert erreichen (z.B. 10km)
+    DELTA_INCREASE = "v"            # Steigerung um X (nicht täglich!)
+    DELTA_DECREASE = "w"            # Reduktion um X
+    PERCENT_CHANGE = "x"            # Veränderung um X %
+    CONSISTENCY = "z"               # geringe Varianz / stabil bleiben
+    STREAK_WITH_TOLERANCE = "aa"    # Streak mit erlaubten Aussetzern
+    NON_CONSECUTIVE_COUNT = "ab"    # X-mal, egal wann
+    RECURRENCE_PATTERN = "ac"       # z.B. Mo/Mi/Fr
+    RANGE_TARGET = "ad"             # Wert in Bereich halten
+    IMPROVEMENT_SCORE = "ae"        # subjektive Verbesserung
+    PEAK_STATE = "af"               # Zustand X erreichen (Flow etc.)
+    LIMIT_STATE = "ag"              # Zustand unter X halten (Stress etc.)
+    TRIGGER_BASED = "am"            # wenn X → dann Y tun
+    WEIGHTED_SCORE = "ar"           # gewichtete Bewertung
+    POINTS = "aw"                   # Punktesystem erreichen
+    ACHIEVEMENT = "ay"              # einmaliges Ziel
+    CHALLENGE = "az"                # zeitlich begrenzte Challenge
+    RECOVERY_GOAL = "bd"            # nach Rückfall zurückkommen
 
 class GoalPeriod(Enum):
     """Zeiträume für Goals"""

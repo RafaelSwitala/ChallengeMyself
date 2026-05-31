@@ -231,3 +231,9 @@ Bildungsprojekt für "Projekt: Einführung in die Programmierung mit Python"
 **Version:** 1.0 (Python Plotly Backend)  
 **Python:** 3.12  
 **Status:** Produktionsbereit
+
+**Benotet** mit 1,0
+
+---
+
+Projekt wird umbenannt in Vascendia

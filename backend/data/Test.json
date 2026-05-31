@@ -1,0 +1,31 @@
+{
+    "name": "Test",
+    "activity_type": "Joggen",
+    "goal": null,
+    "goal_types": [],
+    "sessions": [
+        {
+            "date": "2026-03-03",
+            "time": "16:27",
+            "values": {
+                "date": "3",
+                "time": "16:27",
+                "distance": 3.0,
+                "duration": 3.0,
+                "clarity_range": "3",
+                "discipline_range": "3",
+                "energy_range": "3",
+                "fitness_level_range": "3",
+                "focus_range": "3",
+                "mood_range": "3",
+                "motivation_range": "3",
+                "movement_intensity_range": "3",
+                "physical_discomfort_range": "3",
+                "physical_energy_range": "3",
+                "success_range": "3",
+                "sugar_craving_range": "3",
+                "tension_range": "3"
+            }
+        }
+    ]
+}

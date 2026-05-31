@@ -93,6 +93,52 @@ ACTIVITIES: dict[str, list[str]] = {
 
 
 
+# GoalType Definitionen pro Aktivität
+# Diese Struktur definiert, welche GoalTypes für welche Aktivität verfügbar sind
+# und enthält die Standard-Konfiguration für jeden GoalType
+ACTIVITY_GOAL_TYPES: dict[str, dict] = {
+    ActivityType.JOGGING.value: {
+        "MORE_THAN": {
+            "label": "Gesamtdistanz pro Periode",
+            "description": "Joggen Sie insgesamt mindestens X km pro Periode",
+            "default_unit": "km",
+            "default_metric": "distance",
+            "default_period": "monthly",
+            "example": "120 km pro Monat"
+        },
+        "FREQUENCY_MIN": {
+            "label": "Mindestens X Sessions",
+            "description": "Mindestens X-mal pro Periode joggen gehen",
+            "default_period": "weekly",
+            "example": "3 mal pro Woche oder 20 mal pro Monat"
+        },
+        "AVERAGE_ABOVE": {
+            "label": "Durchschnittliche Dauer",
+            "description": "Jede Session soll durchschnittlich mindestens X Minuten sein",
+            "default_metric": "duration",
+            "default_unit": "minutes",
+            "example": "mindestens 30 Minuten pro Session"
+        },
+        "RECURRENCE_PATTERN": {
+            "label": "An bestimmten Wochentagen",
+            "description": "Joggen Sie an bestimmten Wochentagen",
+            "example": "Jeden Dienstag, Mittwoch und Samstag"
+        }
+    },
+    ActivityType.CYCLING.value: {},
+    ActivityType.WANDERING.value: {},
+}
+
+
+def get_available_goal_types(activity: str) -> dict:
+    """Gibt die verfügbaren GoalTypes für eine Aktivität zurück"""
+    try:
+        return ACTIVITY_GOAL_TYPES.get(activity, {})
+    except Exception:
+        logger.exception(f"Failed to get available goal types for {activity}")
+        return {}
+
+
 def get_activity_names() -> list[str]:
     """Returns all available activity names."""
     try:
@@ -106,18 +152,24 @@ def get_fields(activity: str) -> list[dict]:
     """Returns all fields for a specific activity as dicts."""
     try:
         field_keys = ACTIVITIES.get(activity, [])
-        return [FIELD_DEFINITIONS[key].to_dict() if hasattr(FIELD_DEFINITIONS[key], 'to_dict')
-                else {
-                    "key": FIELD_DEFINITIONS[key].key,
-                    "label": FIELD_DEFINITIONS[key].label,
-                    "field_type": FIELD_DEFINITIONS[key].field_type.value,
-                    "chart_type": FIELD_DEFINITIONS[key].chart_type.value,
-                    "required": FIELD_DEFINITIONS[key].required,
-                    "hidden": FIELD_DEFINITIONS[key].hidden,
-                    "unit": FIELD_DEFINITIONS[key].unit,
-                    "options": FIELD_DEFINITIONS[key].options,
+        result = []
+        for key in field_keys:
+            if key in FIELD_DEFINITIONS:
+                field_obj = FIELD_DEFINITIONS[key]
+                field_dict = {
+                    "name": field_obj.key,  # Use "name" for frontend compatibility
+                    "key": field_obj.key,
+                    "label": field_obj.label,
+                    "type": field_obj.field_type.value,  # Use "type" for frontend
+                    "field_type": field_obj.field_type.value,
+                    "chart_type": field_obj.chart_type.value,
+                    "required": field_obj.required,
+                    "hidden": field_obj.hidden,
+                    "unit": field_obj.unit,
+                    "options": field_obj.options,
                 }
-                for key in field_keys if key in FIELD_DEFINITIONS]
+                result.append(field_dict)
+        return result
     except Exception:
         logger.exception("Failed to get fields for activity %s", activity)
         return []
